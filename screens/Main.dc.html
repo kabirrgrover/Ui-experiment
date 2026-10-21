@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Docbuilder · Spec Street</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coming+Soon&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Shantell+Sans:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#111111}a:hover{color:#111111}
+@keyframes db-drift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes db-float{from{transform:translateX(0)}to{transform:translateX(-160px)}}
+.db-track,.db-sky{animation-name:db-drift;animation-timing-function:linear;animation-iteration-count:infinite}
+.db-cloud{animation:db-float 26s ease-in-out infinite alternate}
+.db-street:hover .db-track,.db-street:focus-within .db-track,.db-street:hover .db-sky,.db-street:focus-within .db-sky{animation-play-state:paused}
+.db-door{transition:transform 240ms cubic-bezier(.34,1.56,.64,1)}
+.db-door:hover,.db-door:focus-visible{transform:translateY(-8px)}
+.db-door:focus-visible{outline:2px solid #3355e6;outline-offset:6px;border-radius:6px}
+.db-tip{opacity:0;transform:translate(-50%,8px);transition:opacity 160ms ease,transform 240ms cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.db-door:hover .db-tip,.db-door:focus-visible .db-tip{opacity:1;transform:translate(-50%,0)}
+.db-chip:hover{border-color:#111111 !important}
+.db-btn{transition:transform 140ms cubic-bezier(.2,.8,.2,1),box-shadow 140ms cubic-bezier(.2,.8,.2,1)}
+.db-btn:hover{transform:translateY(-1px) rotate(-.6deg);box-shadow:2px 3px 0 #111111}
+.db-card{transition:transform 240ms cubic-bezier(.34,1.56,.64,1)}
+.db-card:hover{transform:translateY(-4px) rotate(-.6deg)}
+.db-field:focus-within{box-shadow:3px 4px 0 #111111}
+:where(.db-chip,.db-navlink,.db-btn,.db-card,.db-link):focus-visible{outline:2px solid #3355e6;outline-offset:3px}
+.db-input:focus{outline:none}
+.db-grid{background-image:linear-gradient(#dedcd6 1px,transparent 1px),linear-gradient(90deg,#dedcd6 1px,transparent 1px),linear-gradient(#ecebe6 1px,transparent 1px),linear-gradient(90deg,#ecebe6 1px,transparent 1px);background-size:140px 140px,140px 140px,28px 28px,28px 28px;background-position:center -1px;-webkit-mask-image:radial-gradient(ellipse 85% 100% at 50% 35%,#000 45%,transparent 90%);mask-image:radial-gradient(ellipse 85% 100% at 50% 35%,#000 45%,transparent 90%)}
+.db-enav a{position:relative;color:#5f5e5b;text-decoration:none;transition:color 180ms ease}
+.db-enav a:hover,.db-enav a:focus-visible{color:#111111}
+.db-enav img{position:absolute;right:calc(100% + 4px);top:50%;width:34px;height:auto;opacity:0;transform:translateY(-50%) rotate(-22deg) scale(.4);transition:opacity 180ms ease,transform 180ms ease;pointer-events:none}
+.db-enav a:hover img,.db-enav a:focus-visible img{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(1);transition:opacity 300ms ease,transform 300ms cubic-bezier(.34,1.56,.64,1)}
+@media (prefers-reduced-motion: reduce){.db-enav img,.db-enav a:hover img{transition:opacity 200ms ease;transform:translateY(-50%) rotate(-6deg)}}
+.db-input::placeholder{color:#5f5e5b}
+@media (prefers-reduced-motion: reduce){.db-track,.db-sky,.db-cloud{animation:none}.db-clip{overflow-x:auto}}
+@keyframes db-peek{0%,84%{transform:translateY(105%)}88%,95%{transform:translateY(6%)}99%,100%{transform:translateY(105%)}}
+.db-worker{display:block;transform:translateY(105%);animation:db-peek 22s ease-in-out 5s infinite}
+.db-peekwrap:hover .db-worker{animation:none;transform:translateY(6%);transition:transform 320ms cubic-bezier(.34,1.56,.64,1)}
+@keyframes db-wave{from{transform:rotate(-18deg)}to{transform:rotate(22deg)}}
+.db-hand{transform-origin:38px 34px;animation:db-wave 420ms ease-in-out infinite alternate}
+@media (prefers-reduced-motion: reduce){.db-worker,.db-hand{animation:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #ffffff; color: #111111; font-family: 'Instrument Sans', system-ui, sans-serif; display: flex; flex-direction: column;">
+
+  <header style="position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 20px clamp(20px, 4vw, 56px);">
+    <a href="#" class="db-navlink" style="text-decoration: none; font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 21px; color: #111111;">AI Docbuilder</a>
+    <nav aria-label="Main" class="db-enav" style="position: relative; z-index: 3; display: flex; align-items: center; gap: 48px; flex-wrap: wrap; font-size: 16px; font-weight: 500;">
+      <a href="Folders.dc.html" class="db-navlink"><img src="assets/icon-folder.svg" alt="">Folders</a>
+      <a href="Chat.dc.html" class="db-navlink"><img src="assets/icon-chat.svg" alt="">Past chats</a>
+      <a href="Chat.dc.html" class="db-btn" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; box-sizing: border-box; padding: 10px 18px; background: #f0662a; color: #111111; text-decoration: none; font-weight: 600; font-size: 15px; border: 2px solid #111111; border-radius: 255px 14px 225px 16px / 16px 225px 14px 255px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v11M2.5 8h11" stroke="#111111" stroke-width="2.4" stroke-linecap="round" fill="none"></path></svg>
+        New chat
+      </a>
+      <span aria-label="Your account" role="img" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #111111; background: #fbe97a; display: inline-flex; align-items: center; justify-content: center; font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 15px;">K</span>
+    </nav>
+  </header>
+
+  <section style="position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; padding: clamp(24px, 5vw, 56px) 20px 8px; gap: 16px;">
+    <div class="db-grid" aria-hidden="true" style="position: absolute; inset: -90px 0 -150px; pointer-events: none;"></div>
+    <h1 style="position: relative; margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: clamp(40px, 5.6vw, 72px); line-height: 1.05;">what are we drafting today?</h1>
+    <p style="position: relative; margin: 0; max-width: 560px; font-size: 18px; line-height: 27px; color: #5f5e5b;">Tell me what you need, or knock on a door down Spec Street.</p>
+    <form onSubmit="{{start}}" class="db-field" style="position: relative; display: flex; align-items: center; gap: 8px; width: min(680px, 100%); box-sizing: border-box; margin-top: 10px; padding: 8px 8px 8px 20px; background: #ffffff; border: 2px solid #111111; border-radius: 22px 14px 24px 16px / 16px 24px 14px 22px; transition: box-shadow 140ms ease;">
+      <label for="db-ask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Describe the document you need</label>
+      <input id="db-ask" class="db-input" type="text" placeholder="e.g. an SR for 3 boreholes at the North pad" style="flex: 1; min-width: 0; border: 0; background: transparent; font-family: 'Instrument Sans', sans-serif; font-size: 17px; line-height: 26px; color: #111111; padding: 8px 0;">
+      <button type="submit" class="db-btn" style="flex: 0 0 auto; min-height: 44px; padding: 10px 18px; background: #111111; color: #ffffff; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 2px solid #111111; border-radius: 14px 18px 12px 16px; cursor: pointer;">Start drafting</button>
+    </form>
+    <div style="position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; font-size: 13px; color: #5f5e5b; align-items: center;">
+      <span style="font-family: 'Shantell Sans', cursive; font-weight: 500; font-size: 15px; color: #3355e6;">try:</span>
+      <button class="db-chip" style="font-family: 'Instrument Sans', sans-serif; font-size: 13px; padding: 6px 12px; border-radius: 999px; background: #f4f4f2; border: 1.5px solid #f4f4f2; color: #111111; cursor: pointer;">PEP for a substation upgrade</button>
+      <button class="db-chip" style="font-family: 'Instrument Sans', sans-serif; font-size: 13px; padding: 6px 12px; border-radius: 999px; background: #f4f4f2; border: 1.5px solid #f4f4f2; color: #111111; cursor: pointer;">MR for rebar, level 2</button>
+      <button class="db-chip" style="font-family: 'Instrument Sans', sans-serif; font-size: 13px; padding: 6px 12px; border-radius: 999px; background: #f4f4f2; border: 1.5px solid #f4f4f2; color: #111111; cursor: pointer;">Hydro test for the cooling loop</button>
+    </div>
+  </section>
+
+  <section class="db-street" aria-label="Spec Street, document types" style="position: relative; margin-top: 28px;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; padding: 0 clamp(20px, 4vw, 56px); position: relative; z-index: 2;">
+      <div style="display: flex; align-items: baseline; gap: 10px;">
+        <h2 style="margin: 0; font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 28px; line-height: 34px;">Spec Street</h2>
+        <span style="font-size: 14px; color: #5f5e5b;">{{doorCount}} doors open</span>
+      </div>
+      <div role="group" aria-label="Filter by document type" style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <sc-for list="{{chips}}" as="chip" hint-placeholder-count="4">
+          <button class="db-chip" aria-pressed="{{chip.pressed}}" onClick="{{chip.pick}}" style="{{chip.style}}">{{chip.label}} <span style="opacity: .6;">{{chip.count}}</span></button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div class="db-clip" style="position: relative; overflow-x: clip; overflow-y: visible; padding-top: 150px;">
+      <div aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none;">
+        <div class="db-sky" style="{{skyStyle}}">
+          <img src="assets/sky-skyline.svg" alt="" style="display: block; width: 1600px; height: 262px; flex: 0 0 auto;">
+          <img src="assets/sky-skyline.svg" alt="" style="display: block; width: 1600px; height: 262px; flex: 0 0 auto;">
+          <img src="assets/sky-skyline.svg" alt="" style="display: block; width: 1600px; height: 262px; flex: 0 0 auto;">
+          <img src="assets/sky-skyline.svg" alt="" style="display: block; width: 1600px; height: 262px; flex: 0 0 auto;">
+        </div>
+      </div>
+      <div class="db-track" style="{{trackStyle}}">
+        <sc-for list="{{street}}" as="it" hint-placeholder-count="8">
+          <sc-if value="{{it.isProp}}" hint-placeholder-val="{{false}}">
+            <div aria-hidden="true" style="flex: 0 0 auto; margin-right: 36px; display: flex; align-items: flex-end;">
+              <img src="{{it.img}}" alt="" style="{{it.imgStyle}}">
+            </div>
+          </sc-if>
+          <sc-if value="{{it.isDoor}}" hint-placeholder-val="{{true}}">
+            <a href="Chat.dc.html" class="db-door" aria-label="{{it.aria}}" aria-hidden="{{it.hidden}}" tabindex="{{it.tab}}" style="{{it.boxStyle}}">
+              <sc-if value="{{it.showDim}}" hint-placeholder-val="{{false}}">
+                <span aria-hidden="true" style="position: absolute; left: 0; right: 0; top: -34px; height: 14px; border-left: 1.5px solid #b9b7b1; border-right: 1.5px solid #b9b7b1;">
+                  <span style="position: absolute; left: 0; right: 0; top: 6px; height: 1.5px; background: #b9b7b1;"></span>
+                  <span style="position: absolute; left: 50%; top: -2px; transform: translateX(-50%); background: #ffffff; padding: 0 6px; font-family: 'Instrument Sans', sans-serif; font-size: 11px; line-height: 16px; letter-spacing: .04em; color: #8d8c88; white-space: nowrap;">{{it.dimW}}</span>
+                </span>
+                <span aria-hidden="true" style="position: absolute; top: 0; bottom: 0; right: -24px; width: 14px; border-top: 1.5px solid #b9b7b1; border-bottom: 1.5px solid #b9b7b1;">
+                  <span style="position: absolute; top: 0; bottom: 0; left: 6px; width: 1.5px; background: #b9b7b1;"></span>
+                  <span style="position: absolute; top: 50%; left: 7px; transform: translate(-50%, -50%) rotate(-90deg); background: #ffffff; padding: 0 6px; font-family: 'Instrument Sans', sans-serif; font-size: 11px; line-height: 16px; letter-spacing: .04em; color: #8d8c88; white-space: nowrap;">{{it.dimH}}</span>
+                </span>
+              </sc-if>
+              <img src="{{it.bldg}}" alt="" style="display: block; width: 100%; height: 100%;">
+              <span style="{{it.signStyle}}">
+                <span style="font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: {{it.signSize}}; line-height: 1.05; color: #111111; white-space: nowrap;">{{it.name}}</span>
+                <sc-if value="{{it.showPlate}}" hint-placeholder-val="{{true}}">
+                  <span style="font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: #5f5e5b; white-space: nowrap;">{{it.plate}}</span>
+                </sc-if>
+              </span>
+              <img src="{{it.doodle}}" alt="" style="{{it.doodleStyle}}">
+              <span class="db-tip" role="tooltip" style="position: absolute; left: 50%; bottom: calc(100% + 14px); width: 248px; box-sizing: border-box; background: #ffffff; border: 2px solid #111111; border-radius: 16px 10px 18px 12px / 12px 18px 10px 16px; padding: 14px 16px; text-align: left; box-shadow: 0 10px 18px -10px rgba(17,17,17,.3); z-index: 5;">
+                <span style="display: flex; align-items: center; gap: 8px;">
+                  <span style="{{it.tagStyle}}">{{it.doc}}</span>
+                  <span style="font-weight: 600; font-size: 15px;">{{it.type}}</span>
+                </span>
+                <span style="display: block; margin-top: 6px; font-size: 14px; line-height: 20px; color: #3d3c3a;">{{it.blurb}}</span>
+                <span style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 13px;">
+                  <span style="color: #5f5e5b;">{{it.qs}}</span>
+                  <span style="font-family: 'Shantell Sans', cursive; font-weight: 700;">knock →</span>
+                </span>
+              </span>
+            </a>
+          </sc-if>
+        </sc-for>
+      </div>
+    </div>
+    <div aria-hidden="true" style="height: 26px; background-color: #f4f4f2; background-image: repeating-linear-gradient(90deg, transparent 0 118px, #e6e5e1 118px 120px); border-top: 2.6px solid #111111;"></div>
+  </section>
+
+  <footer style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px; padding: 28px clamp(20px, 4vw, 56px) 40px; font-size: 13px; color: #5f5e5b;">
+    <span>Hover the street to stop it. Drafts save as you go.</span>
+    <div aria-label="Sheet title block" role="img" style="display: grid; grid-template-columns: auto auto auto; border: 1.5px solid #111111; font-family: 'Instrument Sans', sans-serif; color: #111111; font-size: 12px;">
+      <span style="grid-column: 1 / 4; padding: 6px 10px; border-bottom: 1.5px solid #111111; display: flex; justify-content: space-between; gap: 24px;"><span style="font-size: 10px; letter-spacing: .1em; color: #5f5e5b;">PROJECT</span><span style="font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 14px;">AI Docbuilder</span></span>
+      <span style="padding: 6px 10px; border-right: 1.5px solid #111111;"><span style="display: block; font-size: 10px; letter-spacing: .1em; color: #5f5e5b;">SHEET</span>Spec Street</span>
+      <span style="padding: 6px 10px; border-right: 1.5px solid #111111;"><span style="display: block; font-size: 10px; letter-spacing: .1em; color: #5f5e5b;">SCALE</span>1 : 100</span>
+      <span style="padding: 6px 10px;"><span style="display: block; font-size: 10px; letter-spacing: .1em; color: #5f5e5b;">REV</span>A · 1 of 1</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"speed":{"editor":"range","default":38,"min":10,"max":90,"step":2,"unit":"px/s","section":"Street"},"$preview":{"width":1440,"height":1060}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { filter: 'all' }; }
+  renderVals() {
+    var B = {
+      shop: { w: 260, h: 300, sign: [34, 58, 192, 50], win: [34, 166, 128, 120], size: '22px', plate: true },
+      warehouse: { w: 330, h: 290, sign: [38, 100, 252, 44], win: [188, 162, 108, 100], size: '22px', plate: true },
+      tower: { w: 230, h: 400, sign: [36, 40, 158, 46], win: [38, 280, 108, 112], size: '20px', plate: true },
+      kiosk: { w: 230, h: 280, sign: [44, 138, 142, 30], win: [46, 176, 138, 76], size: '17px', plate: false },
+      gable: { w: 270, h: 330, sign: [44, 126, 182, 44], win: [44, 186, 116, 112], size: '20px', plate: true }
+    };
+    var doors = [
+      { doc: 'SR', kind: 'shop', name: 'Dirt Lab', type: 'Geotech', blurb: 'Soil investigation: boreholes, test pits and lab testing.', qs: 'about 6 questions', bldg: 'assets/bldg-geotech.svg', doodle: 'assets/doodle-geotech.svg' },
+      { doc: 'SR', kind: 'warehouse', name: 'Span Works', type: 'Bridging', blurb: 'Temporary bridging and crossings for site access.', qs: 'about 5 questions', bldg: 'assets/bldg-bridging.svg', doodle: 'assets/doodle-bridging.svg' },
+      { doc: 'SR', kind: 'kiosk', name: 'Pressure Point', type: 'Pressure testing', blurb: 'Hydro and pneumatic pressure tests for piping systems.', qs: 'about 7 questions', bldg: 'assets/bldg-pressure-testing.svg', doodle: 'assets/doodle-pressure-testing.svg' },
+      { doc: 'SR', kind: 'warehouse', name: 'Big Iron', type: 'Field machinery', blurb: 'Excavators, loaders and plant hire for the field.', qs: 'about 6 questions', bldg: 'assets/bldg-field-machinery.svg', doodle: 'assets/doodle-field-machinery.svg' },
+      { doc: 'SR', kind: 'shop', name: 'Live Wire', type: 'Cable testing', blurb: 'Insulation, continuity and HV cable testing.', qs: 'about 5 questions', bldg: 'assets/bldg-cable-testing.svg', doodle: 'assets/doodle-cable-testing.svg' },
+      { doc: 'MR', kind: 'warehouse', name: 'Supply Yard', type: 'Material requisition', blurb: 'What to buy: specs, quantities and delivery dates.', qs: 'about 8 questions', bldg: 'assets/bldg-mr.svg', doodle: 'assets/doodle-mr.svg' },
+      { doc: 'SR', kind: 'tower', name: 'Power Factor', type: 'PFC panels', blurb: 'Power factor correction panels: supply and install.', qs: 'about 6 questions', bldg: 'assets/bldg-pfc-panels.svg', doodle: 'assets/doodle-pfc-panels.svg' },
+      { doc: 'SR', kind: 'gable', name: 'Drop-Off Depot', type: 'Material delivery', blurb: 'Trucked deliveries of bulk and heavy materials.', qs: 'about 5 questions', bldg: 'assets/bldg-material-delivery.svg', doodle: 'assets/doodle-material-delivery.svg' },
+      { doc: 'SR', kind: 'shop', name: 'Hot Seam', type: 'Welding', blurb: 'Welding services, procedures and inspection.', qs: 'about 6 questions', bldg: 'assets/bldg-welding.svg', doodle: 'assets/doodle-welding.svg' },
+      { doc: 'PEP', kind: 'tower', name: 'Plan HQ', type: 'Project execution plan', blurb: 'Scope, schedule, people and how the job gets done.', qs: 'about 10 questions', bldg: 'assets/bldg-pep.svg', doodle: 'assets/doodle-pep.svg' },
+      { doc: 'SR', kind: 'tower', name: 'Going Up', type: 'Elevator', blurb: 'Elevator supply, install and commissioning.', qs: 'about 6 questions', bldg: 'assets/bldg-elevator.svg', doodle: 'assets/doodle-elevator.svg' },
+      { doc: 'SR', kind: 'gable', name: 'Firm Footing', type: 'Tower crane foundations', blurb: 'Design and pour of tower crane footings.', qs: 'about 7 questions', bldg: 'assets/bldg-tower-crane-foundations.svg', doodle: 'assets/doodle-tower-crane-foundations.svg' },
+      { doc: 'SR', kind: 'kiosk', name: 'Slump & Co.', type: 'Concrete testing', blurb: 'Slump, cylinder and core testing for concrete.', qs: 'about 5 questions', bldg: 'assets/bldg-concrete-testing.svg', doodle: 'assets/doodle-concrete-testing.svg' }
+    ];
+    var props = [
+      { img: 'assets/prop-lamp.svg', imgStyle: 'display:block;height:190px;width:auto' },
+      { img: 'assets/prop-tree.svg', imgStyle: 'display:block;height:170px;width:auto' },
+      { img: 'assets/cone.png', imgStyle: 'display:block;height:74px;width:auto;margin-bottom:-4px' },
+      { img: 'assets/prop-signpost.svg', imgStyle: 'display:block;height:180px;width:auto' }
+    ];
+    var tagColor = { SR: 'background:#f0662a;color:#111111', MR: 'background:#3355e6;color:#ffffff', PEP: 'background:#2f7d4f;color:#ffffff' };
+    var f = this.state.filter;
+    var list = doors.filter(function (s) { return f === 'all' || s.doc === f; });
+    var run = [];
+    list.forEach(function (s, i) {
+      run.push(s);
+      if (i % 3 === 2) run.push(Object.assign({ isProp: true }, props[(i / 3 | 0) % props.length]));
+    });
+    if (run.length && !run[run.length - 1].isProp) run.push(Object.assign({ isProp: true }, props[1]));
+    var base = run.slice();
+    while (run.length < 10) run = run.concat(base);
+    var street = run.concat(run).map(function (s, i) {
+      var dup = i >= run.length;
+      if (s.isProp) return { isProp: true, isDoor: false, img: s.img, imgStyle: s.imgStyle };
+      var b = B[s.kind];
+      return {
+        showDim: (i % run.length) % 5 === 1, dimW: (b.w / 40).toFixed(1) + ' m', dimH: (b.h / 40).toFixed(1) + ' m',
+        isProp: false, isDoor: true, name: s.name, plate: s.type + ' · ' + s.doc, showPlate: b.plate, doc: s.doc, type: s.type,
+        blurb: s.blurb, qs: s.qs, bldg: s.bldg, doodle: s.doodle, signSize: b.size,
+        aria: 'Start a ' + s.type + ' ' + s.doc + ' at ' + s.name,
+        hidden: dup ? 'true' : 'false', tab: dup ? '-1' : '0',
+        boxStyle: 'position:relative;display:block;flex:0 0 auto;margin-right:36px;width:' + b.w + 'px;height:' + b.h + 'px;text-decoration:none;color:#111111;z-index:1',
+        signStyle: 'position:absolute;left:' + b.sign[0] + 'px;top:' + b.sign[1] + 'px;width:' + b.sign[2] + 'px;height:' + b.sign[3] + 'px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;overflow:hidden',
+        doodleStyle: 'position:absolute;left:' + (b.win[0] + 8) + 'px;top:' + (b.win[1] + 8) + 'px;width:' + (b.win[2] - 16) + 'px;height:' + (b.win[3] - 16) + 'px;object-fit:contain',
+        tagStyle: tagColor[s.doc] + ';font-weight:700;font-size:11px;letter-spacing:.06em;padding:3px 7px;border:1.5px solid #111111;border-radius:4px'
+      };
+    });
+    var widthPx = run.reduce(function (a, s) { return a + (s.isProp ? 110 : B[s.kind].w) + 36; }, 0);
+    var speed = this.props.speed ?? 38;
+    var self = this;
+    var counts = { all: doors.length, SR: 0, MR: 0, PEP: 0 };
+    doors.forEach(function (s) { counts[s.doc]++; });
+    var chips = [['all', 'Everything'], ['SR', 'Service requisitions'], ['MR', 'Material requisitions'], ['PEP', 'Execution plans']].map(function (c) {
+      var on = f === c[0];
+      return {
+        label: c[1], count: counts[c[0]], pressed: on ? 'true' : 'false',
+        pick: function () { self.setState({ filter: c[0] }); },
+        style: 'font-family:\'Instrument Sans\',sans-serif;font-size:14px;font-weight:500;line-height:20px;padding:8px 16px;border-radius:999px;cursor:pointer;min-height:40px;' +
+          (on ? 'background:#111111;color:#ffffff;border:1.5px solid #111111' : 'background:#ffffff;color:#111111;border:1.5px solid #8d8c88')
+      };
+    });
+    return {
+      street: street, chips: chips, doorCount: list.length,
+      start: function (e) { if (e && e.preventDefault) e.preventDefault(); },
+      trackStyle: 'position:relative;display:flex;align-items:flex-end;width:max-content;animation-duration:' + Math.round(widthPx / speed) + 's',
+      skyStyle: 'position:absolute;left:0;bottom:0;display:flex;width:max-content;opacity:.9;animation-duration:' + Math.round(3200 / (speed * 0.35)) + 's'
+    };
+  }
+}
+</script>
+</body>
+</html>

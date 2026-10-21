@@ -1,0 +1,18 @@
+{
+ "v": 3,
+ "createdOnFiles": {"v": 1, "at": "2026-10-21T03:40:00Z"},
+ "title": "Docbuilder Storefront Street",
+ "launch": {"view": "focused", "file": "Main.dc.html"},
+ "pages": [],
+ "boards": {
+  "Main.dc.html": {"x": 0, "y": 0, "w": 1440, "h": 1060, "title": "Spec Street", "expand": "fill", "is_interactive": true},
+  "Chat.dc.html": {"x": 1520, "y": 0, "w": 1440, "h": 1240, "title": "Chat", "expand": "fill", "is_interactive": true},
+  "Canvas.dc.html": {"x": 3040, "y": 0, "w": 1440, "h": 900, "title": "Canvas", "expand": "fill", "is_interactive": true},
+  "Folders.dc.html": {"x": 4560, "y": 0, "w": 1440, "h": 1100, "title": "Folders", "expand": "fill", "is_interactive": true}
+ },
+ "order": ["Main.dc.html", "Chat.dc.html", "Canvas.dc.html", "Folders.dc.html"],
+ "notes": {},
+ "designSystems": [
+  {"title": "AI Docbuilder", "namespace": "docbuilder", "artifact": "https://claude.ai/artifact/RZS887jNytDEgH1qZtmoJ2", "version": "1792552662-eca8", "copiedAt": "2026-10-21T03:40:00Z"}
+ ]
+}

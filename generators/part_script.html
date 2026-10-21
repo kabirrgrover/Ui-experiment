@@ -1,0 +1,240 @@
+<script type="text/x-dc" data-dc-script data-props='{"pastOpen":{"editor":"boolean","default":false,"section":"Screen"},"pace":{"editor":"range","default":900,"min":300,"max":2000,"step":100,"unit":"ms per section","section":"Drafting"},"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 3, answers: ['North pad', 'Boreholes and lab testing', 'Class D'], editing: null,
+      phase: 'ask', done: 0, follow: null, notes: [], peek: null, text: '',
+      showPast: null, active: 'geo', drag: null,
+      tabs: [
+        { id: 'geo', doc: 'SR', title: 'Geotech, North pad' },
+        { id: 'rebar', doc: 'MR', title: 'Rebar, level 2' }
+      ]
+    };
+    this.press = null; this.timer = null;
+  }
+  componentWillUnmount() { if (this.timer) clearInterval(this.timer); if (this.press && this.press.timer) clearTimeout(this.press.timer); }
+  run(total) {
+    var self = this;
+    if (this.timer) clearInterval(this.timer);
+    this.timer = setInterval(function () {
+      var st = self.state;
+      if (st.phase !== 'write') return;
+      var next = st.done + 1;
+      if (next === 5 && st.follow === null) { self.setState({ done: next, phase: 'wait' }); return; }
+      if (next >= total) { clearInterval(self.timer); self.timer = null; self.setState({ done: total, phase: 'done' }); return; }
+      self.setState({ done: next });
+    }, this.props.pace ?? 900);
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var Q = [
+      { key: 'site', title: 'which site is this for?', why: 'Sets the address, access route and site contact on the cover page.', opts: ['North pad', 'Substation B', 'Cooling tower area'], ack: 'Got it, North pad. I have the site plan for that one.' },
+      { key: 'scope', title: 'what do you need the contractor to do?', why: 'Decides which work sections go in. Lab testing adds about 3 pages.', opts: ['Boreholes', 'Test pits', 'Boreholes and lab testing'], ack: 'Okay, I will add a lab testing section with the standard suite.' },
+      { key: 'soil', title: "what's the expected soil class?", why: 'Drives the drilling method and how much casing they should price.', opts: ['Class C', 'Class D', 'Class E'], ack: 'Noted. The contractor will confirm it on site.' },
+      { key: 'boreholes', title: 'how many boreholes, and how deep?', why: 'This is the biggest cost line, so vendors price it per metre.', opts: ['3 × 20 m', '5 × 15 m', '6 × 25 m'], ack: 'That works for a crane footing.' },
+      { key: 'timing', title: 'when do you need them on site?', why: 'Goes into the schedule and the mobilisation milestone.', opts: ['Within 2 weeks', 'This month', 'Next quarter'], ack: 'Okay.' },
+      { key: 'deliverables', title: 'what should the vendor hand over?', why: 'Factual is logs and lab data. Interpretive adds design advice and costs more.', opts: ['Factual report', 'Interpretive report', 'Both reports'], ack: 'That is the last one.' }
+    ];
+    var answers = st.answers, phase = st.phase;
+    var asking = phase === 'ask';
+    var answer = function (i, val) {
+      var a = answers.slice(); a[i] = val;
+      var nextStep = Math.max(st.step, i + 1);
+      while (nextStep < Q.length && a[nextStep]) nextStep++;
+      self.setState({ answers: a, step: st.editing !== null ? st.step : nextStep, editing: null, text: '' });
+    };
+    var qi = st.editing !== null ? st.editing : st.step;
+    var cur = asking ? Q[qi] : null;
+    var q = cur ? {
+      step: 'Question ' + (qi + 1) + ' of ' + Q.length, title: cur.title, why: cur.why, isEdit: st.editing !== null,
+      unsure: function () { answer(qi, 'Contractor to propose'); },
+      opts: cur.opts.map(function (o, k) {
+        var picked = answers[qi] === o;
+        return { n: k + 1, label: o, pick: function () { answer(qi, o); },
+          style: 'font-family:\'Instrument Sans\',sans-serif;font-size:15px;font-weight:500;line-height:20px;min-height:42px;padding:10px 16px;border-radius:4px 7px 5px 8px;cursor:pointer;' + (picked ? 'background:#111111;color:#ffffff;border:1.2px solid #111111' : 'background:#ffffff;color:#111111;border:1.2px solid #8d8c88') };
+      })
+    } : { step: '', title: '', why: '', opts: [], isEdit: false, unsure: null };
+
+    var steps = Q.map(function (qq, i) {
+      var has = !!answers[i], isCur = asking && i === qi;
+      return {
+        label: qq.key, mark: has && !isCur ? '✓' : String(i + 1), current: isCur ? 'step' : 'false', sep: i < Q.length - 1,
+        tip: has ? qq.key + ': ' + answers[i] + (asking ? ' (click to change)' : '') : qq.key,
+        pick: function () { if (asking && (has || i === st.step)) self.setState({ editing: has && i !== st.step ? i : null }); },
+        style: 'display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:6px 8px;border-radius:6px;font-family:\'Instrument Sans\',sans-serif;font-size:13.5px;cursor:' + (asking && (has || i === st.step) ? 'pointer' : 'default') + ';color:' + (isCur ? '#111111' : has ? '#3d3c3a' : '#a8a6a0') + ';font-weight:' + (isCur ? 600 : 500),
+        markStyle: 'width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;' + (isCur ? 'border:1.5px solid #111111;color:#111111' : has ? 'background:#111111;color:#ffffff' : 'border:1.2px solid #d6d4ce;color:#a8a6a0')
+      };
+    });
+
+    // ---- the outline of a long document ----
+    var A = function (i, d) { return answers[i] || d; };
+    var outline = [
+      ['Purpose and background', 1, 'Investigate ground conditions at the ' + A(0, '[site]') + ' ahead of design of the tower crane footing.'],
+      ['Scope of work', 4, A(1, '[scope]') + ', ' + A(3, '[boreholes]') + ', logging, sampling at each change in strata and two standpipes.'],
+      ['Site information and access', 2, 'Access from the north gate, laydown next to the batch plant, site induction required before mobilising.'],
+      ['Ground conditions', 2, 'Expected ' + A(2, '[soil class]') + '. Contractor confirms on site and stops work on groundwater or obstructions.'],
+      ['Fieldwork requirements', 5, 'Rotary drilling with casing as needed, SPTs every 1.5 m, core where rock is met, all holes backfilled.'],
+      ['Laboratory testing', 3, 'Classification, moisture, Atterberg limits, PSD, consolidation and triaxial on selected samples.'],
+      ['HSE requirements', 3, 'Permit to dig, underground services scan, exclusion zones around rigs, daily toolbox talks.'],
+      ['Schedule and milestones', 1, 'Mobilise ' + A(4, '[timing]').toLowerCase() + '. Fieldwork about two weeks, results ten working days after the last hole.'],
+      ['Deliverables and reporting', 2, A(5, '[reports]') + ', borehole logs, photos and lab results in the project template.'],
+      ['Commercial and pricing schedule', 3, 'Lump sum mobilisation, rates per metre drilled, provisional sums for standby and extra testing.'],
+      ['Appendices', 4, 'Site plan, crane footing layout, borehole location drawing, pricing schedule template.']
+    ];
+    var total = outline.length;
+    var pagesTotal = outline.reduce(function (a, o) { return a + o[1]; }, 0);
+    var done = phase === 'ask' ? 0 : st.done;
+    var pagesSoFar = outline.slice(0, done).reduce(function (a, o) { return a + o[1]; }, 0);
+    var outlineView = outline.map(function (o, i) {
+      var isDone = i < done || phase === 'done', isNow = !isDone && i === done && phase === 'write', isWait = !isDone && i === done && phase === 'wait';
+      var open = st.peek === i;
+      return {
+        num: (i + 1) + '.', title: o[0], excerpt: o[2],
+        icon: isDone ? '✓' : isNow ? '' : isWait ? '?' : '',
+        iconStyle: 'width:16px;height:16px;flex:0 0 auto;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;' +
+          (isDone ? 'background:#111111;color:#ffffff' : isNow ? 'border:2px solid #3355e6;border-right-color:transparent;animation:db-spin 800ms linear infinite' : isWait ? 'border:1.5px solid #3355e6;color:#3355e6' : 'border:1.2px solid #d6d4ce'),
+        labelStyle: isDone ? 'color:#111111' : isNow || isWait ? 'color:#111111;font-weight:600' : 'color:#a8a6a0',
+        meta: isDone ? o[1] + (o[1] === 1 ? ' page' : ' pages') : isNow ? 'writing…' : isWait ? 'needs you' : '',
+        canPeek: isDone, open: open ? 'true' : 'false', peekLabel: open ? 'hide' : 'peek', showPeek: isDone && open,
+        peek: function () { self.setState({ peek: open ? null : i }); }
+      };
+    });
+
+    // ---- mini site in the card, tied to progress ----
+    var placed = phase === 'done' ? 6 : Math.floor(done / total * 6);
+    var on = function (show) { return 'opacity:' + (show ? 1 : 0) + ';transform:' + (show ? 'none' : 'translateY(-40px)') + ';transition:opacity 500ms ease,transform 900ms cubic-bezier(.34,1.3,.64,1)'; };
+    var tops = [0, .3, 1.3, 2.3, 3.3, 4.3, 4.55];
+    var hookDy = Math.max(0, (5.3 - (tops[placed] + 0.25))) * 30;
+    var busy = phase === 'write' || phase === 'wait';
+    var sc = {
+      pit: on(true), pile: on(true), slab: on(placed >= 1), f1: on(placed >= 2), f2: on(placed >= 3), f3: on(placed >= 4), f4: on(placed >= 5), roof: on(placed >= 6),
+      dozer: placed < 1 ? 'animation:db-push 2.4s ease-in-out infinite' : 'opacity:1',
+      load: 'opacity:' + (busy ? 1 : 0) + ';transform:translateY(' + (busy ? hookDy : 0) + 'px);transition:opacity 400ms ease,transform 900ms cubic-bezier(.2,.8,.2,1)',
+      ropeY: busy ? (126.75 + hookDy).toFixed(1) : 104
+    };
+
+    // ---- the thread ----
+    var messages = [{ isAI: true, isUser: false, isDraft: false, text: "Let's put together a geotech service requisition. Six questions, then I'll draft it. Attach a soil report or an old SR if you have one and I'll pull answers from it." }];
+    answers.forEach(function (a, i) {
+      if (!a) return;
+      messages.push({ isAI: false, isUser: true, isDraft: false, text: a, editLabel: 'Change your answer: ' + a,
+        edit: function () { if (st.phase === 'ask') self.setState({ editing: i }); } });
+      messages.push({ isAI: true, isUser: false, isDraft: false, text: Q[i].ack });
+    });
+    if (phase !== 'ask') messages.push({ isDraft: true, isAI: false, isUser: false });
+    if (st.follow) {
+      messages.push({ isAI: false, isUser: true, isDraft: false, text: st.follow, editLabel: st.follow, edit: null });
+      messages.push({ isAI: true, isUser: false, isDraft: false, text: 'Thanks. I added a standby line to the pricing schedule and carried on.' });
+    }
+    st.notes.forEach(function (n) {
+      messages.push({ isAI: false, isUser: true, isDraft: false, text: n, editLabel: n, edit: null });
+      messages.push({ isAI: true, isUser: false, isDraft: false, text: phase === 'done' ? 'Noted. Open it in the canvas and I will make that change there.' : 'Noted, I will work that into the sections I have not written yet.' });
+    });
+    var followOpts = ['Yes, a day rate', 'No, contractor carries it', 'Leave it to them to propose'].map(function (l) {
+      return { label: l, pick: function () { self.setState({ follow: l, phase: 'write' }); } };
+    });
+
+    // ---- past chats on the crane: hold to drag, neighbours bump ----
+    var pastOpen = st.showPast === null ? (this.props.pastOpen ?? false) : st.showPast;
+    var pastData = [
+      { id: 'bridge', doc: 'SR', title: 'Bridging, East gate', num: 'SR-24-0131', when: '3 days ago', summary: 'Temporary bridge over the drainage cut at the east gate. 40 t rating, 6-week hire. Approved.' },
+      { id: 'rebar', doc: 'MR', title: 'Rebar, level 2', num: 'MR-24-0087', when: 'yesterday', summary: 'Bars for the level 2 slab, cut and bent. Waiting on review from structures.' },
+      { id: 'sub', doc: 'PEP', title: 'Substation upgrade', num: 'PEP-24-0009', when: 'last week', summary: 'Execution plan for the substation upgrade: phases, outages and the team.' },
+      { id: 'pour', doc: 'SR', title: 'Concrete testing, pour 4', num: 'SR-24-0122', when: '2 weeks ago', summary: 'Slump and cylinder tests for pour 4. 28-day results due next week.' },
+      { id: 'lift', doc: 'SR', title: 'Elevator, tower B', num: 'SR-24-0104', when: 'last month', summary: 'Supply and install of two passenger lifts in tower B. Draft, not sent.' }
+    ];
+    var baseX = [210, 400, 590, 780, 970], cable = [50, 84, 64, 96, 58], W = 132;
+    var drag = st.drag;
+    var openTab = function (p) {
+      var tabs = st.tabs.some(function (t) { return t.id === p.id; }) ? st.tabs : st.tabs.concat([{ id: p.id, doc: p.doc, title: p.title }]);
+      self.setState({ tabs: tabs, active: p.id, showPast: false });
+    };
+    var past = pastData.map(function (p, i) {
+      var dx = 0, dy = 0, rot = 0, dragging = drag && drag.i === i && drag.live;
+      if (dragging) { dx = drag.dx; dy = drag.dy; rot = Math.max(-18, Math.min(18, -drag.vx * 0.6)); }
+      else if (drag && drag.live) {
+        var cx = baseX[drag.i] + drag.dx, gap = Math.abs(cx - baseX[i]), need = W + 14;
+        if (gap < need) { dx = (baseX[i] >= cx ? 1 : -1) * (need - gap); rot = -dx * 0.12; }
+      }
+      var tr = dragging ? 'none' : 'transform 620ms cubic-bezier(.34,1.56,.64,1)';
+      return {
+        doc: p.doc, title: p.title, num: p.num, when: p.when, summary: p.summary,
+        aria: p.doc + ' ' + p.title + ', ' + p.when + '. ' + p.summary + ' Press Enter to open in a new tab.',
+        cls: 'db-hang' + (dragging ? ' is-drag' : ''),
+        posStyle: 'position:absolute;left:' + (baseX[i] - W / 2) + 'px;top:46px;width:' + W + 'px;cursor:' + (dragging ? 'grabbing' : 'pointer') + ';touch-action:none;user-select:none;z-index:' + (dragging ? 5 : 1) + ';transform:translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg);transform-origin:50% 0;transition:' + tr,
+        swingStyle: 'animation-delay:-' + (i * 1.1) + 's;animation-duration:' + (4.6 + i * .5) + 's',
+        cableStyle: 'display:block;width:1.5px;height:' + cable[i] + 'px;margin:0 auto;background:#111111',
+        down: function (e) {
+          var el = e.currentTarget, x = e.clientX, y = e.clientY, pid = e.pointerId;
+          self.press = { i: i, x: x, y: y, lx: x, timer: setTimeout(function () {
+            try { el.setPointerCapture(pid); } catch (err) {}
+            if (self.press) self.press.armed = true;
+            self.setState({ drag: { i: i, dx: 0, dy: 0, vx: 0, live: true } });
+          }, 220) };
+        },
+        move: function (e) {
+          var pr = self.press; if (!pr || pr.i !== i) return;
+          if (!pr.armed) { if (Math.abs(e.clientX - pr.x) + Math.abs(e.clientY - pr.y) > 8) { clearTimeout(pr.timer); self.press = null; } return; }
+          var vx = e.clientX - pr.lx; pr.lx = e.clientX;
+          self.setState({ drag: { i: i, dx: e.clientX - pr.x, dy: Math.max(-30, Math.min(30, e.clientY - pr.y)), vx: vx, live: true } });
+        },
+        up: function () {
+          var pr = self.press; self.press = null;
+          if (pr && pr.timer) clearTimeout(pr.timer);
+          if (pr && pr.i === i && !pr.armed) { openTab(p); return; }
+          self.setState({ drag: null });
+        },
+        key: function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTab(p); } }
+      };
+    });
+
+    var tabs = st.tabs.map(function (t) {
+      var sel = t.id === st.active;
+      return {
+        doc: t.doc, title: t.title, selected: sel ? 'true' : 'false', closeLabel: 'Close ' + t.title,
+        pick: function () { self.setState({ active: t.id }); },
+        close: function () {
+          var rest = st.tabs.filter(function (x) { return x.id !== t.id; });
+          if (!rest.length) return;
+          self.setState({ tabs: rest, active: sel ? rest[0].id : st.active });
+        },
+        wrapStyle: 'display:inline-flex;align-items:center;gap:4px;position:relative;top:1.5px;padding:9px 10px 11px 14px;font-size:14px;font-weight:500;border:1.5px solid ' + (sel ? '#111111' : 'transparent') + ';border-bottom:0;border-radius:10px 14px 0 0 / 8px 10px 0 0;background:' + (sel ? '#ffffff' : 'transparent') + ';color:' + (sel ? '#111111' : '#5f5e5b')
+      };
+    });
+    var activeTab = st.tabs.filter(function (t) { return t.id === st.active; })[0] || st.tabs[0];
+    var isDemo = activeTab.id === 'geo';
+    var answered = answers.filter(Boolean).length;
+    var pct = phase === 'done' ? 100 : Math.round(done / total * 100);
+    return {
+      pastOpen: pastOpen ? 'true' : 'false', showPast: pastOpen,
+      togglePast: function () { self.setState({ showPast: !pastOpen }); },
+      past: past, tabs: tabs,
+      isDemo: isDemo, isPastTab: !isDemo, activeTitle: activeTab.doc + ' · ' + activeTab.title,
+      statusText: asking ? answered + ' of 6 answered' : phase === 'done' ? 'draft ready · ' + pagesTotal + ' pages' : 'drafting',
+      steps: steps, messages: messages, q: q,
+      hasQuestion: !!cur, readyToDraft: asking && !cur,
+      hasFollow: phase === 'wait', followOpts: followOpts,
+      done: phase === 'done',
+      outline: outlineView,
+      draftTitle: phase === 'done' ? 'your SR is ready' : phase === 'wait' ? 'paused for one question' : 'drafting your SR',
+      draftSub: phase === 'done' ? pagesTotal + ' pages · ' + total + ' sections · saved to Folders' : 'page ' + pagesSoFar + ' of ~' + pagesTotal + ' · section ' + Math.min(done + 1, total) + ' of ' + total,
+      barStyle: 'height:100%;width:' + pct + '%;background:#111111;transition:width 600ms cubic-bezier(.2,.8,.2,1)',
+      placeholder: asking ? 'type your own answer, or ask me why…' : phase === 'done' ? 'ask for a change…' : 'add a note while I write…',
+      draft: function () { self.setState({ phase: 'write', done: 0, follow: null, notes: [], peek: null }); self.run(total); },
+      restart: function () { if (self.timer) clearInterval(self.timer); self.timer = null; self.setState({ step: 3, answers: ['North pad', 'Boreholes and lab testing', 'Class D'], editing: null, phase: 'ask', done: 0, follow: null, notes: [], peek: null }); },
+      text: st.text,
+      typed: function (e) { self.setState({ text: e.target.value }); },
+      send: function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var v = st.text.trim(); if (!v) return;
+        if (asking && cur) answer(qi, v);
+        else self.setState({ notes: st.notes.concat([v]), text: '' });
+      },
+      sc: sc, sceneLabel: 'Small construction drawing that builds as sections finish.'
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+  <main style="flex: 1; display: flex; justify-content: center; padding: 28px clamp(20px, 4vw, 56px) 48px;">
+    <sc-if value="{{isDemo}}" hint-placeholder-val="{{true}}">
+      <section aria-label="Chat" style="width: 100%; max-width: 760px; display: flex; flex-direction: column;">
+
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <img src="/_blob/732274df989a5aba2e97d1e690c2f888" alt="" style="width: 64px; height: auto; transform: rotate(-7deg);">
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-family: 'Coming Soon', cursive; font-size: 24px; line-height: 30px;">geotech SR, north pad</span>
+            <span style="font-size: 13px; color: #5f5e5b; font-variant-numeric: tabular-nums;">SR-24-0142 · {{statusText}}</span>
+          </div>
+        </div>
+
+        <nav aria-label="Questions" style="margin-top: 18px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid #ecebe7;">
+          <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+            <button type="button" class="db-step" onClick="{{s.pick}}" aria-current="{{s.current}}" title="{{s.tip}}" style="{{s.style}}">
+              <span style="{{s.markStyle}}">{{s.mark}}</span>{{s.label}}
+            </button>
+            <sc-if value="{{s.sep}}" hint-placeholder-val="{{true}}">
+              <span aria-hidden="true" style="width: 14px; height: 1px; background: #d6d4ce;"></span>
+            </sc-if>
+          </sc-for>
+        </nav>
+
+        <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 26px;">
+          <sc-for list="{{messages}}" as="m" hint-placeholder-count="4">
+            <sc-if value="{{m.isAI}}" hint-placeholder-val="{{true}}">
+              <div class="db-msg" style="font-size: 16px; line-height: 26px; max-width: 90%;">
+                <div style="font-family: 'Coming Soon', cursive; font-size: 15px; color: #5f5e5b; margin-bottom: 2px;">docbuilder</div>
+                <div>{{m.text}}</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{m.isUser}}" hint-placeholder-val="{{false}}">
+              <button type="button" class="db-msg db-mine" onClick="{{m.edit}}" aria-label="{{m.editLabel}}" style="align-self: flex-end; max-width: 78%; text-align: left; background: #ffffff; border: 1.5px solid #111111; border-radius: 14px 14px 3px 14px / 12px 12px 3px 12px; padding: 9px 15px; font: inherit; font-size: 16px; line-height: 24px; color: #111111; cursor: pointer;">{{m.text}}<span class="db-edit" aria-hidden="true" style="margin-left: 10px; font-family: 'Coming Soon', cursive; font-size: 13px; color: #3355e6;">edit</span></button>
+            </sc-if>
+            <sc-if value="{{m.isDraft}}" hint-placeholder-val="{{false}}">
+              <div class="db-msg" style="border: 1.5px solid #111111; border-radius: 8px 11px 9px 12px; background: #ffffff; overflow: hidden;">
+                <div style="display: flex; gap: 16px; align-items: center; padding: 14px 18px; border-bottom: 1px solid #ecebe7;">
+                  <div aria-hidden="true" style="width: 96px; flex: 0 0 auto;">ISO_SVG</div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-family: 'Coming Soon', cursive; font-size: 22px; line-height: 28px;">{{draftTitle}}</div>
+                    <div style="font-size: 13px; color: #5f5e5b; margin-top: 2px;">{{draftSub}}</div>
+                    <div aria-hidden="true" style="margin-top: 10px; height: 4px; background: #ecebe7; border-radius: 2px; overflow: hidden;"><div style="{{barStyle}}"></div></div>
+                  </div>
+                  <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+                    <img class="db-slap" src="/_blob/c51e6988592a6e6009e91754da6757ce" alt="" style="width: 92px; height: auto; flex: 0 0 auto;">
+                  </sc-if>
+                </div>
+                <ol aria-label="Sections" style="list-style: none; margin: 0; padding: 6px 0;">
+                  <sc-for list="{{outline}}" as="o" hint-placeholder-count="6">
+                    <li style="padding: 0 18px;">
+                      <div style="display: flex; align-items: center; gap: 12px; min-height: 36px; font-size: 14.5px;">
+                        <span aria-hidden="true" style="{{o.iconStyle}}">{{o.icon}}</span>
+                        <span style="{{o.labelStyle}}"><span style="color: #8d8c88; margin-right: 6px; font-variant-numeric: tabular-nums;">{{o.num}}</span>{{o.title}}</span>
+                        <span style="margin-left: auto; font-size: 12.5px; color: #8d8c88; font-variant-numeric: tabular-nums;">{{o.meta}}</span>
+                        <sc-if value="{{o.canPeek}}" hint-placeholder-val="{{false}}">
+                          <button type="button" class="db-link" onClick="{{o.peek}}" aria-expanded="{{o.open}}" style="background: none; border: 0; padding: 4px 2px; font-family: 'Coming Soon', cursive; font-size: 14px; color: #3355e6; cursor: pointer;">{{o.peekLabel}}</button>
+                        </sc-if>
+                      </div>
+                      <sc-if value="{{o.showPeek}}" hint-placeholder-val="{{false}}">
+                        <p style="margin: 0 0 10px 28px; padding: 10px 14px; background: #fafaf8; border-left: 1.5px solid #111111; font-size: 14px; line-height: 22px; color: #3d3c3a;">{{o.excerpt}}</p>
+                      </sc-if>
+                    </li>
+                  </sc-for>
+                </ol>
+                <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 18px; border-top: 1px solid #ecebe7;">
+                    <a href="#" class="db-box" style="display: inline-flex; align-items: center; min-height: 42px; padding: 6px 16px; background: #f0662a; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">open in canvas</a>
+                    <a href="#" class="db-box" style="display: inline-flex; align-items: center; min-height: 42px; padding: 6px 16px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">download .docx</a>
+                    <button type="button" class="db-link" onClick="{{restart}}" style="margin-left: auto; background: none; border: 0; padding: 0; font: inherit; font-size: 14px; color: #5f5e5b; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">run the demo again</button>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </sc-for>
+
+          <sc-if value="{{hasQuestion}}" hint-placeholder-val="{{true}}">
+            <div class="db-msg" style="padding: 8px 0 4px;">
+              <div style="display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8d8c88;">{{q.step}}<sc-if value="{{q.isEdit}}" hint-placeholder-val="{{false}}"><span style="text-transform: none; letter-spacing: 0; font-family: 'Coming Soon', cursive; font-size: 14px; font-weight: 400; color: #3355e6;">changing your answer</span></sc-if></div>
+              <h2 style="margin: 10px 0 6px; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 38px; line-height: 44px;">{{q.title}}</h2>
+              <p style="margin: 0 0 18px; font-size: 14px; line-height: 21px; color: #5f5e5b; max-width: 560px;">{{q.why}}</p>
+              <div role="group" aria-label="Suggested answers" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <sc-for list="{{q.opts}}" as="o" hint-placeholder-count="3">
+                  <button type="button" class="db-chip" onClick="{{o.pick}}" style="{{o.style}}"><span style="color: #8d8c88; font-size: 12px; margin-right: 8px; font-variant-numeric: tabular-nums;">{{o.n}}</span>{{o.label}}</button>
+                </sc-for>
+                <button type="button" class="db-chip" onClick="{{q.unsure}}" style="font-family: 'Instrument Sans', sans-serif; font-size: 15px; font-weight: 500; line-height: 20px; min-height: 42px; padding: 10px 16px; border-radius: 4px 7px 5px 8px; background: transparent; color: #5f5e5b; border: 1.2px dashed #b9b7b1; cursor: pointer;">not sure, let the contractor propose</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{readyToDraft}}" hint-placeholder-val="{{false}}">
+            <div class="db-msg" style="padding: 8px 0 4px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+              <h2 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 38px; line-height: 44px;">that's everything I need.</h2>
+              <p style="margin: 0; font-size: 14px; line-height: 21px; color: #5f5e5b;">It'll be about 30 pages. You can keep chatting while I write, and change any answer above first if you like.</p>
+              <button type="button" class="db-box" onClick="{{draft}}" style="min-height: 46px; padding: 8px 20px; background: #f0662a; color: #111111; font-family: 'Coming Soon', cursive; font-size: 20px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; cursor: pointer;">draft my SR</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{hasFollow}}" hint-placeholder-val="{{false}}">
+            <div class="db-msg" style="padding: 4px 0;">
+              <div style="font-family: 'Coming Soon', cursive; font-size: 15px; color: #3355e6;">quick one while I write</div>
+              <h2 style="margin: 6px 0 14px; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 30px; line-height: 36px;">should the contractor price standby for weather days?</h2>
+              <div role="group" aria-label="Answers" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <sc-for list="{{followOpts}}" as="o" hint-placeholder-count="3">
+                  <button type="button" class="db-chip" onClick="{{o.pick}}" style="font-family: 'Instrument Sans', sans-serif; font-size: 15px; font-weight: 500; line-height: 20px; min-height: 42px; padding: 10px 16px; border-radius: 4px 7px 5px 8px; background: #ffffff; color: #111111; border: 1.2px solid #8d8c88; cursor: pointer;">{{o.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <form onSubmit="{{send}}" class="db-line" style="position: sticky; bottom: 0; display: flex; align-items: center; gap: 10px; margin-top: 30px; padding: 10px 0; background: rgba(255,255,255,.92); border-bottom: 1.5px solid #8d8c88; transition: border-color 140ms ease;">
+          <button type="button" class="db-link" aria-label="Attach a file, like a soil report or an old SR" title="Attach a soil report or an old SR" style="width: 40px; height: 40px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; border-radius: 50%; cursor: pointer;">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M13.5 6.5 L7.6 12.4 A1.8 1.8 0 0 0 10.1 14.9 L16 9 A3.4 3.4 0 0 0 11.2 4.2 L5.1 10.3 A5 5 0 0 0 12.2 17.4 L16.4 13.2" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </button>
+          <label for="db-msg-input" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Message</label>
+          <input id="db-msg-input" class="db-input" type="text" value="{{text}}" onInput="{{typed}}" placeholder="{{placeholder}}" style="flex: 1; min-width: 0; border: 0; background: transparent; font-family: 'Instrument Sans', sans-serif; font-size: 17px; line-height: 26px; color: #111111; padding: 8px 0;">
+          <button type="submit" class="db-box" style="min-height: 40px; padding: 4px 14px; background: #111111; color: #ffffff; font-family: 'Coming Soon', cursive; font-size: 17px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; cursor: pointer;">send</button>
+        </form>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isPastTab}}" hint-placeholder-val="{{false}}">
+      <div class="db-msg" style="width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 16px;">
+        <h1 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 40px; line-height: 1.1;">{{activeTitle}}</h1>
+        <div style="font-size: 16px; line-height: 26px;">Welcome back. This one is saved. Ask me to change anything, or open the document.</div>
+        <a href="#" class="db-box" style="align-self: flex-start; display: inline-flex; min-height: 42px; align-items: center; padding: 6px 16px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">open the document</a>
+      </div>
+    </sc-if>
+  </main>

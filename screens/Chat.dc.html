@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Docbuilder · chat</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coming+Soon&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Shantell+Sans:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#111111}a:hover{color:#111111}
+.db-paper{background-color:#ffffff;background-image:radial-gradient(#e3e2dd 1.1px,transparent 1.3px);background-size:24px 24px}
+.db-enav a,.db-enav button{position:relative;color:#5f5e5b;text-decoration:none;background:none;border:0;padding:0;font:inherit;cursor:pointer;transition:color 180ms ease}
+.db-enav a:hover,.db-enav a:focus-visible,.db-enav button:hover,.db-enav button:focus-visible,.db-enav button[aria-expanded="true"]{color:#111111}
+.db-enav img{position:absolute;right:calc(100% + 4px);top:50%;width:34px;height:auto;opacity:0;transform:translateY(-50%) rotate(-22deg) scale(.4);transition:opacity 180ms ease,transform 180ms ease;pointer-events:none}
+.db-enav a:hover img,.db-enav a:focus-visible img,.db-enav button:hover img,.db-enav button:focus-visible img,.db-enav button[aria-expanded="true"] img{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(1);transition:opacity 300ms ease,transform 300ms cubic-bezier(.34,1.56,.64,1)}
+.db-box{transition:transform 140ms ease}
+.db-box:hover{transform:rotate(-1.5deg)}
+.db-chip{transition:border-color 140ms ease,background 140ms ease}
+.db-chip:hover{border-color:#111111 !important;background:#fafaf8 !important}
+@keyframes db-drop{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
+.db-crane{animation:db-drop 460ms cubic-bezier(.2,.8,.2,1) both}
+@keyframes db-sway{0%,100%{transform:rotate(-1.8deg)}50%{transform:rotate(1.8deg)}}
+.db-swing{transform-origin:50% 0;animation:db-sway 5s ease-in-out infinite}
+.db-hang.is-drag .db-swing{animation-play-state:paused}
+.db-flip{perspective:700px}
+.db-flip-in{position:relative;transform-style:preserve-3d;transition:transform 520ms cubic-bezier(.34,1.3,.64,1)}
+.db-hang:hover .db-flip-in,.db-hang:focus-visible .db-flip-in{transform:rotateY(180deg)}
+.db-hang.is-drag .db-flip-in{transform:none}
+.db-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.db-back{transform:rotateY(180deg)}
+@keyframes db-in{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.db-msg{animation:db-in 280ms cubic-bezier(.2,.8,.2,1) both}
+@keyframes db-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.db-caret{animation:db-blink 900ms step-end infinite}
+@keyframes db-push{0%,100%{transform:translateX(0)}50%{transform:translateX(26px)}}
+.db-dozing{animation:db-push 2.4s ease-in-out infinite}
+@keyframes db-slap{from{transform:rotate(-24deg) scale(1.8);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+.db-slap{animation:db-slap 420ms cubic-bezier(.34,1.56,.64,1) both}
+.db-part{transition:opacity 500ms ease,transform 900ms cubic-bezier(.34,1.3,.64,1)}
+.db-row{transition:background 300ms ease}
+.db-tab:hover{color:#111111 !important}
+:where(.db-box,.db-chip,.db-tab,.db-hang,.db-link,.db-x,.db-enav a,.db-enav button):focus-visible{outline:2px solid #3355e6;outline-offset:3px}
+.db-input:focus{outline:none}
+.db-input::placeholder{color:#8d8c88}
+.db-line:focus-within{border-bottom-color:#111111 !important}
+@media (prefers-reduced-motion: reduce){.db-swing,.db-crane,.db-msg,.db-caret,.db-dozing,.db-slap{animation:none}.db-flip-in,.db-part{transition:none}}
+@keyframes db-spin{to{transform:rotate(360deg)}}
+.db-edit{opacity:0;transition:opacity 140ms ease}
+.db-mine:hover .db-edit,.db-mine:focus-visible .db-edit{opacity:1}
+.db-step:hover{background:#f4f4f2}
+.db-mine:focus-visible,.db-step:focus-visible{outline:2px solid #3355e6;outline-offset:3px}
+@keyframes db-peek{0%,84%{transform:translateY(105%)}88%,95%{transform:translateY(6%)}99%,100%{transform:translateY(105%)}}
+.db-worker{display:block;transform:translateY(105%);animation:db-peek 22s ease-in-out 5s infinite}
+.db-peekwrap:hover .db-worker{animation:none;transform:translateY(6%);transition:transform 320ms cubic-bezier(.34,1.56,.64,1)}
+@keyframes db-wave{from{transform:rotate(-18deg)}to{transform:rotate(22deg)}}
+.db-hand{transform-origin:38px 34px;animation:db-wave 420ms ease-in-out infinite alternate}
+@keyframes db-wiggle{0%,100%{transform:rotate(-7deg)}25%{transform:rotate(-14deg) scale(1.06)}75%{transform:rotate(2deg) scale(1.06)}}
+.db-wiggle{transform:rotate(-7deg);cursor:grab}
+.db-wiggle:hover{animation:db-wiggle 520ms ease-in-out}
+@keyframes db-pop{0%{transform:scale(0) rotate(-40deg);opacity:0}35%{transform:scale(1.25) rotate(10deg);opacity:1}70%{opacity:1}100%{transform:scale(.9) rotate(0);opacity:0}}
+.db-pop{position:absolute;right:-12px;top:-12px;width:22px;height:auto;pointer-events:none;animation:db-pop 1100ms cubic-bezier(.2,.8,.2,1) both}
+.db-margin{display:none}
+@media (min-width:1180px){.db-margin{display:block}}
+@media (prefers-reduced-motion: reduce){.db-worker,.db-hand,.db-pop,.db-wiggle:hover{animation:none}}
+@keyframes db-refin{from{transform:translateY(-14px) rotate(-6deg);opacity:0}to{transform:none;opacity:1}}
+.db-ref{animation:db-refin 420ms cubic-bezier(.34,1.56,.64,1) both}
+@keyframes db-drawer{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+.db-drawer{animation:db-drawer 280ms cubic-bezier(.2,.8,.2,1) both}
+.db-handle:hover{background:#f6f5f2 !important}
+.db-handle:focus-visible{outline:2px solid #3355e6;outline-offset:2px}
+@keyframes db-pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){.db-ref,.db-drawer{animation:none}}
+@keyframes db-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-0.7%)}}
+.db-bob{animation:db-bob 2.6s ease-in-out infinite}
+@keyframes db-gantry{0%{transform:translate(10.22%,-5.88%)}100%{transform:translate(-7.36%,4.24%)}}
+.db-gantry{animation:db-gantry 3.4s ease-in-out infinite alternate}
+@keyframes db-carriage{0%{transform:translate(-4.79%,-4.52%)}100%{transform:translate(4.79%,4.52%)}}
+.db-carriage{animation:db-carriage .85s ease-in-out infinite alternate}
+@keyframes db-ink{0%{clip-path:inset(0 100% 0 0)}80%,100%{clip-path:inset(0 0 0 0)}}
+.db-ink{animation:db-ink 4.2s linear infinite}
+@media (prefers-reduced-motion: reduce){.db-bob,.db-gantry,.db-carriage,.db-ink{animation:none}}
+</style>
+</helmet>
+<div class="db-paper" style="min-height: 100vh; color: #111111; font-family: 'Instrument Sans', system-ui, sans-serif; display: flex; flex-direction: column;">
+
+  <header style="position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px clamp(20px, 4vw, 56px);">
+    <a href="Main.dc.html" class="db-link" style="text-decoration: none; font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 20px; color: #111111;">AI Docbuilder</a>
+    <nav aria-label="Main" class="db-enav" style="display: flex; align-items: center; gap: 48px; flex-wrap: wrap; font-size: 16px; font-weight: 500;">
+      <a href="Folders.dc.html"><img src="assets/icon-folder.svg" alt="">Folders</a>
+      <button type="button" aria-expanded="{{pastOpen}}" aria-controls="db-past" onClick="{{togglePast}}"><img src="assets/icon-chat.svg" alt="">Past chats</button>
+      <a href="Main.dc.html" class="db-box" style="display: inline-flex; align-items: center; gap: 6px; min-height: 40px; box-sizing: border-box; padding: 6px 14px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">+ new chat</a>
+      <span aria-label="Your account" role="img" style="width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #111111; background: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: 'Coming Soon', cursive; font-size: 16px;">k</span>
+    </nav>
+  </header>
+
+  <sc-if value="{{showPast}}" hint-placeholder-val="{{false}}">
+    <section id="db-past" aria-label="Past chats" class="db-crane" style="position: relative; padding: 0 clamp(20px, 4vw, 56px) 8px;">
+      <div style="position: relative; height: 350px; overflow-x: auto; overflow-y: hidden; touch-action: pan-y;">
+        <div style="position: relative; width: 1180px; height: 350px;">
+          <svg aria-hidden="true" width="1180" height="330" viewBox="0 0 1180 330" style="position: absolute; left: 0; top: 0;">
+            <g fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M70 330 L70 46 M90 330 L90 46"></path>
+              <path d="M70 320 L90 300 L70 280 L90 260 L70 240 L90 220 L70 200 L90 180 L70 160 L90 140 L70 120 L90 100 L70 80 L90 60"></path>
+              <path d="M40 46 L1160 46 M90 34 L1160 46 M40 46 L80 6 L120 46"></path>
+              <path d="M120 46 L140 34 L160 46 L180 34 L200 46 L220 34 L240 46 L260 34 L280 46 L300 34 L320 46 L340 34 L360 46 L380 34 L400 46 L420 34 L440 46 L460 34 L480 46 L500 34 L520 46 L540 34 L560 46 L580 34 L600 46 L620 34 L640 46 L660 34 L680 46 L700 34 L720 46 L740 34 L760 46 L780 34 L800 46 L820 34 L840 46 L860 34 L880 46 L900 34 L920 46 L940 34 L960 46 L980 34 L1000 46 L1020 34 L1040 46 L1060 34 L1080 46 L1100 34 L1120 46 L1140 34 L1160 46"></path>
+              <path d="M80 6 L1160 34"></path>
+              <rect x="94" y="50" width="26" height="22" rx="2"></rect>
+              <path d="M8 46 L40 46 L40 60 L8 60 Z"></path>
+            </g>
+          </svg>
+          <sc-for list="{{past}}" as="p" hint-placeholder-count="5">
+            <div class="{{p.cls}}" tabindex="0" role="button" aria-label="{{p.aria}}" onPointerDown="{{p.down}}" onPointerMove="{{p.move}}" onPointerUp="{{p.up}}" onPointerCancel="{{p.up}}" onKeyDown="{{p.key}}" style="{{p.posStyle}}">
+              <div class="db-swing" style="{{p.swingStyle}}">
+                <span aria-hidden="true" style="{{p.cableStyle}}"></span>
+                <svg aria-hidden="true" width="18" height="20" viewBox="0 0 18 20" style="display: block; margin: -1px auto 0;"><path d="M9 0 V8 M9 8 C 2 8, 2 18, 9 18 C 14 18, 15 13, 13 11" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round"></path></svg>
+                <div class="db-flip" style="width: 132px; height: 164px; margin-top: 2px;">
+                  <div class="db-flip-in" style="width: 100%; height: 100%;">
+                    <div class="db-face" style="background: #ffffff; border: 1.5px solid #111111; border-radius: 6px 9px 7px 10px; display: flex; flex-direction: column; padding: 12px; box-sizing: border-box; box-shadow: 0 14px 22px -16px rgba(17,17,17,.4);">
+                      <span style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #5f5e5b;">{{p.doc}}</span>
+                      <span style="margin-top: 10px; font-family: 'Coming Soon', cursive; font-size: 19px; line-height: 23px; color: #111111;">{{p.title}}</span>
+                      <span style="margin-top: auto; font-size: 11px; color: #5f5e5b; font-variant-numeric: tabular-nums;">{{p.num}}</span>
+                      <span style="font-size: 11px; color: #5f5e5b;">{{p.when}}</span>
+                    </div>
+                    <div class="db-face db-back" style="background: #ffffff; border: 1.5px solid #111111; border-radius: 6px 9px 7px 10px; display: flex; flex-direction: column; padding: 12px; box-sizing: border-box;">
+                      <span style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #5f5e5b;">SUMMARY</span>
+                      <span style="margin-top: 6px; font-size: 12.5px; line-height: 17px; color: #111111;">{{p.summary}}</span>
+                      <span style="margin-top: auto; font-family: 'Coming Soon', cursive; font-size: 15px;">open ↗</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 13px; color: #5f5e5b; margin-top: 4px;">
+        <span style="font-family: 'Coming Soon', cursive; font-size: 17px; color: #111111;">past chats</span>
+        <span>Hover to read · click to open in a tab · hold and drag to move</span>
+      </div>
+    </section>
+  </sc-if>
+
+  <div style="padding: 0 clamp(20px, 4vw, 56px);">
+    <div role="tablist" aria-label="Open documents" style="display: flex; align-items: flex-end; gap: 2px; overflow-x: auto; padding-top: 8px; border-bottom: 1.5px solid #111111;">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+        <span style="{{t.wrapStyle}}">
+          <button type="button" role="tab" class="db-tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; max-width: 210px;">
+            <span style="font-weight: 600; font-size: 11px; letter-spacing: .06em;">{{t.doc}}</span>
+            <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{t.title}}</span>
+          </button>
+          <button type="button" class="db-x" aria-label="{{t.closeLabel}}" onClick="{{t.close}}" style="width: 22px; height: 22px; border: 0; background: none; border-radius: 50%; font-size: 15px; line-height: 1; color: #8d8c88; cursor: pointer;">×</button>
+        </span>
+      </sc-for>
+      <a href="Main.dc.html" aria-label="New chat" class="db-link" style="align-self: center; margin-left: 6px; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #111111; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 500; font-size: 14px;">+</a>
+    </div>
+  </div>
+
+  <main style="flex: 1; display: flex; justify-content: center; padding: 28px clamp(20px, 4vw, 56px) 48px;">
+    <sc-if value="{{isDemo}}" hint-placeholder-val="{{true}}">
+      <section aria-label="Chat" style="position: relative; width: 100%; max-width: 760px; display: flex; flex-direction: column;">
+        <img class="db-margin" src="assets/tool-level.svg" alt="" style="position: absolute; left: -190px; top: 150px; width: 128px; height: auto; transform: rotate(-12deg); pointer-events: none;">
+
+        <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+          <img class="db-wiggle" src="assets/hello-sr.svg" alt="" style="width: 64px; height: auto;">
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-family: 'Coming Soon', cursive; font-size: 24px; line-height: 30px;">geotech SR, north pad</span>
+            <span style="font-size: 13px; color: #5f5e5b; font-variant-numeric: tabular-nums;">SR-24-0142 · {{statusText}}</span>
+          </div>
+        </div>
+
+        <nav aria-label="Questions" style="margin-top: 18px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid #ecebe7;">
+          <sc-for list="{{steps}}" as="s" hint-placeholder-count="6">
+            <button type="button" class="db-step" onClick="{{s.pick}}" aria-current="{{s.current}}" title="{{s.tip}}" style="{{s.style}}">
+              <span style="{{s.markStyle}}">{{s.mark}}</span>{{s.label}}
+            </button>
+            <sc-if value="{{s.sep}}" hint-placeholder-val="{{true}}">
+              <span aria-hidden="true" style="width: 14px; height: 1px; background: #d6d4ce;"></span>
+            </sc-if>
+          </sc-for>
+        </nav>
+
+        <div style="display: flex; flex-direction: column; gap: 22px; padding-top: 26px;">
+          <sc-for list="{{messages}}" as="m" hint-placeholder-count="4">
+            <sc-if value="{{m.isAI}}" hint-placeholder-val="{{true}}">
+              <div class="db-msg" style="font-size: 16px; line-height: 26px; max-width: 90%;">
+                <div style="font-family: 'Coming Soon', cursive; font-size: 15px; color: #5f5e5b; margin-bottom: 2px;">docbuilder</div>
+                <div>{{m.text}}</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{m.isUser}}" hint-placeholder-val="{{false}}">
+              <button type="button" class="db-msg db-mine" onClick="{{m.edit}}" aria-label="{{m.editLabel}}" style="position: relative; align-self: flex-end; max-width: 78%; text-align: left; background: #ffffff; border: 1.5px solid #111111; border-radius: 14px 14px 3px 14px / 12px 12px 3px 12px; padding: 9px 15px; font: inherit; font-size: 16px; line-height: 24px; color: #111111; cursor: pointer;">{{m.text}}<img class="db-pop" src="assets/sparkle-orange.svg" alt=""><span class="db-edit" aria-hidden="true" style="margin-left: 10px; font-family: 'Coming Soon', cursive; font-size: 13px; color: #3355e6;">edit</span></button>
+            </sc-if>
+            <sc-if value="{{m.isEgg}}" hint-placeholder-val="{{false}}">
+              <div class="db-msg" style="display: flex; align-items: center; gap: 16px;">
+                <img class="db-slap" src="{{m.img}}" alt="" style="width: 84px; height: auto;">
+                <div style="font-size: 16px; line-height: 26px;"><div style="font-family: 'Coming Soon', cursive; font-size: 15px; color: #5f5e5b;">docbuilder</div>{{m.text}}</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{m.isDraft}}" hint-placeholder-val="{{false}}">
+              <div class="db-msg" style="border: 1.5px solid #111111; border-radius: 8px 11px 9px 12px; background: #ffffff; overflow: hidden;">
+                <sc-if value="{{busy}}" hint-placeholder-val="{{false}}">
+                  <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 22px 18px 18px; border-bottom: 1px solid #ecebe7; background: radial-gradient(#ecebe6 1px, transparent 1.2px) 0 0 / 18px 18px;">
+                    <div style="display: inline-flex; gap: 2px; padding: 3px; border: 1px solid #e6e5e1; border-radius: 8px; background: #ffffff; margin-bottom: 6px;" role="group" aria-label="Drawing">
+                      <sc-for list="{{figOpts}}" as="fo" hint-placeholder-count="2">
+                        <button type="button" aria-pressed="{{fo.on}}" onClick="{{fo.pick}}" style="{{fo.style}}">{{fo.label}}</button>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{isCrane}}" hint-placeholder-val="{{true}}">
+                      <div role="img" aria-label="{{figLabel}}" style="position: relative; width: min(440px, 100%); aspect-ratio: 560 / 520;">
+                        <img src="assets/crane-back.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                        <sc-for list="{{storeys}}" as="sy" hint-placeholder-count="3">
+                          <img src="{{sy.src}}" alt="" style="{{sy.style}}">
+                        </sc-for>
+                        <img src="assets/crane-top.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                        <div style="{{ropeStyle}}"></div>
+                        <div class="db-bob" style="position: absolute; inset: 0;"><img src="assets/crane-hoist.svg" alt="" style="{{hoistStyle}}"></div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{isPlotter}}" hint-placeholder-val="{{false}}">
+                      <div role="img" aria-label="{{figLabel}}" style="position: relative; width: min(460px, 100%); aspect-ratio: 560 / 380;">
+                        <img src="assets/plotter-back.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                        <img class="db-ink" src="assets/plotter-rules.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                        <img src="assets/plotter-tray.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                        <sc-for list="{{pagesOut}}" as="pg" hint-placeholder-count="3">
+                          <img src="{{pg.src}}" alt="" style="{{pg.style}}">
+                        </sc-for>
+                        <div class="db-gantry" style="position: absolute; inset: 0;">
+                          <img src="assets/plotter-gantry.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                          <img class="db-carriage" src="assets/plotter-carriage.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                        </div>
+                        <img src="assets/plotter-front.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                      </div>
+                    </sc-if>
+                    <div style="font-family: 'Coming Soon', cursive; font-size: 26px; line-height: 32px; margin-top: 4px;">{{draftTitle}}</div>
+                    <div role="status" style="font-size: 14px; color: #3d3c3a; margin-top: 4px; min-height: 21px;">{{nowLine}}</div>
+                    <div aria-hidden="true" style="width: min(380px, 100%); margin-top: 12px; height: 4px; background: #ecebe7; border-radius: 2px; overflow: hidden;"><div style="{{barStyle}}"></div></div>
+                    <div style="font-size: 12.5px; color: #8d8c88; margin-top: 6px; font-variant-numeric: tabular-nums;">{{draftSub}}</div>
+                    <div aria-label="Sources pulled so far" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; max-width: 560px;">
+                      <sc-for list="{{refsLive}}" as="r" hint-placeholder-count="2">
+                        <span class="db-ref" style="{{r.style}}"><span style="font-weight: 600; font-size: 10px; letter-spacing: .08em; color: #8d8c88;">{{r.kind}}</span>{{r.title}}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+                <div style="display: flex; gap: 16px; align-items: center; padding: 14px 18px; border-bottom: 1px solid #ecebe7;">
+                  <div aria-hidden="true" style="position: relative; width: 104px; flex: 0 0 auto; aspect-ratio: 560 / 520;">
+                    <img src="assets/crane-back.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                    <sc-for list="{{storeysAll}}" as="sy" hint-placeholder-count="3"><img src="{{sy}}" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;"></sc-for>
+                    <img src="assets/crane-top.svg" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+                  </div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="font-family: 'Coming Soon', cursive; font-size: 22px; line-height: 28px;">{{draftTitle}}</div>
+                    <div style="font-size: 13px; color: #5f5e5b; margin-top: 2px;">{{draftSub}}</div>
+                    <div aria-hidden="true" style="margin-top: 10px; height: 4px; background: #ecebe7; border-radius: 2px; overflow: hidden;"><div style="{{barStyle}}"></div></div>
+                  </div>
+                  <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+                    <img class="db-slap" src="assets/specd-signed.svg" alt="" style="width: 92px; height: auto; flex: 0 0 auto;">
+                  </sc-if>
+                </div>
+                </sc-if>
+                <ol aria-label="Sections" style="list-style: none; margin: 0; padding: 6px 0;">
+                  <sc-for list="{{outline}}" as="o" hint-placeholder-count="6">
+                    <li style="padding: 0 18px;">
+                      <div style="display: flex; align-items: center; gap: 12px; min-height: 36px; font-size: 14.5px;">
+                        <span aria-hidden="true" style="{{o.iconStyle}}">{{o.icon}}</span>
+                        <span style="{{o.labelStyle}}"><span style="color: #8d8c88; margin-right: 6px; font-variant-numeric: tabular-nums;">{{o.num}}</span>{{o.title}}</span>
+                        <span style="margin-left: auto; font-size: 12.5px; color: #8d8c88; font-variant-numeric: tabular-nums;">{{o.meta}}</span>
+                        <sc-if value="{{o.canPeek}}" hint-placeholder-val="{{false}}">
+                          <button type="button" class="db-link" onClick="{{o.peek}}" aria-expanded="{{o.open}}" style="background: none; border: 0; padding: 4px 2px; font-family: 'Instrument Sans', sans-serif; font-weight: 500; font-size: 14px; color: #3355e6; cursor: pointer;">{{o.peekLabel}}</button>
+                        </sc-if>
+                      </div>
+                      <sc-if value="{{o.showPeek}}" hint-placeholder-val="{{false}}">
+                        <p style="margin: 0 0 10px 28px; padding: 10px 14px; background: #fafaf8; border-left: 1.5px solid #111111; font-size: 14px; line-height: 22px; color: #3d3c3a;">{{o.excerpt}}</p>
+                      </sc-if>
+                    </li>
+                  </sc-for>
+                </ol>
+                <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 18px; border-top: 1px solid #ecebe7;">
+                    <a href="Canvas.dc.html" class="db-box" style="display: inline-flex; align-items: center; min-height: 42px; padding: 6px 16px; background: #f0662a; color: #111111; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">open in canvas</a>
+                    <a href="#" class="db-box" style="display: inline-flex; align-items: center; min-height: 42px; padding: 6px 16px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">download .docx</a>
+                    <button type="button" class="db-link" onClick="{{restart}}" style="margin-left: auto; background: none; border: 0; padding: 0; font: inherit; font-size: 14px; color: #5f5e5b; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">run the demo again</button>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </sc-for>
+
+          <sc-if value="{{hasQuestion}}" hint-placeholder-val="{{true}}">
+            <div class="db-msg" style="padding: 8px 0 4px;">
+              <div style="display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8d8c88;">{{q.step}}<sc-if value="{{q.isEdit}}" hint-placeholder-val="{{false}}"><span style="text-transform: none; letter-spacing: 0; font-family: 'Coming Soon', cursive; font-size: 14px; font-weight: 400; color: #3355e6;">changing your answer</span></sc-if></div>
+              <h2 style="margin: 10px 0 6px; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 38px; line-height: 44px;">{{q.title}}</h2>
+              <p style="margin: 0 0 18px; font-size: 14px; line-height: 21px; color: #5f5e5b; max-width: 560px;">{{q.why}}</p>
+              <div role="group" aria-label="Suggested answers" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                <sc-for list="{{q.opts}}" as="o" hint-placeholder-count="3">
+                  <button type="button" class="db-chip" onClick="{{o.pick}}" style="{{o.style}}"><span style="color: #8d8c88; font-size: 12px; margin-right: 8px; font-variant-numeric: tabular-nums;">{{o.n}}</span>{{o.label}}</button>
+                </sc-for>
+                <button type="button" class="db-chip" onClick="{{q.unsure}}" style="font-family: 'Instrument Sans', sans-serif; font-size: 15px; font-weight: 500; line-height: 20px; min-height: 42px; padding: 10px 16px; border-radius: 4px 7px 5px 8px; background: transparent; color: #5f5e5b; border: 1.2px dashed #b9b7b1; cursor: pointer;">not sure, let the contractor propose</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{readyToDraft}}" hint-placeholder-val="{{false}}">
+            <div class="db-msg" style="padding: 8px 0 4px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
+              <h2 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 38px; line-height: 44px;">that's everything I need.</h2>
+              <p style="margin: 0; font-size: 14px; line-height: 21px; color: #5f5e5b;">It'll be about 30 pages. You can keep chatting while I write, and change any answer above first if you like.</p>
+              <button type="button" class="db-box" onClick="{{draft}}" style="min-height: 46px; padding: 8px 20px; background: #f0662a; color: #111111; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; cursor: pointer;">draft my SR</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{hasFollow}}" hint-placeholder-val="{{false}}">
+            <div class="db-msg" style="padding: 4px 0;">
+              <div style="font-family: 'Coming Soon', cursive; font-size: 15px; color: #3355e6;">quick one while I write</div>
+              <h2 style="margin: 6px 0 14px; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 30px; line-height: 36px;">should the contractor price standby for weather days?</h2>
+              <div role="group" aria-label="Answers" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <sc-for list="{{followOpts}}" as="o" hint-placeholder-count="3">
+                  <button type="button" class="db-chip" onClick="{{o.pick}}" style="font-family: 'Instrument Sans', sans-serif; font-size: 15px; font-weight: 500; line-height: 20px; min-height: 42px; padding: 10px 16px; border-radius: 4px 7px 5px 8px; background: #ffffff; color: #111111; border: 1.2px solid #8d8c88; cursor: pointer;">{{o.label}}</button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+
+        <form onSubmit="{{send}}" class="db-line" style="position: sticky; bottom: 0; display: flex; align-items: center; gap: 10px; margin-top: 30px; padding: 10px 0; background: rgba(255,255,255,.92); border-bottom: 1.5px solid #8d8c88; transition: border-color 140ms ease;">
+          <button type="button" class="db-link" aria-label="Attach a file, like a soil report or an old SR" title="Attach a soil report or an old SR" style="width: 40px; height: 40px; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; background: none; border: 0; border-radius: 50%; cursor: pointer;">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M13.5 6.5 L7.6 12.4 A1.8 1.8 0 0 0 10.1 14.9 L16 9 A3.4 3.4 0 0 0 11.2 4.2 L5.1 10.3 A5 5 0 0 0 12.2 17.4 L16.4 13.2" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </button>
+          <label for="db-msg-input" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Message</label>
+          <input id="db-msg-input" class="db-input" type="text" value="{{text}}" onInput="{{typed}}" placeholder="{{placeholder}}" style="flex: 1; min-width: 0; border: 0; background: transparent; font-family: 'Instrument Sans', sans-serif; font-size: 17px; line-height: 26px; color: #111111; padding: 8px 0;">
+          <button type="submit" class="db-box" style="min-height: 40px; padding: 4px 14px; background: #111111; color: #ffffff; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; cursor: pointer;">send</button>
+        </form>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{isPastTab}}" hint-placeholder-val="{{false}}">
+      <div class="db-msg" style="width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 16px;">
+        <h1 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 40px; line-height: 1.1;">{{activeTitle}}</h1>
+        <div style="font-size: 16px; line-height: 26px;">Welcome back. This one is saved. Ask me to change anything, or open the document.</div>
+        <a href="#" class="db-box" style="align-self: flex-start; display: inline-flex; min-height: 42px; align-items: center; padding: 6px 16px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">open the document</a>
+      </div>
+    </sc-if>
+  </main>
+
+  <button type="button" class="db-handle" aria-expanded="{{panelOpen}}" aria-controls="db-think" onClick="{{togglePanel}}" style="position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 15; writing-mode: vertical-rl; padding: 16px 9px; background: #ffffff; border: 1.5px solid #111111; border-right: 0; border-radius: 10px 0 0 10px; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 13px; color: #111111; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;"><span aria-hidden="true" style="{{handleDot}}"></span>thinking &amp; sources</button>
+
+  <sc-if value="{{showPanel}}" hint-placeholder-val="{{false}}">
+    <aside id="db-think" aria-label="Thinking and sources" class="db-drawer" style="position: fixed; right: 0; top: 0; bottom: 0; width: min(400px, 92vw); z-index: 20; background: #ffffff; border-left: 1.5px solid #111111; box-shadow: -24px 0 48px -32px rgba(17,17,17,.4); display: flex; flex-direction: column;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 20px 12px; border-bottom: 1px solid #ecebe7;">
+        <span style="font-family: 'Coming Soon', cursive; font-size: 22px;">how I'm building this</span>
+        <button type="button" onClick="{{togglePanel}}" aria-label="Close panel" style="width: 32px; height: 32px; border: 0; background: none; font-size: 18px; color: #5f5e5b; cursor: pointer; border-radius: 6px;">×</button>
+      </div>
+      <div style="flex: 1; overflow-y: auto; padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 22px;">
+        <section aria-label="Thinking">
+          <div style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #8d8c88; margin-bottom: 10px;">THINKING</div>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+            <sc-for list="{{thinking}}" as="th" hint-placeholder-count="3">
+              <li class="db-msg" style="display: grid; grid-template-columns: 18px 1fr; gap: 10px; font-size: 13.5px; line-height: 20px;">
+                <span aria-hidden="true" style="{{th.dot}}"></span>
+                <span><strong style="font-weight: 600;">{{th.head}}</strong><span style="display: block; color: #3d3c3a;">{{th.body}}</span></span>
+              </li>
+            </sc-for>
+          </ol>
+        </section>
+        <section aria-label="Sources">
+          <div style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #8d8c88; margin-bottom: 10px;">SOURCES · {{refCount}}</div>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+            <sc-for list="{{refsAll}}" as="r" hint-placeholder-count="4">
+              <li style="{{r.rowStyle}}">
+                <span style="display: flex; justify-content: space-between; gap: 8px;"><span style="font-weight: 600; font-size: 10px; letter-spacing: .08em; color: #8d8c88;">{{r.kind}}</span><span style="font-size: 11px; color: #8d8c88;">{{r.used}}</span></span>
+                <span style="font-size: 14px; font-weight: 500; color: #111111;">{{r.title}}</span>
+                <span style="font-size: 12.5px; line-height: 18px; color: #5f5e5b;">{{r.why}}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+      </div>
+    </aside>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pastOpen":{"editor":"boolean","default":false,"section":"Screen"},"figure":{"editor":"enum","options":["crane","plotter"],"default":"crane","section":"Drafting"},"pace":{"editor":"range","default":900,"min":300,"max":2000,"step":100,"unit":"ms per section","section":"Drafting"},"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 3, answers: ['North pad', 'Boreholes and lab testing', 'Class D'], editing: null,
+      phase: 'ask', done: 0, follow: null, notes: [], eggs: [], peek: null, text: '', panel: false, fig: null,
+      showPast: null, active: 'geo', drag: null,
+      tabs: [
+        { id: 'geo', doc: 'SR', title: 'Geotech, North pad' },
+        { id: 'rebar', doc: 'MR', title: 'Rebar, level 2' }
+      ]
+    };
+    this.press = null; this.timer = null;
+  }
+  componentWillUnmount() { if (this.timer) clearInterval(this.timer); if (this.press && this.press.timer) clearTimeout(this.press.timer); }
+  run(total) {
+    var self = this;
+    if (this.timer) clearInterval(this.timer);
+    this.timer = setInterval(function () {
+      var st = self.state;
+      if (st.phase !== 'write') return;
+      var next = st.done + 1;
+      if (next === 5 && st.follow === null) { self.setState({ done: next, phase: 'wait' }); return; }
+      if (next >= total) { clearInterval(self.timer); self.timer = null; self.setState({ done: total, phase: 'done' }); return; }
+      self.setState({ done: next });
+    }, this.props.pace ?? 900);
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var Q = [
+      { key: 'site', title: 'which site is this for?', why: 'Sets the address, access route and site contact on the cover page.', opts: ['North pad', 'Substation B', 'Cooling tower area'], ack: 'Got it, North pad. I have the site plan for that one.' },
+      { key: 'scope', title: 'what do you need the contractor to do?', why: 'Decides which work sections go in. Lab testing adds about 3 pages.', opts: ['Boreholes', 'Test pits', 'Boreholes and lab testing'], ack: 'Okay, I will add a lab testing section with the standard suite.' },
+      { key: 'soil', title: "what's the expected soil class?", why: 'Drives the drilling method and how much casing they should price.', opts: ['Class C', 'Class D', 'Class E'], ack: 'Noted. The contractor will confirm it on site.' },
+      { key: 'boreholes', title: 'how many boreholes, and how deep?', why: 'This is the biggest cost line, so vendors price it per metre.', opts: ['3 × 20 m', '5 × 15 m', '6 × 25 m'], ack: 'That works for a crane footing.' },
+      { key: 'timing', title: 'when do you need them on site?', why: 'Goes into the schedule and the mobilisation milestone.', opts: ['Within 2 weeks', 'This month', 'Next quarter'], ack: 'Okay.' },
+      { key: 'deliverables', title: 'what should the vendor hand over?', why: 'Factual is logs and lab data. Interpretive adds design advice and costs more.', opts: ['Factual report', 'Interpretive report', 'Both reports'], ack: 'That is the last one.' }
+    ];
+    var answers = st.answers, phase = st.phase;
+    var asking = phase === 'ask';
+    var answer = function (i, val) {
+      var a = answers.slice(); a[i] = val;
+      var nextStep = Math.max(st.step, i + 1);
+      while (nextStep < Q.length && a[nextStep]) nextStep++;
+      self.setState({ answers: a, step: st.editing !== null ? st.step : nextStep, editing: null, text: '' });
+    };
+    var qi = st.editing !== null ? st.editing : st.step;
+    var cur = asking ? Q[qi] : null;
+    var q = cur ? {
+      step: 'Question ' + (qi + 1) + ' of ' + Q.length, title: cur.title, why: cur.why, isEdit: st.editing !== null,
+      unsure: function () { answer(qi, 'Contractor to propose'); },
+      opts: cur.opts.map(function (o, k) {
+        var picked = answers[qi] === o;
+        return { n: k + 1, label: o, pick: function () { answer(qi, o); },
+          style: 'font-family:\'Instrument Sans\',sans-serif;font-size:15px;font-weight:500;line-height:20px;min-height:42px;padding:10px 16px;border-radius:4px 7px 5px 8px;cursor:pointer;' + (picked ? 'background:#111111;color:#ffffff;border:1.2px solid #111111' : 'background:#ffffff;color:#111111;border:1.2px solid #8d8c88') };
+      })
+    } : { step: '', title: '', why: '', opts: [], isEdit: false, unsure: null };
+
+    var steps = Q.map(function (qq, i) {
+      var has = !!answers[i], isCur = asking && i === qi;
+      return {
+        label: qq.key, mark: has && !isCur ? '✓' : String(i + 1), current: isCur ? 'step' : 'false', sep: i < Q.length - 1,
+        tip: has ? qq.key + ': ' + answers[i] + (asking ? ' (click to change)' : '') : qq.key,
+        pick: function () { if (asking && (has || i === st.step)) self.setState({ editing: has && i !== st.step ? i : null }); },
+        style: 'display:inline-flex;align-items:center;gap:7px;background:none;border:0;padding:6px 8px;border-radius:6px;font-family:\'Instrument Sans\',sans-serif;font-size:13.5px;cursor:' + (asking && (has || i === st.step) ? 'pointer' : 'default') + ';color:' + (isCur ? '#111111' : has ? '#3d3c3a' : '#a8a6a0') + ';font-weight:' + (isCur ? 600 : 500),
+        markStyle: 'width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;' + (isCur ? 'border:1.5px solid #111111;color:#111111' : has ? 'background:#111111;color:#ffffff' : 'border:1.2px solid #d6d4ce;color:#a8a6a0')
+      };
+    });
+
+    // ---- the outline of a long document ----
+    var A = function (i, d) { return answers[i] || d; };
+    var outline = [
+      ['Purpose and background', 1, 'Investigate ground conditions at the ' + A(0, '[site]') + ' ahead of design of the tower crane footing.'],
+      ['Scope of work', 4, A(1, '[scope]') + ', ' + A(3, '[boreholes]') + ', logging, sampling at each change in strata and two standpipes.'],
+      ['Site information and access', 2, 'Access from the north gate, laydown next to the batch plant, site induction required before mobilising.'],
+      ['Ground conditions', 2, 'Expected ' + A(2, '[soil class]') + '. Contractor confirms on site and stops work on groundwater or obstructions.'],
+      ['Fieldwork requirements', 5, 'Rotary drilling with casing as needed, SPTs every 1.5 m, core where rock is met, all holes backfilled.'],
+      ['Laboratory testing', 3, 'Classification, moisture, Atterberg limits, PSD, consolidation and triaxial on selected samples.'],
+      ['HSE requirements', 3, 'Permit to dig, underground services scan, exclusion zones around rigs, daily toolbox talks.'],
+      ['Schedule and milestones', 1, 'Mobilise ' + A(4, '[timing]').toLowerCase() + '. Fieldwork about two weeks, results ten working days after the last hole.'],
+      ['Deliverables and reporting', 2, A(5, '[reports]') + ', borehole logs, photos and lab results in the project template.'],
+      ['Commercial and pricing schedule', 3, 'Lump sum mobilisation, rates per metre drilled, provisional sums for standby and extra testing.'],
+      ['Appendices', 4, 'Site plan, crane footing layout, borehole location drawing, pricing schedule template.']
+    ];
+    var total = outline.length;
+    var pagesTotal = outline.reduce(function (a, o) { return a + o[1]; }, 0);
+    var done = phase === 'ask' ? 0 : st.done;
+    var pagesSoFar = outline.slice(0, done).reduce(function (a, o) { return a + o[1]; }, 0);
+    var outlineView = outline.map(function (o, i) {
+      var isDone = i < done || phase === 'done', isNow = !isDone && i === done && phase === 'write', isWait = !isDone && i === done && phase === 'wait';
+      var open = st.peek === i;
+      return {
+        num: (i + 1) + '.', title: o[0], excerpt: o[2],
+        icon: isDone ? '✓' : isNow ? '' : isWait ? '?' : '',
+        iconStyle: 'width:16px;height:16px;flex:0 0 auto;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;' +
+          (isDone ? 'background:#111111;color:#ffffff' : isNow ? 'border:2px solid #3355e6;border-right-color:transparent;animation:db-spin 800ms linear infinite' : isWait ? 'border:1.5px solid #3355e6;color:#3355e6' : 'border:1.2px solid #d6d4ce'),
+        labelStyle: isDone ? 'color:#111111' : isNow || isWait ? 'color:#111111;font-weight:600' : 'color:#a8a6a0',
+        meta: isDone ? o[1] + (o[1] === 1 ? ' page' : ' pages') : isNow ? 'writing…' : isWait ? 'needs you' : '',
+        canPeek: isDone, open: open ? 'true' : 'false', peekLabel: open ? 'hide' : 'peek', showPeek: isDone && open,
+        peek: function () { self.setState({ peek: open ? null : i }); }
+      };
+    });
+
+    // ---- mini site in the card, tied to progress ----
+    var placed = phase === 'done' ? 6 : Math.floor(done / total * 6);
+    var on = function (show) { return 'opacity:' + (show ? 1 : 0) + ';transform:' + (show ? 'none' : 'translateY(-40px)') + ';transition:opacity 500ms ease,transform 900ms cubic-bezier(.34,1.3,.64,1)'; };
+    var tops = [0, .3, 1.3, 2.3, 3.3, 4.3, 4.55];
+    var hookDy = Math.max(0, (5.3 - (tops[placed] + 0.25))) * 30;
+    var busy = phase === 'write' || phase === 'wait';
+    var sc = {
+      pit: on(true), pile: on(true), slab: on(placed >= 1), f1: on(placed >= 2), f2: on(placed >= 3), f3: on(placed >= 4), f4: on(placed >= 5), roof: on(placed >= 6),
+      dozer: placed < 1 ? 'animation:db-push 2.4s ease-in-out infinite' : 'opacity:1',
+      load: 'opacity:' + (busy ? 1 : 0) + ';transform:translateY(' + (busy ? hookDy : 0) + 'px);transition:opacity 400ms ease,transform 900ms cubic-bezier(.2,.8,.2,1)',
+      ropeY: busy ? (126.75 + hookDy).toFixed(1) : 104
+    };
+
+    // ---- the thread ----
+    var messages = [{ isAI: true, isUser: false, isDraft: false, text: "Let's put together a geotech service requisition. Six questions, then I'll draft it. Attach a soil report or an old SR if you have one and I'll pull answers from it." }];
+    answers.forEach(function (a, i) {
+      if (!a) return;
+      messages.push({ isAI: false, isUser: true, isDraft: false, text: a, editLabel: 'Change your answer: ' + a,
+        edit: function () { if (st.phase === 'ask') self.setState({ editing: i }); } });
+      messages.push({ isAI: true, isUser: false, isDraft: false, text: Q[i].ack });
+    });
+    if (phase !== 'ask') messages.push({ isDraft: true, isAI: false, isUser: false });
+    if (st.follow) {
+      messages.push({ isAI: false, isUser: true, isDraft: false, text: st.follow, editLabel: st.follow, edit: null });
+      messages.push({ isAI: true, isUser: false, isDraft: false, text: 'Thanks. I added a standby line to the pricing schedule and carried on.' });
+    }
+    st.notes.forEach(function (n) {
+      messages.push({ isAI: false, isUser: true, isDraft: false, text: n, editLabel: n, edit: null });
+      messages.push({ isAI: true, isUser: false, isDraft: false, text: phase === 'done' ? 'Noted. Open it in the canvas and I will make that change there.' : 'Noted, I will work that into the sections I have not written yet.' });
+    });
+    st.eggs.forEach(function (g) {
+      messages.push({ isAI: false, isUser: true, isDraft: false, text: g.said, editLabel: g.said, edit: null });
+      messages.push({ isEgg: true, isAI: false, isUser: false, isDraft: false, img: g.img, text: g.text });
+    });
+    var followOpts = ['Yes, a day rate', 'No, contractor carries it', 'Leave it to them to propose'].map(function (l) {
+      return { label: l, pick: function () { self.setState({ follow: l, phase: 'write' }); } };
+    });
+
+    // ---- past chats on the crane: hold to drag, neighbours bump ----
+    var pastOpen = st.showPast === null ? (this.props.pastOpen ?? false) : st.showPast;
+    var pastData = [
+      { id: 'bridge', doc: 'SR', title: 'Bridging, East gate', num: 'SR-24-0131', when: '3 days ago', summary: 'Temporary bridge over the drainage cut at the east gate. 40 t rating, 6-week hire. Approved.' },
+      { id: 'rebar', doc: 'MR', title: 'Rebar, level 2', num: 'MR-24-0087', when: 'yesterday', summary: 'Bars for the level 2 slab, cut and bent. Waiting on review from structures.' },
+      { id: 'sub', doc: 'PEP', title: 'Substation upgrade', num: 'PEP-24-0009', when: 'last week', summary: 'Execution plan for the substation upgrade: phases, outages and the team.' },
+      { id: 'pour', doc: 'SR', title: 'Concrete testing, pour 4', num: 'SR-24-0122', when: '2 weeks ago', summary: 'Slump and cylinder tests for pour 4. 28-day results due next week.' },
+      { id: 'lift', doc: 'SR', title: 'Elevator, tower B', num: 'SR-24-0104', when: 'last month', summary: 'Supply and install of two passenger lifts in tower B. Draft, not sent.' }
+    ];
+    var baseX = [210, 400, 590, 780, 970], cable = [50, 84, 64, 96, 58], W = 132;
+    var drag = st.drag;
+    var openTab = function (p) {
+      var tabs = st.tabs.some(function (t) { return t.id === p.id; }) ? st.tabs : st.tabs.concat([{ id: p.id, doc: p.doc, title: p.title }]);
+      self.setState({ tabs: tabs, active: p.id, showPast: false });
+    };
+    var past = pastData.map(function (p, i) {
+      var dx = 0, dy = 0, rot = 0, dragging = drag && drag.i === i && drag.live;
+      if (dragging) { dx = drag.dx; dy = drag.dy; rot = Math.max(-18, Math.min(18, -drag.vx * 0.6)); }
+      else if (drag && drag.live) {
+        var cx = baseX[drag.i] + drag.dx, gap = Math.abs(cx - baseX[i]), need = W + 14;
+        if (gap < need) { dx = (baseX[i] >= cx ? 1 : -1) * (need - gap); rot = -dx * 0.12; }
+      }
+      var tr = dragging ? 'none' : 'transform 620ms cubic-bezier(.34,1.56,.64,1)';
+      return {
+        doc: p.doc, title: p.title, num: p.num, when: p.when, summary: p.summary,
+        aria: p.doc + ' ' + p.title + ', ' + p.when + '. ' + p.summary + ' Press Enter to open in a new tab.',
+        cls: 'db-hang' + (dragging ? ' is-drag' : ''),
+        posStyle: 'position:absolute;left:' + (baseX[i] - W / 2) + 'px;top:46px;width:' + W + 'px;cursor:' + (dragging ? 'grabbing' : 'pointer') + ';touch-action:none;user-select:none;z-index:' + (dragging ? 5 : 1) + ';transform:translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg);transform-origin:50% 0;transition:' + tr,
+        swingStyle: 'animation-delay:-' + (i * 1.1) + 's;animation-duration:' + (4.6 + i * .5) + 's',
+        cableStyle: 'display:block;width:1.5px;height:' + cable[i] + 'px;margin:0 auto;background:#111111',
+        down: function (e) {
+          var el = e.currentTarget, x = e.clientX, y = e.clientY, pid = e.pointerId;
+          self.press = { i: i, x: x, y: y, lx: x, timer: setTimeout(function () {
+            try { el.setPointerCapture(pid); } catch (err) {}
+            if (self.press) self.press.armed = true;
+            self.setState({ drag: { i: i, dx: 0, dy: 0, vx: 0, live: true } });
+          }, 220) };
+        },
+        move: function (e) {
+          var pr = self.press; if (!pr || pr.i !== i) return;
+          if (!pr.armed) { if (Math.abs(e.clientX - pr.x) + Math.abs(e.clientY - pr.y) > 8) { clearTimeout(pr.timer); self.press = null; } return; }
+          var vx = e.clientX - pr.lx; pr.lx = e.clientX;
+          self.setState({ drag: { i: i, dx: e.clientX - pr.x, dy: Math.max(-30, Math.min(30, e.clientY - pr.y)), vx: vx, live: true } });
+        },
+        up: function () {
+          var pr = self.press; self.press = null;
+          if (pr && pr.timer) clearTimeout(pr.timer);
+          if (pr && pr.i === i && !pr.armed) { openTab(p); return; }
+          self.setState({ drag: null });
+        },
+        key: function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTab(p); } }
+      };
+    });
+
+    var tint = { geo: ['#f5da8c', '#fbf0cd'], rebar: ['#b5e3f7', '#def2fb'], bridge: ['#ffd5de', '#ffecf0'], sub: ['#c6ee9c', '#e5f7d2'], pour: ['#f8c98d', '#fce6c9'], lift: ['#efb5f4', '#f8e1fa'] };
+    var tabs = st.tabs.map(function (t) {
+      var sel = t.id === st.active;
+      return {
+        doc: t.doc, title: t.title, selected: sel ? 'true' : 'false', closeLabel: 'Close ' + t.title,
+        pick: function () { self.setState({ active: t.id }); },
+        close: function () {
+          var rest = st.tabs.filter(function (x) { return x.id !== t.id; });
+          if (!rest.length) return;
+          self.setState({ tabs: rest, active: sel ? rest[0].id : st.active });
+        },
+        wrapStyle: 'display:inline-flex;align-items:center;gap:4px;position:relative;top:1.5px;padding:9px 10px 11px 14px;font-size:14px;font-weight:500;border:1.5px solid ' + (sel ? '#111111' : 'transparent') + ';border-bottom:' + (sel ? '1.5px solid ' + (tint[t.id] || tint.geo)[0] : '0') + ';margin-bottom:' + (sel ? '-1.5px' : '0') + ';border-radius:10px 14px 0 0 / 8px 10px 0 0;background:' + (sel ? (tint[t.id] || tint.geo)[0] : (tint[t.id] || tint.geo)[1]) + ';color:' + (sel ? '#111111' : '#3d3c3a')
+      };
+    });
+    var activeTab = st.tabs.filter(function (t) { return t.id === st.active; })[0] || st.tabs[0];
+    var isDemo = activeTab.id === 'geo';
+    var STOREY = ['assets/crane-storey-0.svg','assets/crane-storey-1.svg','assets/crane-storey-2.svg','assets/crane-storey-3.svg','assets/crane-storey-4.svg','assets/crane-storey-5.svg','assets/crane-storey-6.svg','assets/crane-storey-7.svg','assets/crane-storey-8.svg','assets/crane-storey-9.svg','assets/crane-storey-10.svg'];
+    var PAGES = ['assets/plotter-page-0.svg','assets/plotter-page-1.svg','assets/plotter-page-2.svg','assets/plotter-page-3.svg','assets/plotter-page-4.svg','assets/plotter-page-5.svg','assets/plotter-page-6.svg','assets/plotter-page-7.svg','assets/plotter-page-8.svg','assets/plotter-page-9.svg','assets/plotter-page-10.svg'];
+    var layerOn = function (on, drop) { return 'position:absolute;inset:0;width:100%;height:100%;opacity:' + (on ? 1 : 0) + ';transform:translateY(' + (on ? 0 : drop) + '%);transition:opacity 500ms ease,transform 800ms cubic-bezier(.34,1.3,.64,1)'; };
+    var setN = phase === 'done' ? 11 : Math.min(11, done);
+    var figName = st.fig || this.props.figure || 'crane';
+    var figOpts = [['crane', 'crane'], ['plotter', 'plotter']].map(function (f) {
+      var on = figName === f[0];
+      return { label: f[1], on: on ? 'true' : 'false', pick: function () { self.setState({ fig: f[0] }); },
+        style: 'border:0;border-radius:6px;padding:4px 10px;font-family:\'Instrument Sans\',sans-serif;font-size:12.5px;font-weight:500;cursor:pointer;' + (on ? 'background:#111111;color:#ffffff' : 'background:transparent;color:#5f5e5b') };
+    });
+    var answered = answers.filter(Boolean).length;
+    var REFS = [
+      { kind: 'STANDARD', title: 'Company geotechnical investigation standard', why: 'Clause structure, sampling and logging rules.', at: 0, sec: '§1–6' },
+      { kind: 'PAST SR', title: 'SR-24-0098 · Geotech, South yard', why: 'A similar job. Reused the layout and the pricing schedule.', at: 1, sec: '§2, §10' },
+      { kind: 'DRAWING', title: 'North pad site plan, rev C', why: 'Gate, laydown area and borehole locations.', at: 2, sec: '§3, App. B' },
+      { kind: 'VENDOR', title: 'Tower crane footing loads (vendor PDF)', why: 'Why 20 m depth clears the pressure bulb.', at: 3, sec: '§4' },
+      { kind: 'STANDARD', title: 'ASTM D1586 · Standard penetration test', why: 'SPT method and interval in the fieldwork section.', at: 4, sec: '§5' },
+      { kind: 'PROCEDURE', title: 'Permit to dig procedure', why: 'Services scan and permit before each hole.', at: 6, sec: '§7' },
+      { kind: 'TEMPLATE', title: 'Pricing schedule template', why: 'Lump sum, rates per metre, provisional sums.', at: 9, sec: '§10' }
+    ];
+    var started = phase !== 'ask';
+    var refsAll = REFS.map(function (r) {
+      var used = started && (done > r.at || phase === 'done');
+      var pending = started && !used && done === r.at;
+      return { kind: r.kind, title: r.title, why: r.why, used: used ? 'used in ' + r.sec : pending ? 'reading…' : started ? 'queued' : 'will check',
+        rowStyle: 'display:flex;flex-direction:column;gap:3px;padding:10px 12px;border:1px solid ' + (used ? '#111111' : '#e6e5e1') + ';border-radius:6px 9px 7px 10px;background:#ffffff;opacity:' + (used || pending || !started ? 1 : .55) };
+    });
+    var refTint = ['#fbf0cd', '#def2fb', '#ffecf0', '#e5f7d2', '#f8e1fa', '#fce6c9', '#fbf0cd'];
+    var refsLive = REFS.filter(function (r) { return started && (done >= r.at || phase === 'done'); }).map(function (r, i) {
+      return { kind: r.kind, title: r.title, style: 'display:inline-flex;flex-direction:column;align-items:flex-start;gap:1px;padding:6px 10px;background:' + refTint[i] + ';border:1px solid #111111;border-radius:4px 7px 5px 8px;font-size:12.5px;text-align:left;transform:rotate(' + ((i % 3) - 1) * 1.5 + 'deg)' };
+    });
+    var thinkSrc = [
+      ['Read your answers', 'North pad, boreholes plus lab testing, class D. Scope sized for a crane footing.'],
+      ['Found a similar SR', 'SR-24-0098 at the South yard is close. Using its layout so reviewers see a familiar shape.'],
+      ['Checked the site plan', 'Access from the north gate. Placed BH-01 and BH-02 on the crane base corners.'],
+      ['Sized the depth', 'Vendor footing loads say 20 m clears the pressure bulb with margin.'],
+      ['Wrote fieldwork', 'SPT every 1.5 m per ASTM D1586, rotary with casing for class D.'],
+      ['Asked about standby', 'Weather days change the price a lot, so I asked instead of guessing.'],
+      ['Added HSE', 'Permit to dig and services scan before every hole.'],
+      ['Set the schedule', 'Mobilise in two weeks, results ten working days after the last hole.'],
+      ['Listed deliverables', 'Factual report, logs, photos, lab data in the project template.'],
+      ['Priced it', 'Lump sum, rates per metre, provisional sums from the template.'],
+      ['Final pass', 'Numbered clauses, cross-references and the cover block.']
+    ];
+    var thinking = !started ? [{ head: 'Waiting for your answers', body: 'I will show my reasoning and every source here once I start drafting.', dot: 'width:10px;height:10px;margin-top:5px;border-radius:50%;border:1.5px solid #b9b7b1' }]
+      : thinkSrc.slice(0, Math.min(thinkSrc.length, (phase === 'done' ? thinkSrc.length : done + 1))).map(function (t, i, arr) {
+        var cur = phase !== 'done' && i === arr.length - 1;
+        return { head: t[0], body: t[1], dot: 'width:10px;height:10px;margin-top:5px;border-radius:50%;' + (cur ? 'background:#3355e6;animation:db-pulse 1.2s ease-in-out infinite' : 'background:#111111') };
+      });
+    var nowLines = ['reading the geotech standard…', 'opening SR-24-0098 from the South yard…', 'checking the North pad site plan…', 'pulling the crane vendor footing loads…', 'writing fieldwork with ASTM D1586…', 'waiting on your answer about standby…', 'adding the permit to dig steps…', 'writing the schedule…', 'listing deliverables…', 'building the pricing schedule…', 'final pass on numbering…'];
+    var pct = phase === 'done' ? 100 : Math.round(done / total * 100);
+    return {
+      pastOpen: pastOpen ? 'true' : 'false', showPast: pastOpen,
+      togglePast: function () { self.setState({ showPast: !pastOpen }); },
+      past: past, tabs: tabs,
+      isDemo: isDemo, isPastTab: !isDemo, activeTitle: activeTab.doc + ' · ' + activeTab.title,
+      statusText: asking ? answered + ' of 6 answered' : phase === 'done' ? 'draft ready · ' + pagesTotal + ' pages' : 'drafting',
+      isCrane: figName === 'crane', isPlotter: figName === 'plotter', figOpts: figOpts,
+      figLabel: figName === 'crane' ? 'A tower crane sets one storey for each finished section. ' + setN + ' of 11 storeys set.' : 'A drafting plotter draws the document. ' + setN + ' of 11 pages in the tray.',
+      storeys: STOREY.map(function (src, i) { return { src: src, style: layerOn(i < setN, -4) }; }),
+      storeysAll: STOREY,
+      ropeStyle: 'position:absolute;left:52.99%;top:27.74%;width:1px;background:#6e6e6e;transition:height 800ms cubic-bezier(.2,.8,.2,1),opacity 400ms ease;opacity:' + (setN < 11 ? 1 : 0) + ';height:' + ((136.42 - 12.401 * setN) / 5.2).toFixed(2) + '%',
+      hoistStyle: 'position:absolute;inset:0;width:100%;height:100%;transition:transform 800ms cubic-bezier(.2,.8,.2,1),opacity 400ms ease;opacity:' + (setN < 11 ? 1 : 0) + ';transform:translateY(' + (-2.385 * setN).toFixed(2) + '%)',
+      pagesOut: PAGES.map(function (src, i) { return { src: src, style: layerOn(i < setN, -3) }; }),
+      steps: steps, messages: messages, q: q,
+      busy: phase === 'write' || phase === 'wait', refsLive: refsLive, refsAll: refsAll, refCount: refsAll.filter(function (r) { return r.used.indexOf('used') === 0; }).length + ' of ' + REFS.length,
+      nowLine: phase === 'wait' ? 'paused: one quick question below' : nowLines[Math.min(done, nowLines.length - 1)],
+      thinking: thinking,
+      panelOpen: st.panel ? 'true' : 'false', showPanel: !!st.panel,
+      togglePanel: function () { self.setState({ panel: !st.panel }); },
+      handleDot: 'width:8px;height:8px;border-radius:50%;' + (phase === 'write' ? 'background:#3355e6;animation:db-pulse 1.2s ease-in-out infinite' : phase === 'done' ? 'background:#111111' : 'border:1.5px solid #8d8c88'),
+      hasQuestion: !!cur, readyToDraft: asking && !cur,
+      hasFollow: phase === 'wait', followOpts: followOpts,
+      done: phase === 'done',
+      outline: outlineView,
+      draftTitle: phase === 'done' ? 'your SR is ready' : phase === 'wait' ? 'paused for one question' : 'drafting your SR',
+      draftSub: phase === 'done' ? pagesTotal + ' pages · ' + total + ' sections · saved to Folders' : 'page ' + pagesSoFar + ' of ~' + pagesTotal + ' · section ' + Math.min(done + 1, total) + ' of ' + total,
+      barStyle: 'height:100%;width:' + pct + '%;background:#111111;transition:width 600ms cubic-bezier(.2,.8,.2,1)',
+      placeholder: asking ? 'type your own answer, or ask me why…' : phase === 'done' ? 'ask for a change…' : 'add a note while I write…',
+      draft: function () { self.setState({ phase: 'write', done: 0, follow: null, notes: [], peek: null }); self.run(total); },
+      restart: function () { if (self.timer) clearInterval(self.timer); self.timer = null; self.setState({ eggs: [], step: 3, answers: ['North pad', 'Boreholes and lab testing', 'Class D'], editing: null, phase: 'ask', done: 0, follow: null, notes: [], peek: null }); },
+      text: st.text,
+      typed: function (e) { self.setState({ text: e.target.value }); },
+      send: function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        var v = st.text.trim(); if (!v) return;
+        var egg = /\b(coffee|lunch|tea|tired)\b/i.test(v) ? { said: v, img: 'assets/hard-hat-eyes.svg', text: 'Site coffee is terrible. Have a hard hat instead, then back to it.' }
+          : /^(hi|hey|hello|yo)\b/i.test(v) ? { said: v, img: 'assets/peace-glove.png', text: 'Hey. Glove on, let us get this SR done.' }
+          : /\b(thanks|thank you|cheers)\b/i.test(v) ? { said: v, img: 'assets/smiley.svg', text: 'Anytime.' } : null;
+        if (egg) { self.setState({ eggs: st.eggs.concat([egg]), text: '' }); return; }
+        if (asking && cur) answer(qi, v);
+        else self.setState({ notes: st.notes.concat([v]), text: '' });
+      },
+      sc: sc, sceneLabel: 'Small construction drawing that builds as sections finish.'
+    };
+  }
+}
+</script>
+</body>
+</html>

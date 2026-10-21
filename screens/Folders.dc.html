@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Docbuilder · folders</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coming+Soon&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Shantell+Sans:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#111111}a:hover{color:#111111}
+.db-enav a,.db-enav button{position:relative;color:#5f5e5b;text-decoration:none;background:none;border:0;padding:0;font:inherit;cursor:pointer;transition:color 180ms ease}
+.db-enav a:hover,.db-enav a:focus-visible,.db-enav a[aria-current="page"]{color:#111111}
+.db-enav img{position:absolute;right:calc(100% + 4px);top:50%;width:34px;height:auto;opacity:0;transform:translateY(-50%) rotate(-22deg) scale(.4);transition:opacity 180ms ease,transform 180ms ease;pointer-events:none}
+.db-enav a:hover img,.db-enav a:focus-visible img,.db-enav a[aria-current="page"] img{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(1);transition:opacity 300ms ease,transform 300ms cubic-bezier(.34,1.56,.64,1)}
+.db-box{transition:transform 140ms ease}
+.db-box:hover{transform:rotate(-1.5deg)}
+.db-folder{background:none;border:0;padding:0;cursor:pointer;font:inherit;color:#111111;display:flex;flex-direction:column;align-items:center;gap:14px}
+.db-pp{transition:transform 420ms cubic-bezier(.34,1.56,.64,1)}
+.db-folder:hover .db-pp,.db-folder:focus-visible .db-pp{transform:translateY(-16px) rotate(var(--r2,0deg))}
+.db-front{transition:transform 320ms cubic-bezier(.34,1.3,.64,1);transform-origin:50% 100%}
+.db-folder:hover .db-front,.db-folder:focus-visible .db-front{transform:perspective(600px) rotateX(-7deg)}
+.db-folder:focus-visible{outline:2px solid #3355e6;outline-offset:6px;border-radius:12px}
+.db-chip:hover{border-color:#111111 !important}
+.db-doc{transition:transform 240ms cubic-bezier(.34,1.56,.64,1)}
+.db-doc:hover{transform:translateY(-4px) rotate(-.6deg)}
+:where(.db-box,.db-chip,.db-doc,.db-link,.db-enav a):focus-visible{outline:2px solid #3355e6;outline-offset:3px}
+.db-search:focus-within{box-shadow:3px 4px 0 #111111}
+.db-search input:focus{outline:none}
+@keyframes db-in{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.db-in{animation:db-in 320ms cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion: reduce){.db-pp,.db-front,.db-doc{transition:none}.db-in{animation:none}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #ffffff; color: #111111; font-family: 'Instrument Sans', system-ui, sans-serif; display: flex; flex-direction: column;">
+  <header style="position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px clamp(20px, 4vw, 56px);">
+    <a href="Main.dc.html" class="db-link" style="text-decoration: none; font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 20px; color: #111111;">AI Docbuilder</a>
+    <nav aria-label="Main" class="db-enav" style="display: flex; align-items: center; gap: 48px; flex-wrap: wrap; font-size: 16px; font-weight: 500;">
+      <a href="Folders.dc.html" aria-current="page" style="color: #111111;"><img src="assets/icon-folder.svg" alt="">Folders</a>
+      <a href="Chat.dc.html"><img src="assets/icon-chat.svg" alt="">Past chats</a>
+      <a href="Main.dc.html" class="db-box" style="display: inline-flex; align-items: center; gap: 6px; min-height: 40px; box-sizing: border-box; padding: 6px 14px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">+ new chat</a>
+      <span aria-label="Your account" role="img" style="width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #111111; background: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: 'Coming Soon', cursive; font-size: 16px;">k</span>
+    </nav>
+  </header>
+
+  <main style="flex: 1; padding: 24px clamp(20px, 4vw, 56px) 72px;">
+    <sc-if value="{{grid}}" hint-placeholder-val="{{true}}">
+      <div class="db-in">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 18px;">
+          <div>
+            <h1 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: clamp(40px, 5vw, 64px); line-height: 1.05;">your folders</h1>
+            <p style="margin: 8px 0 0; font-size: 16px; color: #5f5e5b;">Everything you have drafted, sorted by type and by project.</p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <form onSubmit="{{noop}}" class="db-search" style="display: flex; align-items: center; gap: 8px; padding: 6px 14px; border: 1.5px solid #111111; border-radius: 22px 14px 24px 16px / 16px 24px 14px 22px; min-width: 260px; transition: box-shadow 140ms ease;">
+              <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="#111111" stroke-width="1.5"></circle><path d="M11 11 L14.5 14.5" stroke="#111111" stroke-width="1.5" stroke-linecap="round"></path></svg>
+              <label for="db-find" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Search documents</label>
+              <input id="db-find" type="text" value="{{q}}" onInput="{{typed}}" placeholder="search SRs, MRs, PEPs…" style="flex: 1; min-width: 0; border: 0; background: transparent; font-family: 'Instrument Sans', sans-serif; font-size: 15px; padding: 6px 0;">
+            </form>
+            <button type="button" class="db-box" style="min-height: 42px; padding: 6px 16px; background: #ffffff; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; cursor: pointer;">+ new folder</button>
+          </div>
+        </div>
+
+        <div role="group" aria-label="Group by" style="display: flex; gap: 8px; margin-top: 22px; flex-wrap: wrap;">
+          <sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+            <button type="button" class="db-chip" aria-pressed="{{g.on}}" onClick="{{g.pick}}" style="{{g.style}}">{{g.label}}</button>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 56px 32px; margin-top: 48px; justify-items: center;">
+          <sc-for list="{{folders}}" as="f" hint-placeholder-count="6">
+            <button type="button" class="db-folder" onClick="{{f.open}}" aria-label="{{f.aria}}">
+              <span style="position: relative; display: block; width: 280px; height: 236px;">
+                <span aria-hidden="true" style="{{f.backStyle}}"></span>
+                <sc-for list="{{f.papers}}" as="pp" hint-placeholder-count="3">
+                  <span class="db-pp" aria-hidden="true" style="{{pp.style}}"><img src="{{pp.src}}" alt="" style="width: 100%; height: 100%; object-fit: contain;"></span>
+                </sc-for>
+                <span class="db-front" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 180px;">
+                  <span style="{{f.glassStyle}}"></span>
+                  <svg width="280" height="180" viewBox="0 0 280 180" style="position: absolute; inset: 0;"><path d="M18 1 H150 C162 1 166 5 172 13 L178 23 H262 Q279 23 279 40 V162 Q279 179 262 179 H18 Q1 179 1 162 V18 Q1 1 18 1 Z" fill="none" stroke="rgba(255,255,255,.95)" stroke-width="2"></path><path d="M18 150 H262 M18 158 H262" stroke="rgba(255,255,255,.75)" stroke-width="1.5"></path></svg>
+                  <sc-for list="{{f.stickers}}" as="st" hint-placeholder-count="1">
+                    <img src="{{st.src}}" alt="" style="{{st.style}}">
+                  </sc-for>
+                </span>
+              </span>
+              <span style="font-weight: 600; font-size: 21px; line-height: 26px;">{{f.name}}</span>
+              <span style="font-size: 14px; color: #5f5e5b; background: #f1f0ec; border-radius: 999px; padding: 5px 14px; font-variant-numeric: tabular-nums;">{{f.count}}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{opened}}" hint-placeholder-val="{{false}}">
+      <div class="db-in">
+        <button type="button" class="db-link" onClick="{{back}}" style="background: none; border: 0; padding: 0; font-family: 'Instrument Sans', sans-serif; font-weight: 500; font-size: 14px; color: #5f5e5b; cursor: pointer;">← all folders</button>
+        <div style="display: flex; align-items: center; gap: 18px; margin-top: 12px; flex-wrap: wrap;">
+          <span aria-hidden="true" style="{{openSwatch}}"></span>
+          <h1 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: clamp(36px, 4.4vw, 56px); line-height: 1.05;">{{openName}}</h1>
+          <span style="font-size: 14px; color: #5f5e5b; background: #f1f0ec; border-radius: 999px; padding: 5px 14px;">{{openCount}}</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 24px; margin-top: 36px;">
+          <sc-for list="{{docs}}" as="d" hint-placeholder-count="4">
+            <a href="Canvas.dc.html" class="db-doc" style="display: flex; flex-direction: column; text-decoration: none; color: #111111; background: #ffffff; border: 1.5px solid #111111; border-radius: 6px 9px 7px 10px; overflow: hidden;">
+              <span style="{{d.thumbStyle}}"><img src="{{d.src}}" alt="" style="width: 70%; height: 100%; object-fit: contain;"></span>
+              <span style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px;">
+                <span style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                  <span style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #5f5e5b;">{{d.doc}}</span>
+                  <span style="{{d.stampStyle}}">{{d.status}}</span>
+                </span>
+                <span style="font-weight: 600; font-size: 17px; line-height: 22px;">{{d.title}}</span>
+                <span style="font-size: 12.5px; color: #5f5e5b; font-variant-numeric: tabular-nums;">{{d.num}} · {{d.when}}</span>
+              </span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { open: null, group: 'type', q: '' }; }
+  renderVals() {
+    var self = this, st = this.state;
+    var D = {
+      geotech: 'assets/doodle-geotech.svg', bridging: 'assets/doodle-bridging.svg', pressure: 'assets/doodle-pressure-testing.svg',
+      machinery: 'assets/doodle-field-machinery.svg', cable: 'assets/doodle-cable-testing.svg', pfc: 'assets/doodle-pfc-panels.svg',
+      delivery: 'assets/doodle-material-delivery.svg', welding: 'assets/doodle-welding.svg', elevator: 'assets/doodle-elevator.svg',
+      crane: 'assets/doodle-tower-crane-foundations.svg', concrete: 'assets/doodle-concrete-testing.svg', mr: 'assets/doodle-mr.svg', pep: 'assets/doodle-pep.svg'
+    };
+    var S = { hello: 'assets/hello-sr.svg', tape: 'assets/tool-tape-measure.png', hat: 'assets/hard-hat-eyes.svg', rfi: 'assets/rfi.svg', smiley: 'assets/smiley.svg', specd: 'assets/specd-signed.svg', level: 'assets/tool-level.svg' };
+    var C = {
+      butter: ['245,218,140', '#e9c45d'], sky: ['181,227,247', '#8ccbe6'], sage: ['150,190,170', '#78a894'],
+      pink: ['255,200,214', '#f1a3b8'], lilac: ['232,186,242', '#cf93dd'], peach: ['248,201,141', '#e9a65a']
+    };
+    var byType = [
+      { id: 'sr', name: 'Service requisitions', n: 12, c: 'butter', papers: ['geotech', 'welding', 'crane'], stickers: [['hello', 92, 18, 72, -8], ['specd', 66, 176, 70, 12]] },
+      { id: 'mr', name: 'Material requisitions', n: 7, c: 'sky', papers: ['mr', 'delivery'], stickers: [['tape', 84, 168, 56, 10], ['smiley', 54, 34, 44, -10]] },
+      { id: 'pep', name: 'Execution plans', n: 3, c: 'sage', papers: ['pep'], stickers: [['hat', 66, 26, 70, -6], ['level', 108, 160, 70, 8]] }
+    ];
+    var byProject = [
+      { id: 'north', name: 'North pad', n: 9, c: 'pink', papers: ['bridging', 'concrete', 'geotech'], stickers: [['rfi', 70, 176, 58, 8], ['hello', 96, 22, 64, -6]] },
+      { id: 'subb', name: 'Substation B', n: 4, c: 'lilac', papers: ['pfc', 'cable'], stickers: [['smiley', 58, 36, 60, -10], ['tape', 92, 168, 52, 6]] },
+      { id: 'shared', name: 'Shared with me', n: 5, c: 'peach', papers: ['elevator', 'machinery'], stickers: [['level', 104, 140, 66, -12], ['hat', 54, 30, 56, 8]] }
+    ];
+    var list = st.group === 'type' ? byType : st.group === 'project' ? byProject : byType.concat(byProject);
+    var PP = [[60, 6, -9, -13], [104, -6, 3, 5], [150, 10, 11, 15]];
+    var folders = list.map(function (f) {
+      var c = C[f.c];
+      return {
+        name: f.name, count: f.n + ' documents', aria: 'Open folder ' + f.name + ', ' + f.n + ' documents',
+        open: function () { self.setState({ open: f.id }); },
+        backStyle: 'position:absolute;left:10px;right:10px;top:34px;bottom:10px;border-radius:16px;background:' + c[1] + ';opacity:.55',
+        glassStyle: 'position:absolute;inset:0;clip-path:path(\'M18 1 H150 C162 1 166 5 172 13 L178 23 H262 Q279 23 279 40 V162 Q279 179 262 179 H18 Q1 179 1 162 V18 Q1 1 18 1 Z\');background:linear-gradient(170deg,rgba(255,255,255,.55),rgba(' + c[0] + ',.42) 45%,rgba(' + c[0] + ',.62));backdrop-filter:blur(12px) saturate(1.25);-webkit-backdrop-filter:blur(12px) saturate(1.25);box-shadow:0 22px 36px -24px rgba(17,17,17,.45)',
+        papers: f.papers.map(function (p, i) {
+          var g = f.papers.length === 1 ? [100, 4, -3, 4] : PP[i];
+          return { src: D[p], style: 'position:absolute;left:' + g[0] + 'px;top:' + g[1] + 'px;width:92px;height:112px;box-sizing:border-box;padding:8px;background:#ffffff;border:4px solid #ffffff;border-radius:10px;box-shadow:0 2px 0 rgba(17,17,17,.06),0 10px 18px -12px rgba(17,17,17,.4);outline:1px solid #e6e5e1;--r2:' + g[3] + 'deg;transform:rotate(' + g[2] + 'deg)' };
+        }),
+        stickers: f.stickers.map(function (s) {
+          return { src: S[s[0]], style: 'position:absolute;top:' + s[1] + 'px;left:' + s[2] + 'px;width:' + s[3] + 'px;height:auto;transform:rotate(' + s[4] + 'deg)' };
+        })
+      };
+    });
+    var groups = [['type', 'By document type'], ['project', 'By project'], ['all', 'Everything']].map(function (g) {
+      var on = st.group === g[0];
+      return { label: g[1], on: on ? 'true' : 'false', pick: function () { self.setState({ group: g[0] }); },
+        style: 'font-family:\'Instrument Sans\',sans-serif;font-size:14px;font-weight:500;min-height:38px;padding:7px 15px;border-radius:999px;cursor:pointer;' + (on ? 'background:#111111;color:#ffffff;border:1.5px solid #111111' : 'background:#ffffff;color:#111111;border:1.5px solid #8d8c88') };
+    });
+    var all = byType.concat(byProject), cur = all.filter(function (f) { return f.id === st.open; })[0];
+    var DOCS = {
+      sr: [['SR', 'Geotech, North pad', 'SR-24-0142', '2 hours ago', 'Draft', 'geotech'], ['SR', 'Bridging, East gate', 'SR-24-0131', '3 days ago', 'Approved', 'bridging'], ['SR', 'Concrete testing, pour 4', 'SR-24-0122', '2 weeks ago', 'For review', 'concrete'], ['SR', 'Welding inspection, pipe rack', 'SR-24-0117', '3 weeks ago', 'Approved', 'welding'], ['SR', 'Elevator, tower B', 'SR-24-0104', 'last month', 'Draft', 'elevator']],
+      mr: [['MR', 'Rebar, level 2', 'MR-24-0087', 'yesterday', 'For review', 'mr'], ['MR', 'Aggregate deliveries, Q4', 'MR-24-0079', '2 weeks ago', 'Approved', 'delivery']],
+      pep: [['PEP', 'Substation upgrade', 'PEP-24-0009', 'last week', 'Approved', 'pep']]
+    };
+    var docs = (DOCS[st.open] || DOCS.sr).filter(function (d) { return !st.q || (d[1] + d[2]).toLowerCase().indexOf(st.q.toLowerCase()) >= 0; });
+    var stamp = { 'Draft': '#5f5e5b', 'For review': '#a3451a', 'Approved': '#2f7d4f' };
+    var cc = cur ? C[cur.c] : C.butter;
+    return {
+      grid: !st.open, opened: !!st.open, folders: folders, groups: groups,
+      q: st.q, typed: function (e) { self.setState({ q: e.target.value }); }, noop: function (e) { if (e && e.preventDefault) e.preventDefault(); },
+      back: function () { self.setState({ open: null }); },
+      openName: cur ? cur.name : '', openCount: cur ? cur.n + ' documents' : '',
+      openSwatch: 'width:46px;height:38px;border-radius:8px;background:rgba(' + cc[0] + ',.7);border:1.5px solid ' + cc[1],
+      docs: docs.map(function (d) {
+        return { doc: d[0], title: d[1], num: d[2], when: d[3], status: d[4].toUpperCase(), src: D[d[5]],
+          thumbStyle: 'display:flex;justify-content:center;height:150px;padding:12px;box-sizing:border-box;background:rgba(' + cc[0] + ',.35);border-bottom:1.5px solid #111111',
+          stampStyle: 'font-weight:700;font-size:10px;letter-spacing:.1em;color:' + stamp[d[4]] + ';border:2px solid ' + stamp[d[4]] + ';border-radius:4px;padding:2px 6px;transform:rotate(-3deg)' };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

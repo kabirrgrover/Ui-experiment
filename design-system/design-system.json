@@ -1,0 +1,588 @@
+{
+ "v": 3,
+ "assetGroups": {
+  "Doodles": {
+   "files": {
+    "arrow-curve.svg": {
+     "blob": "d10fe558b8cafa89b3a670e29f71a156",
+     "name": "arrow-curve.svg",
+     "size": 559,
+     "type": "image/svg+xml"
+    },
+    "asterisk.svg": {
+     "blob": "86fd26c29ac39f479c334e7eb1d6f41e",
+     "name": "asterisk.svg",
+     "size": 904,
+     "type": "image/svg+xml"
+    },
+    "check.svg": {
+     "blob": "cddaa29eb92b0dc7ad9cb7b57325287e",
+     "name": "check.svg",
+     "size": 335,
+     "type": "image/svg+xml"
+    },
+    "circle-scribble.svg": {
+     "blob": "5207b2211783c662a78656366df5248f",
+     "name": "circle-scribble.svg",
+     "size": 1363,
+     "type": "image/svg+xml"
+    },
+    "cross.svg": {
+     "blob": "23dbca58c677ab04b806dc5a374b37f4",
+     "name": "cross.svg",
+     "size": 696,
+     "type": "image/svg+xml"
+    },
+    "emphasis.svg": {
+     "blob": "d4848b6559857eff3163719acef81759",
+     "name": "emphasis.svg",
+     "size": 625,
+     "type": "image/svg+xml"
+    },
+    "highlight-swash.svg": {
+     "blob": "85c35403e9aa8f1175f2caefe41bd100",
+     "name": "highlight-swash.svg",
+     "size": 345,
+     "type": "image/svg+xml"
+    },
+    "paperclip.svg": {
+     "blob": "81d65067e6b57c8e3065d4ccbd45514a",
+     "name": "paperclip.svg",
+     "size": 497,
+     "type": "image/svg+xml"
+    },
+    "pushpin.svg": {
+     "blob": "f391b4e1b83890352fcf53c55ee40072",
+     "name": "pushpin.svg",
+     "size": 3531,
+     "type": "image/svg+xml"
+    },
+    "star.svg": {
+     "blob": "2d6622ef3b04dacc26978d38494e0c44",
+     "name": "star.svg",
+     "size": 834,
+     "type": "image/svg+xml"
+    },
+    "tape-strip.svg": {
+     "blob": "803340627531f4293d59578695f95186",
+     "name": "tape-strip.svg",
+     "size": 999,
+     "type": "image/svg+xml"
+    },
+    "underline.svg": {
+     "blob": "4c50ec901cfa0cce8ed5241a8c9a8cf9",
+     "name": "underline.svg",
+     "size": 524,
+     "type": "image/svg+xml"
+    }
+   },
+   "name": "Doodles",
+   "order": [
+    "arrow-curve.svg",
+    "asterisk.svg",
+    "check.svg",
+    "circle-scribble.svg",
+    "cross.svg",
+    "emphasis.svg",
+    "highlight-swash.svg",
+    "paperclip.svg",
+    "pushpin.svg",
+    "star.svg",
+    "tape-strip.svg",
+    "underline.svg"
+   ],
+   "tile": "s"
+  },
+  "SR Types": {
+   "files": {
+    "bridging.svg": {
+     "blob": "3350619726f1ce345d998cfc12390b46",
+     "name": "bridging.svg",
+     "size": 4730,
+     "type": "image/svg+xml"
+    },
+    "cable-testing.svg": {
+     "blob": "74c5991f9e4aae82eb7289024334063d",
+     "name": "cable-testing.svg",
+     "size": 5947,
+     "type": "image/svg+xml"
+    },
+    "concrete-testing.svg": {
+     "blob": "189c250a0158f3c3ed45abb93d8b4ebf",
+     "name": "concrete-testing.svg",
+     "size": 4393,
+     "type": "image/svg+xml"
+    },
+    "elevator.svg": {
+     "blob": "80c27780ec90facd8c17587cdc7e67e3",
+     "name": "elevator.svg",
+     "size": 10158,
+     "type": "image/svg+xml"
+    },
+    "field-machinery.svg": {
+     "blob": "45c9432ee8df2e36c14d861e6c659437",
+     "name": "field-machinery.svg",
+     "size": 11221,
+     "type": "image/svg+xml"
+    },
+    "geotech.svg": {
+     "blob": "47025e52685a320f275676f49b9dcbe6",
+     "name": "geotech.svg",
+     "size": 6731,
+     "type": "image/svg+xml"
+    },
+    "material-delivery.svg": {
+     "blob": "71b0c7c9088c69f5c4d21772b40d66ae",
+     "name": "material-delivery.svg",
+     "size": 6405,
+     "type": "image/svg+xml"
+    },
+    "pfc-panels.svg": {
+     "blob": "1cfdef6613a5243081801a7834dcf3ae",
+     "name": "pfc-panels.svg",
+     "size": 8135,
+     "type": "image/svg+xml"
+    },
+    "pressure-testing.svg": {
+     "blob": "46e6807d1239a9a455111a5663760502",
+     "name": "pressure-testing.svg",
+     "size": 8119,
+     "type": "image/svg+xml"
+    },
+    "tower-crane-foundations.svg": {
+     "blob": "a891a3f8d03cad1471a001eb41a563c8",
+     "name": "tower-crane-foundations.svg",
+     "size": 10988,
+     "type": "image/svg+xml"
+    },
+    "welding.svg": {
+     "blob": "29a2b26f9601720d26e91fce03a87e14",
+     "name": "welding.svg",
+     "size": 6116,
+     "type": "image/svg+xml"
+    }
+   },
+   "name": "SR Types",
+   "order": [
+    "bridging.svg",
+    "cable-testing.svg",
+    "concrete-testing.svg",
+    "elevator.svg",
+    "field-machinery.svg",
+    "geotech.svg",
+    "material-delivery.svg",
+    "pfc-panels.svg",
+    "pressure-testing.svg",
+    "tower-crane-foundations.svg",
+    "welding.svg"
+   ],
+   "tile": "m"
+  },
+  "Stamps": {
+   "files": {
+    "approved.svg": {
+     "blob": "e0bf0e81a14f760ce3aaa7739b2c61f8",
+     "name": "approved.svg",
+     "size": 12351,
+     "type": "image/svg+xml"
+    },
+    "draft.svg": {
+     "blob": "d62d44a641138864f6972e7fd1fb2402",
+     "name": "draft.svg",
+     "size": 27799,
+     "type": "image/svg+xml"
+    },
+    "for-review.svg": {
+     "blob": "45cccd7173cecf80d8a944c8c5b94f1c",
+     "name": "for-review.svg",
+     "size": 12678,
+     "type": "image/svg+xml"
+    },
+    "ifc.svg": {
+     "blob": "836098c4887bf42c672c9eebd46954ef",
+     "name": "ifc.svg",
+     "size": 32462,
+     "type": "image/svg+xml"
+    },
+    "on-hold.svg": {
+     "blob": "408c4d3bfd6fbb8d473f8615b513fc7e",
+     "name": "on-hold.svg",
+     "size": 10868,
+     "type": "image/svg+xml"
+    },
+    "revised.svg": {
+     "blob": "fcf163f8ae063e57183a066f94b5556a",
+     "name": "revised.svg",
+     "size": 24025,
+     "type": "image/svg+xml"
+    }
+   },
+   "name": "Stamps",
+   "order": [
+    "approved.svg",
+    "draft.svg",
+    "for-review.svg",
+    "ifc.svg",
+    "on-hold.svg",
+    "revised.svg"
+   ],
+   "tile": "m"
+  },
+  "Stickers": {
+   "files": {
+    "asterisk-black.svg": {
+     "blob": "702cb33b8df55497934cf9acd1fcec85",
+     "name": "asterisk-black.svg",
+     "size": 1426,
+     "type": "image/svg+xml"
+    },
+    "build-what-you-drew.svg": {
+     "blob": "5cfbc5b2f2d360533c28f8f77ea00581",
+     "name": "build-what-you-drew.svg",
+     "size": 7950,
+     "type": "image/svg+xml"
+    },
+    "burst-purple.svg": {
+     "blob": "91ce7473501f32ec8a998e96f0c107a7",
+     "name": "burst-purple.svg",
+     "size": 874,
+     "type": "image/svg+xml"
+    },
+    "checker.svg": {
+     "blob": "f0dc30316a4319c62824c5ffa3d5092b",
+     "name": "checker.svg",
+     "size": 983,
+     "type": "image/svg+xml"
+    },
+    "circle-badge.svg": {
+     "blob": "df6e381ef7e017eaa3467a29fa84f702",
+     "name": "circle-badge.svg",
+     "size": 43527,
+     "type": "image/svg+xml"
+    },
+    "docbuilder-word.svg": {
+     "blob": "c2ba10e4f78da229f07cab677fa81d3c",
+     "name": "docbuilder-word.svg",
+     "size": 12301,
+     "type": "image/svg+xml"
+    },
+    "dont-just-spec.svg": {
+     "blob": "6c2a262cbd1eeed5b00f40fb79d0dc42",
+     "name": "dont-just-spec.svg",
+     "size": 10601,
+     "type": "image/svg+xml"
+    },
+    "draft-draft-redraft.svg": {
+     "blob": "1c0c8828480ee7e05bcd7d5110903733",
+     "name": "draft-draft-redraft.svg",
+     "size": 54863,
+     "type": "image/svg+xml"
+    },
+    "draft-review-issue.svg": {
+     "blob": "5f3fe3fe677ff40a0ea14405a0fdd7e3",
+     "name": "draft-review-issue.svg",
+     "size": 6088,
+     "type": "image/svg+xml"
+    },
+    "engineer-pill.svg": {
+     "blob": "cc16689ddd139ac367dc6419944462d1",
+     "name": "engineer-pill.svg",
+     "size": 5114,
+     "type": "image/svg+xml"
+    },
+    "eyes.svg": {
+     "blob": "c3b95e16fc0262a34a84a1e3df85c4b8",
+     "name": "eyes.svg",
+     "size": 814,
+     "type": "image/svg+xml"
+    },
+    "globe-eyes.svg": {
+     "blob": "ea9146b7f06ec8168b1bab4bb46614ab",
+     "name": "globe-eyes.svg",
+     "size": 1198,
+     "type": "image/svg+xml"
+    },
+    "good-docs-ship-first.svg": {
+     "blob": "ebda8c07502d5623151d441df282cee1",
+     "name": "good-docs-ship-first.svg",
+     "size": 12445,
+     "type": "image/svg+xml"
+    },
+    "hard-hat-eyes.svg": {
+     "blob": "0dcd66d7a9b01fe5c0bba2da2c9a4aa8",
+     "name": "hard-hat-eyes.svg",
+     "size": 1281,
+     "type": "image/svg+xml"
+    },
+    "hazard-tape.svg": {
+     "blob": "70f2aa33c0ef01bfd771330d0bb089c5",
+     "name": "hazard-tape.svg",
+     "size": 1553,
+     "type": "image/svg+xml"
+    },
+    "heart-nut.svg": {
+     "blob": "44040399184a308a9820899cd5b9fb9d",
+     "name": "heart-nut.svg",
+     "size": 852,
+     "type": "image/svg+xml"
+    },
+    "hello-mr.svg": {
+     "blob": "89b30081fa5e8185b5b081df8c1f9a61",
+     "name": "hello-mr.svg",
+     "size": 38176,
+     "type": "image/svg+xml"
+    },
+    "hello-pep.svg": {
+     "blob": "28526bd16f940546f2754c9bb2f43329",
+     "name": "hello-pep.svg",
+     "size": 42280,
+     "type": "image/svg+xml"
+    },
+    "hello-sr.svg": {
+     "blob": "9b58f93871bf945cc43781a24ebeda1a",
+     "name": "hello-sr.svg",
+     "size": 33682,
+     "type": "image/svg+xml"
+    },
+    "i-heart-my-site.svg": {
+     "blob": "52e79f6ed7d5c685dc51b2cba0f76720",
+     "name": "i-heart-my-site.svg",
+     "size": 4707,
+     "type": "image/svg+xml"
+    },
+    "make-it-clear.svg": {
+     "blob": "4bd32b84d939f5f3e35fb76c16618d58",
+     "name": "make-it-clear.svg",
+     "size": 8453,
+     "type": "image/svg+xml"
+    },
+    "measure-twice.svg": {
+     "blob": "b586a7db053f5f13caf8b131cc5c2644",
+     "name": "measure-twice.svg",
+     "size": 28488,
+     "type": "image/svg+xml"
+    },
+    "out-on-site.svg": {
+     "blob": "8cc1d916b4a7f6de26fa8bd6adb32896",
+     "name": "out-on-site.svg",
+     "size": 6494,
+     "type": "image/svg+xml"
+    },
+    "peace-lemon.svg": {
+     "blob": "33ec6d57b8c5ef67d8b9fbb33f3621aa",
+     "name": "peace-lemon.svg",
+     "size": 2852,
+     "type": "image/svg+xml"
+    },
+    "peace-lilac.svg": {
+     "blob": "29671a95b015b2712ad31c02a70ee2e0",
+     "name": "peace-lilac.svg",
+     "size": 2853,
+     "type": "image/svg+xml"
+    },
+    "peace-teal.svg": {
+     "blob": "150704d4d92f19a41600bfcfd58ea006",
+     "name": "peace-teal.svg",
+     "size": 2852,
+     "type": "image/svg+xml"
+    },
+    "rfi.svg": {
+     "blob": "b1e7e7f236e52dcf0aab1a56ae85be16",
+     "name": "rfi.svg",
+     "size": 2294,
+     "type": "image/svg+xml"
+    },
+    "safety-over-speed.svg": {
+     "blob": "f61b45caf8e9c62ca27c689ef555430a",
+     "name": "safety-over-speed.svg",
+     "size": 6771,
+     "type": "image/svg+xml"
+    },
+    "site-mode.svg": {
+     "blob": "01be21ba96fe7bb58c8598405d7cb463",
+     "name": "site-mode.svg",
+     "size": 29180,
+     "type": "image/svg+xml"
+    },
+    "smiley.svg": {
+     "blob": "695741c9dc3bba1c11bd335b9e6e6828",
+     "name": "smiley.svg",
+     "size": 753,
+     "type": "image/svg+xml"
+    },
+    "sparkle-orange.svg": {
+     "blob": "9b064fb9442edb569c114f582cd935ea",
+     "name": "sparkle-orange.svg",
+     "size": 561,
+     "type": "image/svg+xml"
+    },
+    "spec-checker.svg": {
+     "blob": "7642f04fda276062f921135b712c4df2",
+     "name": "spec-checker.svg",
+     "size": 65139,
+     "type": "image/svg+xml"
+    },
+    "specd-signed.svg": {
+     "blob": "511ab923b321b09bcd83e197f2a7b4a1",
+     "name": "specd-signed.svg",
+     "size": 9016,
+     "type": "image/svg+xml"
+    },
+    "tool-bolt.svg": {
+     "blob": "78c5ed9c5946be2bb38f480967fe9171",
+     "name": "tool-bolt.svg",
+     "size": 1473,
+     "type": "image/svg+xml"
+    },
+    "tool-hammer.svg": {
+     "blob": "9d855496ae452598c0a6d350583517b4",
+     "name": "tool-hammer.svg",
+     "size": 1753,
+     "type": "image/svg+xml"
+    },
+    "tool-level.svg": {
+     "blob": "d944771d4fdcde03a6c3528a95f64e4f",
+     "name": "tool-level.svg",
+     "size": 988,
+     "type": "image/svg+xml"
+    },
+    "tool-pencil.svg": {
+     "blob": "bb243be40fe00e113becb2062de40243",
+     "name": "tool-pencil.svg",
+     "size": 1969,
+     "type": "image/svg+xml"
+    },
+    "tool-scale-ruler.svg": {
+     "blob": "5d05f521a87135cde7f76546c718effb",
+     "name": "tool-scale-ruler.svg",
+     "size": 9661,
+     "type": "image/svg+xml"
+    },
+    "tool-screwdriver.svg": {
+     "blob": "c12d88d4304530fdab638905d1f43934",
+     "name": "tool-screwdriver.svg",
+     "size": 1675,
+     "type": "image/svg+xml"
+    },
+    "tool-wrench.svg": {
+     "blob": "870d966ab3a6073641942154b857364f",
+     "name": "tool-wrench.svg",
+     "size": 3114,
+     "type": "image/svg+xml"
+    },
+    "torque-to-spec.svg": {
+     "blob": "e2ad2bd42c5d39d7e4847d2659c1cc40",
+     "name": "torque-to-spec.svg",
+     "size": 15094,
+     "type": "image/svg+xml"
+    },
+    "turn-notes-into-srs.svg": {
+     "blob": "c3defeef0818b8b1fb2b5401ec00b982",
+     "name": "turn-notes-into-srs.svg",
+     "size": 9560,
+     "type": "image/svg+xml"
+    },
+    "tool-tape-measure.png": {
+     "name": "tool-tape-measure.png",
+     "blob": "7ff3321c6aa9f3c7e9f09a46c8de000a",
+     "size": 140387,
+     "type": "image/png"
+    },
+    "tool-crane.png": {
+     "name": "tool-crane.png",
+     "blob": "b492aee7303c1e7b61f4058a58ec16b1",
+     "size": 219497,
+     "type": "image/png"
+    },
+    "cone.png": {
+     "name": "cone.png",
+     "blob": "7f9e7ececcdeb83150f6599dc2bbf8c2",
+     "size": 136697,
+     "type": "image/png"
+    },
+    "peace-glove.png": {
+     "name": "peace-glove.png",
+     "blob": "e29b77a078e4de4dc6f28c72a3384540",
+     "size": 154950,
+     "type": "image/png"
+    }
+   },
+   "name": "Stickers",
+   "order": [
+    "tool-crane.png",
+    "tool-tape-measure.png",
+    "cone.png",
+    "peace-glove.png",
+    "asterisk-black.svg",
+    "build-what-you-drew.svg",
+    "burst-purple.svg",
+    "checker.svg",
+    "circle-badge.svg",
+    "docbuilder-word.svg",
+    "dont-just-spec.svg",
+    "draft-draft-redraft.svg",
+    "draft-review-issue.svg",
+    "engineer-pill.svg",
+    "eyes.svg",
+    "globe-eyes.svg",
+    "good-docs-ship-first.svg",
+    "hard-hat-eyes.svg",
+    "hazard-tape.svg",
+    "heart-nut.svg",
+    "hello-mr.svg",
+    "hello-pep.svg",
+    "hello-sr.svg",
+    "i-heart-my-site.svg",
+    "make-it-clear.svg",
+    "measure-twice.svg",
+    "out-on-site.svg",
+    "peace-lemon.svg",
+    "peace-lilac.svg",
+    "peace-teal.svg",
+    "rfi.svg",
+    "safety-over-speed.svg",
+    "site-mode.svg",
+    "smiley.svg",
+    "sparkle-orange.svg",
+    "spec-checker.svg",
+    "specd-signed.svg",
+    "tool-bolt.svg",
+    "tool-hammer.svg",
+    "tool-level.svg",
+    "tool-pencil.svg",
+    "tool-scale-ruler.svg",
+    "tool-screwdriver.svg",
+    "tool-wrench.svg",
+    "torque-to-spec.svg",
+    "turn-notes-into-srs.svg"
+   ],
+   "tile": "m"
+  }
+ },
+ "blobs": {},
+ "createdOnFiles": {
+  "at": "2026-10-21T02:53:16Z",
+  "v": 1
+ },
+ "docs": {
+  "readme": "project/README.md",
+  "sections": []
+ },
+ "groups": [
+  "Stickers",
+  "SR Types",
+  "Doodles",
+  "Stamps"
+ ],
+ "lastChange": {
+  "by": "Kabir",
+  "at": "2026-10-21T03:17:39Z",
+  "via": "Claude",
+  "note": "Cut to three fonts: Coming Soon, Shantell Sans, Instrument Sans"
+ },
+ "layout": "files",
+ "libraries": [],
+ "namespace": "Docbuilder",
+ "sections": {},
+ "title": "AI Docbuilder"
+}

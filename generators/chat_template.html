@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Docbuilder · geotech SR</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coming+Soon&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Shantell+Sans:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#111111}a:hover{color:#111111}
+.db-paper{background-color:#ffffff;background-image:radial-gradient(#e3e2dd 1.1px,transparent 1.3px);background-size:24px 24px}
+.db-enav a,.db-enav button{position:relative;color:#5f5e5b;text-decoration:none;background:none;border:0;padding:0;font:inherit;cursor:pointer;transition:color 180ms ease}
+.db-enav a:hover,.db-enav a:focus-visible,.db-enav button:hover,.db-enav button:focus-visible,.db-enav button[aria-expanded="true"]{color:#111111}
+.db-enav img{position:absolute;right:calc(100% + 4px);top:50%;width:34px;height:auto;opacity:0;transform:translateY(-50%) rotate(-22deg) scale(.4);transition:opacity 180ms ease,transform 180ms ease;pointer-events:none}
+.db-enav a:hover img,.db-enav a:focus-visible img,.db-enav button:hover img,.db-enav button:focus-visible img,.db-enav button[aria-expanded="true"] img{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(1);transition:opacity 300ms ease,transform 300ms cubic-bezier(.34,1.56,.64,1)}
+.db-box{transition:transform 140ms ease}
+.db-box:hover{transform:rotate(-1.5deg)}
+.db-chip{transition:border-color 140ms ease,background 140ms ease}
+.db-chip:hover{border-color:#111111 !important;background:#fafaf8 !important}
+@keyframes db-drop{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
+.db-crane{animation:db-drop 460ms cubic-bezier(.2,.8,.2,1) both}
+@keyframes db-sway{0%,100%{transform:rotate(-1.8deg)}50%{transform:rotate(1.8deg)}}
+.db-swing{transform-origin:50% 0;animation:db-sway 5s ease-in-out infinite}
+.db-hang.is-drag .db-swing{animation-play-state:paused}
+.db-flip{perspective:700px}
+.db-flip-in{position:relative;transform-style:preserve-3d;transition:transform 520ms cubic-bezier(.34,1.3,.64,1)}
+.db-hang:hover .db-flip-in,.db-hang:focus-visible .db-flip-in{transform:rotateY(180deg)}
+.db-hang.is-drag .db-flip-in{transform:none}
+.db-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.db-back{transform:rotateY(180deg)}
+@keyframes db-in{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.db-msg{animation:db-in 280ms cubic-bezier(.2,.8,.2,1) both}
+@keyframes db-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.db-caret{animation:db-blink 900ms step-end infinite}
+@keyframes db-push{0%,100%{transform:translateX(0)}50%{transform:translateX(26px)}}
+.db-dozing{animation:db-push 2.4s ease-in-out infinite}
+@keyframes db-slap{from{transform:rotate(-24deg) scale(1.8);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+.db-slap{animation:db-slap 420ms cubic-bezier(.34,1.56,.64,1) both}
+.db-part{transition:opacity 500ms ease,transform 900ms cubic-bezier(.34,1.3,.64,1)}
+.db-row{transition:background 300ms ease}
+.db-tab:hover{color:#111111 !important}
+:where(.db-box,.db-chip,.db-tab,.db-hang,.db-link,.db-x,.db-enav a,.db-enav button):focus-visible{outline:2px solid #3355e6;outline-offset:3px}
+.db-input:focus{outline:none}
+.db-input::placeholder{color:#8d8c88}
+.db-line:focus-within{border-bottom-color:#111111 !important}
+@media (prefers-reduced-motion: reduce){.db-swing,.db-crane,.db-msg,.db-caret,.db-dozing,.db-slap{animation:none}.db-flip-in,.db-part{transition:none}}
+</style>
+</helmet>
+<div class="db-paper" style="min-height: 100vh; color: #111111; font-family: 'Instrument Sans', system-ui, sans-serif; display: flex; flex-direction: column;">
+
+  <header style="position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px clamp(20px, 4vw, 56px);">
+    <a href="Main.dc.html" class="db-link" style="text-decoration: none; font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 20px; color: #111111;">AI Docbuilder</a>
+    <nav aria-label="Main" class="db-enav" style="display: flex; align-items: center; gap: 48px; flex-wrap: wrap; font-size: 16px; font-weight: 500;">
+      <a href="#"><img src="/_blob/de079131fca9052b41c59f6b64c07c50" alt="">Folders</a>
+      <button type="button" aria-expanded="{{pastOpen}}" aria-controls="db-past" onClick="{{togglePast}}"><img src="/_blob/22fdcc6ec0be3cdcad4c444402375850" alt="">Past chats</button>
+      <a href="Main.dc.html" class="db-box" style="display: inline-flex; align-items: center; gap: 6px; min-height: 40px; box-sizing: border-box; padding: 6px 14px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">+ new chat</a>
+      <span aria-label="Your account" role="img" style="width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #111111; background: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: 'Coming Soon', cursive; font-size: 16px;">k</span>
+    </nav>
+  </header>
+
+  <sc-if value="{{showPast}}" hint-placeholder-val="{{false}}">
+    <section id="db-past" aria-label="Past chats" class="db-crane" style="position: relative; padding: 0 clamp(20px, 4vw, 56px) 8px;">
+      <div style="position: relative; height: 350px; overflow-x: auto; overflow-y: hidden; touch-action: pan-y;">
+        <div style="position: relative; width: 1180px; height: 350px;">
+          <svg aria-hidden="true" width="1180" height="330" viewBox="0 0 1180 330" style="position: absolute; left: 0; top: 0;">
+            <g fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M70 330 L70 46 M90 330 L90 46"></path>
+              <path d="M70 320 L90 300 L70 280 L90 260 L70 240 L90 220 L70 200 L90 180 L70 160 L90 140 L70 120 L90 100 L70 80 L90 60"></path>
+              <path d="M40 46 L1160 46 M90 34 L1160 46 M40 46 L80 6 L120 46"></path>
+              <path d="M120 46 L140 34 L160 46 L180 34 L200 46 L220 34 L240 46 L260 34 L280 46 L300 34 L320 46 L340 34 L360 46 L380 34 L400 46 L420 34 L440 46 L460 34 L480 46 L500 34 L520 46 L540 34 L560 46 L580 34 L600 46 L620 34 L640 46 L660 34 L680 46 L700 34 L720 46 L740 34 L760 46 L780 34 L800 46 L820 34 L840 46 L860 34 L880 46 L900 34 L920 46 L940 34 L960 46 L980 34 L1000 46 L1020 34 L1040 46 L1060 34 L1080 46 L1100 34 L1120 46 L1140 34 L1160 46"></path>
+              <path d="M80 6 L1160 34"></path>
+              <rect x="94" y="50" width="26" height="22" rx="2"></rect>
+              <path d="M8 46 L40 46 L40 60 L8 60 Z"></path>
+            </g>
+          </svg>
+          <sc-for list="{{past}}" as="p" hint-placeholder-count="5">
+            <div class="{{p.cls}}" tabindex="0" role="button" aria-label="{{p.aria}}" onPointerDown="{{p.down}}" onPointerMove="{{p.move}}" onPointerUp="{{p.up}}" onPointerCancel="{{p.up}}" onKeyDown="{{p.key}}" style="{{p.posStyle}}">
+              <div class="db-swing" style="{{p.swingStyle}}">
+                <span aria-hidden="true" style="{{p.cableStyle}}"></span>
+                <svg aria-hidden="true" width="18" height="20" viewBox="0 0 18 20" style="display: block; margin: -1px auto 0;"><path d="M9 0 V8 M9 8 C 2 8, 2 18, 9 18 C 14 18, 15 13, 13 11" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round"></path></svg>
+                <div class="db-flip" style="width: 132px; height: 164px; margin-top: 2px;">
+                  <div class="db-flip-in" style="width: 100%; height: 100%;">
+                    <div class="db-face" style="background: #ffffff; border: 1.5px solid #111111; border-radius: 6px 9px 7px 10px; display: flex; flex-direction: column; padding: 12px; box-sizing: border-box; box-shadow: 0 14px 22px -16px rgba(17,17,17,.4);">
+                      <span style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #5f5e5b;">{{p.doc}}</span>
+                      <span style="margin-top: 10px; font-family: 'Coming Soon', cursive; font-size: 19px; line-height: 23px; color: #111111;">{{p.title}}</span>
+                      <span style="margin-top: auto; font-size: 11px; color: #5f5e5b; font-variant-numeric: tabular-nums;">{{p.num}}</span>
+                      <span style="font-size: 11px; color: #5f5e5b;">{{p.when}}</span>
+                    </div>
+                    <div class="db-face db-back" style="background: #ffffff; border: 1.5px solid #111111; border-radius: 6px 9px 7px 10px; display: flex; flex-direction: column; padding: 12px; box-sizing: border-box;">
+                      <span style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #5f5e5b;">SUMMARY</span>
+                      <span style="margin-top: 6px; font-size: 12.5px; line-height: 17px; color: #111111;">{{p.summary}}</span>
+                      <span style="margin-top: auto; font-family: 'Coming Soon', cursive; font-size: 15px;">open ↗</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 13px; color: #5f5e5b; margin-top: 4px;">
+        <span style="font-family: 'Coming Soon', cursive; font-size: 17px; color: #111111;">past chats</span>
+        <span>Hover to read · click to open in a tab · hold and drag to move</span>
+      </div>
+    </section>
+  </sc-if>
+
+  <div style="padding: 0 clamp(20px, 4vw, 56px);">
+    <div role="tablist" aria-label="Open documents" style="display: flex; align-items: flex-end; gap: 2px; overflow-x: auto; padding-top: 8px; border-bottom: 1.5px solid #111111;">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+        <span style="{{t.wrapStyle}}">
+          <button type="button" role="tab" class="db-tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; max-width: 210px;">
+            <span style="font-weight: 600; font-size: 11px; letter-spacing: .06em;">{{t.doc}}</span>
+            <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{t.title}}</span>
+          </button>
+          <button type="button" class="db-x" aria-label="{{t.closeLabel}}" onClick="{{t.close}}" style="width: 22px; height: 22px; border: 0; background: none; border-radius: 50%; font-size: 15px; line-height: 1; color: #8d8c88; cursor: pointer;">×</button>
+        </span>
+      </sc-for>
+      <a href="Main.dc.html" aria-label="New chat" class="db-link" style="align-self: center; margin-left: 6px; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 22px;">+</a>
+    </div>
+  </div>
+
+  <main style="flex: 1; display: flex; flex-wrap: wrap; gap: 56px; justify-content: center; align-items: flex-start; padding: 44px clamp(20px, 4vw, 56px) 64px;">
+
+    <sc-if value="{{isDemo}}" hint-placeholder-val="{{true}}">
+      <article aria-label="Geotech SR" style="flex: 999 1 560px; min-width: 0; max-width: 720px; display: flex; flex-direction: column;">
+
+        <div style="position: relative; height: 92px;">
+          <img src="/_blob/732274df989a5aba2e97d1e690c2f888" alt="" style="position: absolute; left: -10px; top: 0; width: 132px; height: auto; transform: rotate(-7deg);">
+          <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+            <img class="db-slap" src="/_blob/76ac445f809c75b0d88b291bd0160c5a" alt="" style="position: absolute; left: 132px; top: 8px; width: 70px; height: auto;">
+          </sc-if>
+        </div>
+        <h1 style="margin: 18px 0 6px; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: clamp(38px, 4.4vw, 54px); line-height: 1.08;">geotech SR, north pad</h1>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 14px; color: #5f5e5b;">
+          <span style="font-variant-numeric: tabular-nums;">SR-24-0142</span>
+          <span aria-hidden="true">·</span>
+          <span>{{statusText}}</span>
+          <span aria-hidden="true">·</span>
+          <span>you + docbuilder</span>
+        </div>
+
+        <div style="position: relative; margin-top: 26px;">
+          <sc-if value="{{showTape}}" hint-placeholder-val="{{true}}">
+            <img src="/_blob/52c08557f207ef040af610fe275439e7" alt="" style="position: absolute; right: -54px; top: -40px; width: 104px; height: auto; transform: rotate(12deg); pointer-events: none; z-index: 1;">
+          </sc-if>
+          <dl aria-label="Properties" style="margin: 0; border-top: 1px solid #ecebe7;">
+            <sc-for list="{{props}}" as="pr" hint-placeholder-count="7">
+              <div class="db-row" style="{{pr.rowStyle}}">
+                <dt style="width: 150px; flex: 0 0 auto; display: flex; align-items: center; gap: 8px; color: #5f5e5b; font-size: 14px;"><span aria-hidden="true" style="width: 14px; text-align: center; color: #8d8c88; font-size: 13px;">{{pr.glyph}}</span>{{pr.label}}</dt>
+                <dd style="{{pr.valStyle}}">{{pr.value}}</dd>
+                <sc-if value="{{pr.asking}}" hint-placeholder-val="{{false}}">
+                  <span style="margin-left: auto; font-family: 'Coming Soon', cursive; font-size: 15px; color: #3355e6; white-space: nowrap;">← asking</span>
+                </sc-if>
+              </div>
+            </sc-for>
+          </dl>
+        </div>
+
+        <sc-if value="{{showConvo}}" hint-placeholder-val="{{true}}">
+          <section aria-label="Conversation" style="margin-top: 34px; display: flex; flex-direction: column; gap: 22px;">
+            <sc-for list="{{messages}}" as="m" hint-placeholder-count="4">
+              <sc-if value="{{m.isAI}}" hint-placeholder-val="{{true}}">
+                <div class="db-msg" style="font-size: 16px; line-height: 26px; max-width: 92%;">
+                  <div style="font-family: 'Coming Soon', cursive; font-size: 15px; color: #5f5e5b; margin-bottom: 2px;">docbuilder</div>
+                  <div>{{m.text}}</div>
+                  <sc-if value="{{m.hasAside}}" hint-placeholder-val="{{false}}">
+                    <div style="margin-top: 2px; font-family: 'Coming Soon', cursive; font-size: 16px; color: #3355e6;">↳ {{m.aside}}</div>
+                  </sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{m.isUser}}" hint-placeholder-val="{{false}}">
+                <div class="db-msg" style="align-self: flex-end; max-width: 78%; background: #ffffff; border: 1.5px solid #111111; border-radius: 14px 14px 3px 14px / 12px 12px 3px 12px; padding: 9px 15px; font-size: 16px; line-height: 24px;">{{m.text}}</div>
+              </sc-if>
+            </sc-for>
+
+            <sc-if value="{{hasQuestion}}" hint-placeholder-val="{{true}}">
+              <div class="db-msg" style="padding-top: 6px;">
+                <div style="font-weight: 600; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #8d8c88;">{{q.step}}</div>
+                <h2 style="margin: 10px 0 18px; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 36px; line-height: 42px;">{{q.title}}</h2>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                  <sc-for list="{{q.opts}}" as="o" hint-placeholder-count="3">
+                    <button type="button" class="db-chip" onClick="{{o.pick}}" style="font-family: 'Instrument Sans', sans-serif; font-size: 15px; font-weight: 500; line-height: 20px; min-height: 42px; padding: 10px 16px; border-radius: 4px 7px 5px 8px; background: #ffffff; color: #111111; border: 1.2px solid #8d8c88; cursor: pointer;">{{o.label}}</button>
+                  </sc-for>
+                  <button type="button" class="db-link" onClick="{{skip}}" style="background: none; border: 0; padding: 10px 6px; font-family: 'Coming Soon', cursive; font-size: 17px; color: #5f5e5b; cursor: pointer;">skip →</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{readyToDraft}}" hint-placeholder-val="{{false}}">
+              <div class="db-msg" style="padding-top: 6px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
+                <h2 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 36px; line-height: 42px;">that's everything I need.</h2>
+                <div style="display: flex; gap: 18px; align-items: center; flex-wrap: wrap;">
+                  <button type="button" class="db-box" onClick="{{draft}}" style="min-height: 46px; padding: 8px 20px; background: #f0662a; color: #111111; font-family: 'Coming Soon', cursive; font-size: 20px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; cursor: pointer;">draft my SR</button>
+                  <button type="button" class="db-link" onClick="{{restart}}" style="background: none; border: 0; padding: 0; font: inherit; font-size: 15px; color: #111111; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; cursor: pointer;">Start over</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <form onSubmit="{{send}}" class="db-line" style="display: flex; align-items: flex-end; gap: 12px; margin-top: 6px; padding: 4px 0; border-bottom: 1.5px solid #8d8c88; transition: border-color 140ms ease;">
+              <label for="db-msg-input" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Message</label>
+              <input id="db-msg-input" class="db-input" type="text" value="{{text}}" onInput="{{typed}}" placeholder="answer, or ask me to change something..." style="flex: 1; min-width: 0; border: 0; background: transparent; font-family: 'Instrument Sans', sans-serif; font-size: 17px; line-height: 26px; color: #111111; padding: 10px 0;">
+              <button type="submit" class="db-box" style="min-height: 40px; margin-bottom: 4px; padding: 4px 14px; background: #111111; color: #ffffff; font-family: 'Coming Soon', cursive; font-size: 17px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; cursor: pointer;">send</button>
+            </form>
+          </section>
+        </sc-if>
+
+        <sc-if value="{{showDoc}}" hint-placeholder-val="{{false}}">
+          <section aria-label="Document" aria-live="polite" style="margin-top: 34px; display: flex; flex-direction: column; gap: 26px;">
+            <button type="button" class="db-link" onClick="{{toggleConvo}}" style="align-self: flex-start; background: none; border: 0; padding: 0; font-family: 'Coming Soon', cursive; font-size: 16px; color: #5f5e5b; cursor: pointer;">▸ 6 answers in the chat</button>
+            <sc-for list="{{sections}}" as="sec" hint-placeholder-count="3">
+              <div class="db-msg">
+                <h2 style="margin: 0 0 6px; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 20px; line-height: 26px;"><span style="color: #8d8c88; font-weight: 500; margin-right: 8px;">{{sec.num}}</span>{{sec.title}}</h2>
+                <p style="margin: 0; font-size: 16px; line-height: 27px; color: #222221;">{{sec.text}}<sc-if value="{{sec.cursor}}" hint-placeholder-val="{{false}}"><span style="position: relative; display: inline-block; width: 0; height: 1em;"><span class="db-caret" style="position: absolute; left: 1px; top: 2px; width: 2px; height: 20px; background: #3355e6;"></span><span style="position: absolute; left: 1px; top: -20px; white-space: nowrap; background: #3355e6; color: #ffffff; font-family: 'Coming Soon', cursive; font-size: 12px; line-height: 16px; padding: 1px 6px; border-radius: 4px 4px 4px 0;">docbuilder</span></span></sc-if></p>
+              </div>
+            </sc-for>
+            <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+              <div class="db-msg" style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding-top: 18px; border-top: 1.5px solid #111111;">
+                <span style="font-family: 'Coming Soon', cursive; font-size: 26px; margin-right: 8px;">your SR is ready.</span>
+                <a href="#" class="db-box" style="display: inline-flex; align-items: center; min-height: 42px; padding: 6px 16px; background: #f0662a; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">open in canvas</a>
+                <a href="#" class="db-box" style="display: inline-flex; align-items: center; min-height: 42px; padding: 6px 16px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">download</a>
+                <button type="button" class="db-link" onClick="{{restart}}" style="background: none; border: 0; padding: 0; font: inherit; font-size: 15px; color: #5f5e5b; text-decoration: underline; text-underline-offset: 4px; cursor: pointer;">run it again</button>
+              </div>
+            </sc-if>
+          </section>
+        </sc-if>
+      </article>
+
+      <aside aria-label="Site progress" style="flex: 1 1 360px; max-width: 460px; position: relative; display: flex; flex-direction: column; gap: 8px;">
+        <div style="position: relative;">
+          ISO_SVG
+          <sc-if value="{{done}}" hint-placeholder-val="{{false}}">
+            <img class="db-slap" src="/_blob/c51e6988592a6e6009e91754da6757ce" alt="" style="position: absolute; right: 2%; bottom: 8%; width: 132px; height: auto;">
+          </sc-if>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid #ecebe7; padding-top: 10px;">
+          <span style="font-family: 'Coming Soon', cursive; font-size: 18px;">{{sceneTitle}}</span>
+          <span style="font-size: 13px; color: #5f5e5b; text-align: right;">{{sceneSub}}</span>
+        </div>
+      </aside>
+    </sc-if>
+
+    <sc-if value="{{isPastTab}}" hint-placeholder-val="{{false}}">
+      <div class="db-msg" style="width: 100%; max-width: 720px; display: flex; flex-direction: column; gap: 16px;">
+        <h1 style="margin: 0; font-family: 'Coming Soon', cursive; font-weight: 400; font-size: 46px; line-height: 1.1;">{{activeTitle}}</h1>
+        <div style="font-size: 16px; line-height: 26px;">Welcome back. This one is saved. Ask me to change anything, or open the document.</div>
+        <a href="#" class="db-box" style="align-self: flex-start; display: inline-flex; min-height: 42px; align-items: center; padding: 6px 16px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">open the document</a>
+      </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"pastOpen":{"editor":"boolean","default":false,"section":"Screen"},"typingSpeed":{"editor":"range","default":4,"min":1,"max":12,"step":1,"unit":"chars/tick","section":"Writing"},"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 2, answers: ['North pad', 'Boreholes and lab testing'], phase: 'ask', chars: 0, text: '',
+      showPast: null, active: 'geo', convoOpen: false, drag: null,
+      tabs: [
+        { id: 'geo', doc: 'SR', title: 'Geotech, North pad' },
+        { id: 'rebar', doc: 'MR', title: 'Rebar, level 2' }
+      ]
+    };
+    this.press = null; this.timer = null;
+  }
+  componentWillUnmount() { if (this.timer) clearInterval(this.timer); if (this.press && this.press.timer) clearTimeout(this.press.timer); }
+  startWriting(total) {
+    var self = this;
+    if (this.timer) clearInterval(this.timer);
+    this.setState({ phase: 'write', chars: 0 });
+    this.timer = setInterval(function () {
+      var step = self.props.typingSpeed ?? 4;
+      var next = self.state.chars + step;
+      if (next >= total) { clearInterval(self.timer); self.timer = null; self.setState({ chars: total, phase: 'done' }); }
+      else self.setState({ chars: next });
+    }, 30);
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var Q = [
+      { key: 'Site', glyph: '⌖', title: 'which site is this for?', opts: ['North pad', 'Substation B', 'Cooling tower area'], ack: 'Got it.' },
+      { key: 'Scope', glyph: '≡', title: 'what do you need the contractor to do?', opts: ['Boreholes', 'Test pits', 'Boreholes and lab testing'], ack: 'Okay, I will add a lab testing section.', aside: 'standard lab suite unless you say otherwise' },
+      { key: 'Soil class', glyph: '◒', title: "what's the expected soil class?", opts: ['Class C', 'Class D', 'Not sure yet'], ack: 'Noted.', aside: 'not sure is fine, the contractor confirms it' },
+      { key: 'Boreholes', glyph: '↧', title: 'how many boreholes, and how deep?', opts: ['3 × 20 m', '5 × 15 m', '6 × 25 m'], ack: 'That works for a crane footing.' },
+      { key: 'Mobilise', glyph: '◷', title: 'when do you need them on site?', opts: ['Within 2 weeks', 'This month', 'Next quarter'], ack: 'Okay.' },
+      { key: 'Deliverables', glyph: '▢', title: 'what should the vendor hand over?', opts: ['Factual report', 'Interpretive report', 'Both reports'], ack: 'Last one done.' }
+    ];
+    var answers = st.answers, step = st.step, phase = st.phase;
+    var A = function (i, d) { var v = answers[i]; return v && v !== '(skipped)' ? v : d; };
+    var messages = [{ isAI: true, isUser: false, text: "Let's put together your geotech service requisition. Six quick questions, then I'll write it while you watch.", aside: 'skip anything you do not know yet', hasAside: true }];
+    answers.forEach(function (a, i) {
+      messages.push({ isAI: false, isUser: true, text: a });
+      messages.push({ isAI: true, isUser: false, text: Q[i].ack, aside: Q[i].aside || '', hasAside: !!Q[i].aside });
+    });
+    var answer = function (val) {
+      if (step >= Q.length) return;
+      self.setState({ answers: answers.concat([val]), step: step + 1, text: '' });
+    };
+    var cur = Q[step];
+    var q = cur ? {
+      step: 'Question ' + (step + 1) + ' of ' + Q.length,
+      title: cur.title,
+      opts: cur.opts.map(function (o) { return { label: o, pick: function () { answer(o); } }; })
+    } : { step: '', title: '', opts: [] };
+
+    var props = [{ key: 'Type', glyph: '◆', value: 'Geotechnical investigation', on: true }].concat(Q.map(function (qq, i) {
+      var v = answers[i];
+      return { key: qq.key, glyph: qq.glyph, value: v ? (v === '(skipped)' ? 'skipped' : v) : 'Empty', on: !!v && v !== '(skipped)', asking: phase === 'ask' && i === step };
+    })).map(function (p) {
+      return {
+        label: p.key, glyph: p.glyph, value: p.value, asking: !!p.asking,
+        rowStyle: 'display:flex;align-items:center;gap:12px;min-height:40px;padding:4px 8px;margin:0 -8px;border-bottom:1px solid #ecebe7;border-radius:4px;' + (p.asking ? 'background:#f2f5ff' : ''),
+        valStyle: 'margin:0;font-size:15px;' + (p.on ? 'color:#111111' : 'color:#b9b7b1')
+      };
+    });
+
+    // ---- the document, written live ----
+    var secs = [
+      { title: 'Purpose', text: 'Engage a geotechnical contractor to investigate ground conditions at the ' + A(0, '[site]') + ', ahead of design of the tower crane footing.' },
+      { title: 'Scope of work', text: A(1, '[scope]') + ': drill ' + A(3, '[number] boreholes to [depth]') + ' below existing grade. Log each hole, take samples at every change in strata, and install standpipes in two holes.' },
+      { title: 'Ground conditions', text: 'Expected soil ' + A(2, '[class]').toLowerCase() + '. The contractor confirms on site and flags groundwater, fill or obstructions before drilling continues.' },
+      { title: 'Schedule', text: 'Mobilise ' + A(4, '[date]').toLowerCase() + '. Fieldwork runs about two weeks, with results due ten working days after the last hole.' },
+      { title: 'Deliverables', text: A(5, '[reports]') + ', borehole logs, site photos and lab results, issued in the project template.' },
+      { title: 'Commercial', text: 'Lump sum for mobilisation, rates per metre drilled, and provisional sums for standby and extra testing.' }
+    ];
+    var total = secs.reduce(function (a, s) { return a + s.text.length; }, 0);
+    var chars = phase === 'ask' ? 0 : st.chars, left = chars, doneSecs = 0, sections = [];
+    secs.forEach(function (s, i) {
+      if (phase === 'ask') return;
+      if (left <= 0 && i > 0 && sections.length && !sections[sections.length - 1].full) return;
+      var shown = Math.max(0, Math.min(s.text.length, left));
+      left -= s.text.length;
+      var full = shown >= s.text.length;
+      if (full) doneSecs++;
+      sections.push({ num: (i + 1) + '.', title: s.title, text: s.text.slice(0, shown), cursor: phase === 'write' && !full, full: full });
+      if (!full) left = 0;
+    });
+    if (phase === 'done') doneSecs = secs.length;
+
+    // ---- the site, tied to progress ----
+    var answered = answers.filter(function (a) { return a && a !== '(skipped)'; }).length;
+    var on = function (show, drop) { return 'opacity:' + (show ? 1 : 0) + ';transform:' + (show ? 'none' : 'translateY(' + (drop || -40) + 'px)') + ';transition:opacity 500ms ease,transform 900ms cubic-bezier(.34,1.3,.64,1)'; };
+    var writing = phase !== 'ask';
+    var tops = [0, .3, 1.3, 2.3, 3.3, 4.3, 4.55];
+    var placed = writing ? doneSecs : 0;
+    var topZ = tops[Math.min(placed, 6)];
+    var hookDy = Math.max(0, (5.3 - (topZ + 0.25))) * 30;
+    var sc = {
+      pit: on(answered >= 2 || writing, 0), pile: on(answered >= 3 || writing, 10),
+      slab: on(placed >= 1), f1: on(placed >= 2), f2: on(placed >= 3), f3: on(placed >= 4), f4: on(placed >= 5), roof: on(placed >= 6),
+      dozer: (placed >= 1 ? 'opacity:.9;transition:opacity 500ms ease' : 'opacity:1'),
+      load: 'opacity:' + (writing && phase !== 'done' ? 1 : 0) + ';transform:translateY(' + (writing ? hookDy : 0) + 'px);transition:opacity 400ms ease,transform 900ms cubic-bezier(.2,.8,.2,1)',
+      ropeY: phase === 'done' || !writing ? 104 : (126.75 + hookDy).toFixed(1)
+    };
+    var names = ['pouring the slab', 'first floor', 'second floor', 'third floor', 'fourth floor', 'roof and flag'];
+    var sceneTitle = phase === 'ask' ? (answered >= 3 ? 'clearing the site' : 'site staked out') : phase === 'done' ? 'topped out' : names[Math.min(doneSecs, 5)];
+    var sceneSub = phase === 'ask' ? answered + ' of 6 answers in · building starts when you hit draft' : phase === 'done' ? '6 of 6 sections written' : 'writing ' + secs[Math.min(doneSecs, 5)].title.toLowerCase() + ' · ' + doneSecs + ' of 6 done';
+
+    // ---- past chats on the crane: hold to drag, neighbours bump ----
+    var pastOpen = st.showPast === null ? (this.props.pastOpen ?? false) : st.showPast;
+    var pastData = [
+      { id: 'bridge', doc: 'SR', title: 'Bridging, East gate', num: 'SR-24-0131', when: '3 days ago', summary: 'Temporary bridge over the drainage cut at the east gate. 40 t rating, 6-week hire. Approved.' },
+      { id: 'rebar', doc: 'MR', title: 'Rebar, level 2', num: 'MR-24-0087', when: 'yesterday', summary: 'Bars for the level 2 slab, cut and bent. Waiting on review from structures.' },
+      { id: 'sub', doc: 'PEP', title: 'Substation upgrade', num: 'PEP-24-0009', when: 'last week', summary: 'Execution plan for the substation upgrade: phases, outages and the team.' },
+      { id: 'pour', doc: 'SR', title: 'Concrete testing, pour 4', num: 'SR-24-0122', when: '2 weeks ago', summary: 'Slump and cylinder tests for pour 4. 28-day results due next week.' },
+      { id: 'lift', doc: 'SR', title: 'Elevator, tower B', num: 'SR-24-0104', when: 'last month', summary: 'Supply and install of two passenger lifts in tower B. Draft, not sent.' }
+    ];
+    var baseX = [210, 400, 590, 780, 970], cable = [50, 84, 64, 96, 58], W = 132;
+    var drag = st.drag;
+    var openTab = function (p) {
+      var tabs = st.tabs.some(function (t) { return t.id === p.id; }) ? st.tabs : st.tabs.concat([{ id: p.id, doc: p.doc, title: p.title }]);
+      self.setState({ tabs: tabs, active: p.id, showPast: false });
+    };
+    var past = pastData.map(function (p, i) {
+      var dx = 0, dy = 0, rot = 0, dragging = drag && drag.i === i && drag.live;
+      if (dragging) { dx = drag.dx; dy = drag.dy; rot = Math.max(-18, Math.min(18, -drag.vx * 0.6)); }
+      else if (drag && drag.live) {
+        var cx = baseX[drag.i] + drag.dx, gap = Math.abs(cx - baseX[i]), need = W + 14;
+        if (gap < need) { dx = (baseX[i] >= cx ? 1 : -1) * (need - gap); rot = -dx * 0.12; }
+      }
+      var tr = dragging ? 'none' : 'transform 620ms cubic-bezier(.34,1.56,.64,1)';
+      return {
+        doc: p.doc, title: p.title, num: p.num, when: p.when, summary: p.summary,
+        aria: p.doc + ' ' + p.title + ', ' + p.when + '. ' + p.summary + ' Press Enter to open in a new tab.',
+        cls: 'db-hang' + (dragging ? ' is-drag' : ''),
+        posStyle: 'position:absolute;left:' + (baseX[i] - W / 2) + 'px;top:46px;width:' + W + 'px;cursor:' + (dragging ? 'grabbing' : 'pointer') + ';touch-action:none;user-select:none;z-index:' + (dragging ? 5 : 1) + ';transform:translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg);transform-origin:50% 0;transition:' + tr,
+        swingStyle: 'animation-delay:-' + (i * 1.1) + 's;animation-duration:' + (4.6 + i * .5) + 's',
+        cableStyle: 'display:block;width:1.5px;height:' + cable[i] + 'px;margin:0 auto;background:#111111',
+        down: function (e) {
+          var el = e.currentTarget, x = e.clientX, y = e.clientY, pid = e.pointerId;
+          self.press = { i: i, x: x, y: y, lx: x, timer: setTimeout(function () {
+            try { el.setPointerCapture(pid); } catch (err) {}
+            if (self.press) self.press.armed = true;
+            self.setState({ drag: { i: i, dx: 0, dy: 0, vx: 0, live: true } });
+          }, 220) };
+        },
+        move: function (e) {
+          var pr = self.press; if (!pr || pr.i !== i) return;
+          if (!pr.armed) { if (Math.abs(e.clientX - pr.x) + Math.abs(e.clientY - pr.y) > 8) { clearTimeout(pr.timer); self.press = null; } return; }
+          var vx = e.clientX - pr.lx; pr.lx = e.clientX;
+          self.setState({ drag: { i: i, dx: e.clientX - pr.x, dy: Math.max(-30, Math.min(30, e.clientY - pr.y)), vx: vx, live: true } });
+        },
+        up: function () {
+          var pr = self.press; self.press = null;
+          if (pr && pr.timer) clearTimeout(pr.timer);
+          if (pr && pr.i === i && !pr.armed) { openTab(p); return; }
+          self.setState({ drag: null });
+        },
+        key: function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openTab(p); } }
+      };
+    });
+
+    var tabs = st.tabs.map(function (t) {
+      var sel = t.id === st.active;
+      return {
+        doc: t.doc, title: t.title, selected: sel ? 'true' : 'false', closeLabel: 'Close ' + t.title,
+        pick: function () { self.setState({ active: t.id }); },
+        close: function () {
+          var rest = st.tabs.filter(function (x) { return x.id !== t.id; });
+          if (!rest.length) return;
+          self.setState({ tabs: rest, active: sel ? rest[0].id : st.active });
+        },
+        wrapStyle: 'display:inline-flex;align-items:center;gap:4px;position:relative;top:1.5px;padding:9px 10px 11px 14px;font-size:14px;font-weight:500;border:1.5px solid ' + (sel ? '#111111' : 'transparent') + ';border-bottom:0;border-radius:10px 14px 0 0 / 8px 10px 0 0;background:' + (sel ? '#ffffff' : 'transparent') + ';color:' + (sel ? '#111111' : '#5f5e5b')
+      };
+    });
+    var activeTab = st.tabs.filter(function (t) { return t.id === st.active; })[0] || st.tabs[0];
+    var isDemo = activeTab.id === 'geo';
+    return {
+      pastOpen: pastOpen ? 'true' : 'false', showPast: pastOpen,
+      togglePast: function () { self.setState({ showPast: !pastOpen }); },
+      past: past, tabs: tabs,
+      isDemo: isDemo, isPastTab: !isDemo, activeTitle: activeTab.doc + ' · ' + activeTab.title,
+      statusText: phase === 'ask' ? 'gathering details' : phase === 'write' ? 'writing…' : 'draft ready',
+      props: props, showTape: phase === 'ask',
+      showConvo: phase === 'ask' || st.convoOpen, showDoc: phase !== 'ask',
+      toggleConvo: function () { self.setState({ convoOpen: !st.convoOpen }); },
+      messages: messages, q: q,
+      hasQuestion: !!cur && phase === 'ask', readyToDraft: !cur && phase === 'ask',
+      done: phase === 'done',
+      sections: sections,
+      skip: function () { answer('(skipped)'); },
+      draft: function () { self.startWriting(total); },
+      restart: function () { if (self.timer) clearInterval(self.timer); self.setState({ step: 0, answers: [], phase: 'ask', chars: 0, convoOpen: false }); },
+      text: st.text,
+      typed: function (e) { self.setState({ text: e.target.value }); },
+      send: function (e) { if (e && e.preventDefault) e.preventDefault(); if (st.text.trim()) answer(st.text.trim()); },
+      sc: sc, sceneTitle: sceneTitle, sceneSub: sceneSub,
+      sceneLabel: 'Construction drawing that builds as the document is written. ' + sceneTitle + '.'
+    };
+  }
+}
+</script>
+</body>
+</html>

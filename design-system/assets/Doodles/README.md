@@ -1,0 +1,1 @@
+Annotation marks in ink `#111111` (check green `#3a7549`, cross and pushpin red `#c0392b`, paperclip `#7d8590`, swash and tape in semi-transparent yellow). To recolour, inline the SVG and swap `#111111` for `currentColor`. Animate with `.db-draw`.

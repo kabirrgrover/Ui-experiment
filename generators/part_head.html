@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Docbuilder · geotech SR</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coming+Soon&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Shantell+Sans:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff}
+a{color:#111111}a:hover{color:#111111}
+.db-paper{background-color:#ffffff;background-image:radial-gradient(#e3e2dd 1.1px,transparent 1.3px);background-size:24px 24px}
+.db-enav a,.db-enav button{position:relative;color:#5f5e5b;text-decoration:none;background:none;border:0;padding:0;font:inherit;cursor:pointer;transition:color 180ms ease}
+.db-enav a:hover,.db-enav a:focus-visible,.db-enav button:hover,.db-enav button:focus-visible,.db-enav button[aria-expanded="true"]{color:#111111}
+.db-enav img{position:absolute;right:calc(100% + 4px);top:50%;width:34px;height:auto;opacity:0;transform:translateY(-50%) rotate(-22deg) scale(.4);transition:opacity 180ms ease,transform 180ms ease;pointer-events:none}
+.db-enav a:hover img,.db-enav a:focus-visible img,.db-enav button:hover img,.db-enav button:focus-visible img,.db-enav button[aria-expanded="true"] img{opacity:1;transform:translateY(-50%) rotate(-6deg) scale(1);transition:opacity 300ms ease,transform 300ms cubic-bezier(.34,1.56,.64,1)}
+.db-box{transition:transform 140ms ease}
+.db-box:hover{transform:rotate(-1.5deg)}
+.db-chip{transition:border-color 140ms ease,background 140ms ease}
+.db-chip:hover{border-color:#111111 !important;background:#fafaf8 !important}
+@keyframes db-drop{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
+.db-crane{animation:db-drop 460ms cubic-bezier(.2,.8,.2,1) both}
+@keyframes db-sway{0%,100%{transform:rotate(-1.8deg)}50%{transform:rotate(1.8deg)}}
+.db-swing{transform-origin:50% 0;animation:db-sway 5s ease-in-out infinite}
+.db-hang.is-drag .db-swing{animation-play-state:paused}
+.db-flip{perspective:700px}
+.db-flip-in{position:relative;transform-style:preserve-3d;transition:transform 520ms cubic-bezier(.34,1.3,.64,1)}
+.db-hang:hover .db-flip-in,.db-hang:focus-visible .db-flip-in{transform:rotateY(180deg)}
+.db-hang.is-drag .db-flip-in{transform:none}
+.db-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.db-back{transform:rotateY(180deg)}
+@keyframes db-in{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+.db-msg{animation:db-in 280ms cubic-bezier(.2,.8,.2,1) both}
+@keyframes db-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.db-caret{animation:db-blink 900ms step-end infinite}
+@keyframes db-push{0%,100%{transform:translateX(0)}50%{transform:translateX(26px)}}
+.db-dozing{animation:db-push 2.4s ease-in-out infinite}
+@keyframes db-slap{from{transform:rotate(-24deg) scale(1.8);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+.db-slap{animation:db-slap 420ms cubic-bezier(.34,1.56,.64,1) both}
+.db-part{transition:opacity 500ms ease,transform 900ms cubic-bezier(.34,1.3,.64,1)}
+.db-row{transition:background 300ms ease}
+.db-tab:hover{color:#111111 !important}
+:where(.db-box,.db-chip,.db-tab,.db-hang,.db-link,.db-x,.db-enav a,.db-enav button):focus-visible{outline:2px solid #3355e6;outline-offset:3px}
+.db-input:focus{outline:none}
+.db-input::placeholder{color:#8d8c88}
+.db-line:focus-within{border-bottom-color:#111111 !important}
+@media (prefers-reduced-motion: reduce){.db-swing,.db-crane,.db-msg,.db-caret,.db-dozing,.db-slap{animation:none}.db-flip-in,.db-part{transition:none}}
+</style>
+</helmet>
+<div class="db-paper" style="min-height: 100vh; color: #111111; font-family: 'Instrument Sans', system-ui, sans-serif; display: flex; flex-direction: column;">
+
+  <header style="position: relative; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px clamp(20px, 4vw, 56px);">
+    <a href="Main.dc.html" class="db-link" style="text-decoration: none; font-family: 'Shantell Sans', cursive; font-weight: 700; font-size: 20px; color: #111111;">AI Docbuilder</a>
+    <nav aria-label="Main" class="db-enav" style="display: flex; align-items: center; gap: 48px; flex-wrap: wrap; font-size: 16px; font-weight: 500;">
+      <a href="#"><img src="/_blob/de079131fca9052b41c59f6b64c07c50" alt="">Folders</a>
+      <button type="button" aria-expanded="{{pastOpen}}" aria-controls="db-past" onClick="{{togglePast}}"><img src="/_blob/22fdcc6ec0be3cdcad4c444402375850" alt="">Past chats</button>
+      <a href="Main.dc.html" class="db-box" style="display: inline-flex; align-items: center; gap: 6px; min-height: 40px; box-sizing: border-box; padding: 6px 14px; background: #ffffff; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 18px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">+ new chat</a>
+      <span aria-label="Your account" role="img" style="width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #111111; background: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: 'Coming Soon', cursive; font-size: 16px;">k</span>
+    </nav>
+  </header>
+
+  <sc-if value="{{showPast}}" hint-placeholder-val="{{false}}">
+    <section id="db-past" aria-label="Past chats" class="db-crane" style="position: relative; padding: 0 clamp(20px, 4vw, 56px) 8px;">
+      <div style="position: relative; height: 350px; overflow-x: auto; overflow-y: hidden; touch-action: pan-y;">
+        <div style="position: relative; width: 1180px; height: 350px;">
+          <svg aria-hidden="true" width="1180" height="330" viewBox="0 0 1180 330" style="position: absolute; left: 0; top: 0;">
+            <g fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M70 330 L70 46 M90 330 L90 46"></path>
+              <path d="M70 320 L90 300 L70 280 L90 260 L70 240 L90 220 L70 200 L90 180 L70 160 L90 140 L70 120 L90 100 L70 80 L90 60"></path>
+              <path d="M40 46 L1160 46 M90 34 L1160 46 M40 46 L80 6 L120 46"></path>
+              <path d="M120 46 L140 34 L160 46 L180 34 L200 46 L220 34 L240 46 L260 34 L280 46 L300 34 L320 46 L340 34 L360 46 L380 34 L400 46 L420 34 L440 46 L460 34 L480 46 L500 34 L520 46 L540 34 L560 46 L580 34 L600 46 L620 34 L640 46 L660 34 L680 46 L700 34 L720 46 L740 34 L760 46 L780 34 L800 46 L820 34 L840 46 L860 34 L880 46 L900 34 L920 46 L940 34 L960 46 L980 34 L1000 46 L1020 34 L1040 46 L1060 34 L1080 46 L1100 34 L1120 46 L1140 34 L1160 46"></path>
+              <path d="M80 6 L1160 34"></path>
+              <rect x="94" y="50" width="26" height="22" rx="2"></rect>
+              <path d="M8 46 L40 46 L40 60 L8 60 Z"></path>
+            </g>
+          </svg>
+          <sc-for list="{{past}}" as="p" hint-placeholder-count="5">
+            <div class="{{p.cls}}" tabindex="0" role="button" aria-label="{{p.aria}}" onPointerDown="{{p.down}}" onPointerMove="{{p.move}}" onPointerUp="{{p.up}}" onPointerCancel="{{p.up}}" onKeyDown="{{p.key}}" style="{{p.posStyle}}">
+              <div class="db-swing" style="{{p.swingStyle}}">
+                <span aria-hidden="true" style="{{p.cableStyle}}"></span>
+                <svg aria-hidden="true" width="18" height="20" viewBox="0 0 18 20" style="display: block; margin: -1px auto 0;"><path d="M9 0 V8 M9 8 C 2 8, 2 18, 9 18 C 14 18, 15 13, 13 11" fill="none" stroke="#111111" stroke-width="1.5" stroke-linecap="round"></path></svg>
+                <div class="db-flip" style="width: 132px; height: 164px; margin-top: 2px;">
+                  <div class="db-flip-in" style="width: 100%; height: 100%;">
+                    <div class="db-face" style="background: #ffffff; border: 1.5px solid #111111; border-radius: 6px 9px 7px 10px; display: flex; flex-direction: column; padding: 12px; box-sizing: border-box; box-shadow: 0 14px 22px -16px rgba(17,17,17,.4);">
+                      <span style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #5f5e5b;">{{p.doc}}</span>
+                      <span style="margin-top: 10px; font-family: 'Coming Soon', cursive; font-size: 19px; line-height: 23px; color: #111111;">{{p.title}}</span>
+                      <span style="margin-top: auto; font-size: 11px; color: #5f5e5b; font-variant-numeric: tabular-nums;">{{p.num}}</span>
+                      <span style="font-size: 11px; color: #5f5e5b;">{{p.when}}</span>
+                    </div>
+                    <div class="db-face db-back" style="background: #ffffff; border: 1.5px solid #111111; border-radius: 6px 9px 7px 10px; display: flex; flex-direction: column; padding: 12px; box-sizing: border-box;">
+                      <span style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #5f5e5b;">SUMMARY</span>
+                      <span style="margin-top: 6px; font-size: 12.5px; line-height: 17px; color: #111111;">{{p.summary}}</span>
+                      <span style="margin-top: auto; font-family: 'Coming Soon', cursive; font-size: 15px;">open ↗</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 13px; color: #5f5e5b; margin-top: 4px;">
+        <span style="font-family: 'Coming Soon', cursive; font-size: 17px; color: #111111;">past chats</span>
+        <span>Hover to read · click to open in a tab · hold and drag to move</span>
+      </div>
+    </section>
+  </sc-if>
+
+  <div style="padding: 0 clamp(20px, 4vw, 56px);">
+    <div role="tablist" aria-label="Open documents" style="display: flex; align-items: flex-end; gap: 2px; overflow-x: auto; padding-top: 8px; border-bottom: 1.5px solid #111111;">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="2">
+        <span style="{{t.wrapStyle}}">
+          <button type="button" role="tab" class="db-tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="display: inline-flex; align-items: center; gap: 8px; background: none; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; max-width: 210px;">
+            <span style="font-weight: 600; font-size: 11px; letter-spacing: .06em;">{{t.doc}}</span>
+            <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{t.title}}</span>
+          </button>
+          <button type="button" class="db-x" aria-label="{{t.closeLabel}}" onClick="{{t.close}}" style="width: 22px; height: 22px; border: 0; background: none; border-radius: 50%; font-size: 15px; line-height: 1; color: #8d8c88; cursor: pointer;">×</button>
+        </span>
+      </sc-for>
+      <a href="Main.dc.html" aria-label="New chat" class="db-link" style="align-self: center; margin-left: 6px; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: #111111; text-decoration: none; font-family: 'Coming Soon', cursive; font-size: 22px;">+</a>
+    </div>
+  </div>
+

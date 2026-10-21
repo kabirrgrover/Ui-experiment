@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AI Docbuilder · canvas</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coming+Soon&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Shantell+Sans:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#ffffff;overflow:hidden}
+a{color:#111111}a:hover{color:#111111}
+.db-vp{background-color:#f6f5f2;background-image:radial-gradient(#dcdad4 1.1px,transparent 1.3px)}
+.db-vp:focus{outline:none}
+.db-tool{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:0;background:none;border-radius:8px;cursor:pointer;color:#111111;position:relative}
+.db-tool:hover{background:#f1f0ec}
+.db-tool[aria-pressed="true"]{background:#fbe97a}
+.db-tool svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.db-tool .db-key{position:absolute;right:3px;bottom:1px;font-size:9px;color:#8d8c88;font-family:'Instrument Sans',sans-serif}
+.db-box{transition:transform 140ms ease}
+.db-box:hover{transform:rotate(-1.5deg)}
+.db-mini{border:0;background:none;width:34px;height:34px;border-radius:6px;cursor:pointer;font-size:18px;color:#111111}
+.db-mini:hover{background:#f1f0ec}
+.db-pg{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:0;background:none;padding:6px 8px;border-radius:6px;cursor:pointer;font-family:'Instrument Sans',sans-serif;font-size:13px;color:#3d3c3a}
+.db-pg:hover{background:#f1f0ec}
+.db-note textarea{width:100%;height:100%;border:0;background:transparent;resize:none;font-family:'Shantell Sans',cursive;font-size:19px;line-height:25px;color:#111111;padding:0;box-sizing:border-box}
+.db-note textarea:focus{outline:none}
+.db-grab{cursor:grab}
+.db-grab:active{cursor:grabbing}
+.db-tray button{border:0;background:none;padding:6px;border-radius:8px;cursor:pointer}
+.db-tray button:hover,.db-tray button[aria-pressed="true"]{background:#f1f0ec}
+@keyframes db-slap{from{transform:scale(1.6) rotate(var(--r,0deg));opacity:0}to{transform:scale(1) rotate(var(--r,0deg));opacity:1}}
+.db-placed{animation:db-slap 360ms cubic-bezier(.34,1.56,.64,1) both}
+.db-chip{transition:border-color 140ms ease}
+.db-chip:hover{border-color:#111111 !important}
+:where(.db-tool,.db-mini,.db-pg,.db-box,.db-chip,.db-tray button,a):focus-visible{outline:2px solid #3355e6;outline-offset:2px}
+.db-ask input:focus{outline:none}
+@media (prefers-reduced-motion: reduce){.db-placed{animation:none}}
+</style>
+</helmet>
+<div style="height: 100vh; display: flex; flex-direction: column; font-family: 'Instrument Sans', system-ui, sans-serif; color: #111111; background: #ffffff;">
+
+  <header style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px; border-bottom: 1.5px solid #111111; background: #ffffff; position: relative; z-index: 5; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 14px; min-width: 0;">
+      <a href="Chat.dc.html" aria-label="Back to chat" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 500; font-size: 14px; color: #5f5e5b;">← chat</a>
+      <span aria-hidden="true" style="width: 1px; height: 22px; background: #d6d4ce;"></span>
+      <div style="display: flex; flex-direction: column; min-width: 0;">
+        <span style="font-family: 'Coming Soon', cursive; font-size: 19px; line-height: 23px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">geotech SR, north pad</span>
+        <span style="font-size: 12px; color: #5f5e5b; font-variant-numeric: tabular-nums;">SR-24-0142 · Rev A · 30 pages · saved</span>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span role="img" aria-label="You and docbuilder are here" style="display: inline-flex;">
+        <span style="width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid #111111; background: #fbe97a; display: inline-flex; align-items: center; justify-content: center; font-family: 'Coming Soon', cursive; font-size: 14px;">k</span>
+        <span style="width: 30px; height: 30px; margin-left: -8px; border-radius: 50%; border: 1.5px solid #111111; background: #3355e6; color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: 'Coming Soon', cursive; font-size: 13px;">ai</span>
+      </span>
+      <a href="#" class="db-box" style="display: inline-flex; align-items: center; min-height: 36px; padding: 4px 14px; background: #ffffff; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">share</a>
+      <a href="#" class="db-box" style="display: inline-flex; align-items: center; min-height: 36px; padding: 4px 14px; background: #f0662a; text-decoration: none; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px;">download</a>
+    </div>
+  </header>
+
+  <div style="position: relative; flex: 1; min-height: 0; display: flex;">
+
+    <nav aria-label="Pages" style="width: 196px; flex: 0 0 auto; border-right: 1px solid #e6e5e1; background: #ffffff; padding: 12px 8px; overflow-y: auto; position: relative; z-index: 3;">
+      <div style="font-weight: 600; font-size: 11px; letter-spacing: .08em; color: #8d8c88; padding: 0 8px 8px;">PAGES</div>
+      <sc-for list="{{pageList}}" as="pg" hint-placeholder-count="6">
+        <button type="button" class="db-pg" onClick="{{pg.go}}">
+          <span aria-hidden="true" style="width: 26px; height: 34px; flex: 0 0 auto; border: 1px solid #b9b7b1; border-radius: 2px; background: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; color: #8d8c88; font-variant-numeric: tabular-nums;">{{pg.n}}</span>
+          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{pg.label}}</span>
+        </button>
+      </sc-for>
+      <div style="margin-top: 14px; padding: 10px 8px; border-top: 1px solid #ecebe7; font-size: 12px; line-height: 18px; color: #8d8c88;">Showing 6 of 30 pages in this mockup.</div>
+    </nav>
+
+    <div class="db-vp" ref="{{vpRef}}" tabindex="0" aria-label="Document canvas. Drag to pan, Control plus scroll to zoom." onPointerDown="{{down}}" onPointerMove="{{move}}" onPointerUp="{{up}}" onPointerCancel="{{up}}" onWheel="{{wheel}}" onKeyDown="{{key}}" style="{{vpStyle}}">
+      <div style="{{worldStyle}}">
+
+        <sc-for list="{{pages}}" as="p" hint-placeholder-count="3">
+          <article aria-label="{{p.aria}}" style="{{p.style}}">
+            <div style="display: flex; justify-content: space-between; font-size: 10.5px; color: #8d8c88; padding-bottom: 10px; border-bottom: 1px solid #ecebe7; font-variant-numeric: tabular-nums;">
+              <span>SR-24-0142 · Geotechnical investigation, North pad</span><span>Rev A · page {{p.n}} of 30</span>
+            </div>
+            <sc-if value="{{p.isCover}}" hint-placeholder-val="{{false}}">
+              <div style="display: flex; flex-direction: column; height: calc(100% - 40px);">
+                <div style="margin-top: 120px; font-weight: 600; font-size: 12px; letter-spacing: .14em; color: #5f5e5b;">SERVICE REQUISITION</div>
+                <h1 style="margin: 12px 0 0; font-weight: 600; font-size: 34px; line-height: 40px; letter-spacing: -0.01em;">Geotechnical investigation, North pad</h1>
+                <p style="margin: 14px 0 0; font-size: 15px; line-height: 23px; color: #3d3c3a; max-width: 520px;">Ground investigation ahead of design of the tower crane footing. Boreholes, sampling and laboratory testing.</p>
+                <span style="align-self: flex-start; margin-top: 36px; color: #5f5e5b; border: 4px solid #5f5e5b; outline: 1.5px solid #5f5e5b; outline-offset: -9px; border-radius: 8px; padding: 10px 20px; font-weight: 700; font-size: 26px; letter-spacing: .06em; transform: rotate(-5deg); display: inline-flex; flex-direction: column; align-items: center;">DRAFT<span style="font-size: 9px; letter-spacing: .12em;">NOT FOR ISSUE</span></span>
+                <table style="margin-top: auto; width: 100%; border-collapse: collapse; font-size: 12px;">
+                  <tbody>
+                    <tr><td style="border: 1px solid #111111; padding: 7px 9px; color: #5f5e5b; width: 22%;">SR number</td><td style="border: 1px solid #111111; padding: 7px 9px;">SR-24-0142</td><td style="border: 1px solid #111111; padding: 7px 9px; color: #5f5e5b; width: 22%;">Discipline</td><td style="border: 1px solid #111111; padding: 7px 9px;">Civil / geotechnical</td></tr>
+                    <tr><td style="border: 1px solid #111111; padding: 7px 9px; color: #5f5e5b;">Site</td><td style="border: 1px solid #111111; padding: 7px 9px;">North pad</td><td style="border: 1px solid #111111; padding: 7px 9px; color: #5f5e5b;">Requested by</td><td style="border: 1px solid #111111; padding: 7px 9px;">[Name]</td></tr>
+                    <tr><td style="border: 1px solid #111111; padding: 7px 9px; color: #5f5e5b;">Revision</td><td style="border: 1px solid #111111; padding: 7px 9px;">A · first draft</td><td style="border: 1px solid #111111; padding: 7px 9px; color: #5f5e5b;">Date</td><td style="border: 1px solid #111111; padding: 7px 9px;">[Date]</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </sc-if>
+            <sc-if value="{{p.isBody}}" hint-placeholder-val="{{true}}">
+              <div style="padding-top: 26px; display: flex; flex-direction: column; gap: 18px;">
+                <sc-for list="{{p.blocks}}" as="b" hint-placeholder-count="4">
+                  <sc-if value="{{b.isH}}" hint-placeholder-val="{{false}}">
+                    <h2 style="margin: 8px 0 0; font-weight: 600; font-size: 19px; line-height: 25px;">{{b.text}}</h2>
+                  </sc-if>
+                  <sc-if value="{{b.isP}}" hint-placeholder-val="{{true}}">
+                    <p style="margin: 0; display: flex; gap: 14px; font-size: 13.5px; line-height: 22px; color: #222221;"><span style="flex: 0 0 34px; color: #8d8c88; font-variant-numeric: tabular-nums;">{{b.num}}</span><span>{{b.text}}</span></p>
+                  </sc-if>
+                  <sc-if value="{{b.isTable}}" hint-placeholder-val="{{false}}">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px; font-variant-numeric: tabular-nums;">
+                      <thead><tr><th style="text-align: left; border-bottom: 1.5px solid #111111; padding: 6px 8px;">Borehole</th><th style="text-align: right; border-bottom: 1.5px solid #111111; padding: 6px 8px;">Depth</th><th style="text-align: left; border-bottom: 1.5px solid #111111; padding: 6px 8px;">Location</th><th style="text-align: left; border-bottom: 1.5px solid #111111; padding: 6px 8px;">Standpipe</th></tr></thead>
+                      <tbody>
+                        <tr><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">BH-01</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px; text-align: right;">20.0 m</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">Crane base, NE corner</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">Yes</td></tr>
+                        <tr><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">BH-02</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px; text-align: right;">20.0 m</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">Crane base, SW corner</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">No</td></tr>
+                        <tr><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">BH-03</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px; text-align: right;">20.0 m</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">Laydown area</td><td style="border-bottom: 1px solid #ecebe7; padding: 6px 8px;">Yes</td></tr>
+                      </tbody>
+                    </table>
+                  </sc-if>
+                </sc-for>
+              </div>
+            </sc-if>
+          </article>
+        </sc-for>
+
+        <svg aria-hidden="true" width="6000" height="1600" viewBox="0 0 6000 1600" style="position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none;">
+          <sc-for list="{{strokes}}" as="s" hint-placeholder-count="2">
+            <path d="{{s.d}}" data-stroke="{{s.id}}" fill="none" stroke="{{s.color}}" stroke-width="{{s.w}}" stroke-linecap="round" stroke-linejoin="round" style="{{s.style}}"></path>
+          </sc-for>
+        </svg>
+
+        <sc-for list="{{stickers}}" as="k" hint-placeholder-count="1">
+          <img class="db-placed db-grab" data-sticker="{{k.id}}" src="{{k.src}}" alt="" draggable="false" style="{{k.style}}">
+        </sc-for>
+
+        <sc-for list="{{notes}}" as="n" hint-placeholder-count="2">
+          <div class="db-note db-placed" data-note="{{n.id}}" style="{{n.style}}">
+            <div class="db-grab" data-notehandle="{{n.id}}" aria-label="Drag note" style="{{n.bandStyle}}"></div>
+            <div style="position: absolute; left: 50%; top: -10px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #111111; pointer-events: none;"></div>
+            <div style="padding: 14px 16px 14px; height: calc(100% - 34px); box-sizing: border-box;">
+              <label for="{{n.inputId}}" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Note text</label>
+              <textarea id="{{n.inputId}}" value="{{n.text}}" onInput="{{n.edit}}" placeholder="write a note…"></textarea>
+            </div>
+            <sc-if value="{{n.byAI}}" hint-placeholder-val="{{false}}">
+              <span style="position: absolute; left: 14px; bottom: 8px; font-family: 'Coming Soon', cursive; font-size: 12px; color: #3355e6;">docbuilder</span>
+            </sc-if>
+          </div>
+        </sc-for>
+
+        <sc-if value="{{showAsk}}" hint-placeholder-val="{{false}}">
+          <div class="db-ask" style="{{askStyle}}">
+            <div style="background: #ffffff; border: 1.5px solid #111111; border-radius: 8px 11px 9px 12px; padding: 12px; width: 300px; box-shadow: 0 16px 30px -18px rgba(17,17,17,.4);">
+              <div style="font-family: 'Coming Soon', cursive; font-size: 16px; margin-bottom: 8px;">ask docbuilder about this</div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <sc-for list="{{askOpts}}" as="o" hint-placeholder-count="3">
+                  <button type="button" class="db-chip" onClick="{{o.pick}}" style="font-family: 'Instrument Sans', sans-serif; font-size: 13px; padding: 6px 10px; border-radius: 4px 7px 5px 8px; background: #ffffff; border: 1.2px solid #8d8c88; cursor: pointer;">{{o.label}}</button>
+                </sc-for>
+              </div>
+              <button type="button" onClick="{{closeAsk}}" style="margin-top: 8px; border: 0; background: none; padding: 0; font-size: 12px; color: #5f5e5b; text-decoration: underline; cursor: pointer;">dismiss</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div role="toolbar" aria-label="Tools" onPointerDown="{{stop}}" style="position: absolute; top: 14px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; padding: 5px; background: #ffffff; border: 1.5px solid #111111; border-radius: 10px 13px 11px 14px; box-shadow: 0 10px 22px -16px rgba(17,17,17,.45); z-index: 4;">
+        <sc-for list="{{tools}}" as="t" hint-placeholder-count="8">
+          <button type="button" class="db-tool" aria-label="{{t.label}}" title="{{t.title}}" aria-pressed="{{t.on}}" onClick="{{t.pick}}">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="{{t.icon}}"></path></svg>
+            <span class="db-key" aria-hidden="true">{{t.k}}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{showTray}}" hint-placeholder-val="{{false}}">
+        <div class="db-tray" role="group" aria-label="Pick a sticker" onPointerDown="{{stop}}" style="position: absolute; top: 72px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; padding: 8px; background: #ffffff; border: 1.5px solid #111111; border-radius: 10px; z-index: 4;">
+          <sc-for list="{{tray}}" as="s" hint-placeholder-count="6">
+            <button type="button" aria-label="{{s.label}}" aria-pressed="{{s.on}}" onClick="{{s.pick}}"><img src="{{s.src}}" alt="" style="display: block; height: 46px; width: auto; max-width: 72px; object-fit: contain;"></button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{showHint}}" hint-placeholder-val="{{false}}">
+        <div style="position: absolute; top: 72px; left: 50%; transform: translateX(-50%); padding: 6px 12px; background: #111111; color: #ffffff; border-radius: 6px; font-size: 13px; z-index: 4; pointer-events: none;">{{hint}}</div>
+      </sc-if>
+
+      <div onPointerDown="{{stop}}" style="position: absolute; right: 14px; bottom: 14px; display: flex; align-items: center; gap: 2px; padding: 4px; background: #ffffff; border: 1.5px solid #111111; border-radius: 8px; z-index: 4;">
+        <button type="button" class="db-mini" aria-label="Zoom out" onClick="{{zoomOut}}">−</button>
+        <button type="button" class="db-mini" aria-label="Zoom to fit" onClick="{{fit}}" style="width: 58px; font-size: 13px; font-variant-numeric: tabular-nums;">{{zoomPct}}</button>
+        <button type="button" class="db-mini" aria-label="Zoom in" onClick="{{zoomIn}}">+</button>
+      </div>
+
+      <form class="db-ask" onSubmit="{{askSubmit}}" onPointerDown="{{stop}}" style="position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(520px, calc(100% - 200px)); display: flex; align-items: center; gap: 8px; padding: 6px 6px 6px 16px; background: #ffffff; border: 1.5px solid #111111; border-radius: 22px 14px 24px 16px / 16px 24px 14px 22px; z-index: 4;">
+        <label for="db-canvas-ask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Ask docbuilder</label>
+        <input id="db-canvas-ask" type="text" value="{{askText}}" onInput="{{askTyped}}" placeholder="ask docbuilder to change something…" style="flex: 1; min-width: 0; border: 0; background: transparent; font-family: 'Instrument Sans', sans-serif; font-size: 15px; padding: 6px 0;">
+        <button type="submit" class="db-box" style="min-height: 34px; padding: 2px 12px; background: #111111; color: #ffffff; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; border: 1.5px solid #111111; border-radius: 4px 7px 5px 8px; cursor: pointer;">ask</button>
+      </form>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var circle = [];
+    for (var k = 0; k <= 40; k++) { var a = -2.6 + k / 40 * 6.9; circle.push([2010 + Math.cos(a) * 150 * (1 + k * .002), 638 + Math.sin(a) * 34]); }
+    this.state = {
+      zoom: 0.46, px: 40, py: 60, tool: 'select', sticker: 0, drag: null, live: null, askAt: null, askText: '', hint: '', seq: 20,
+      notes: [
+        { id: 'n1', x: 640, y: 120, color: 'yellow', rot: -3, text: 'check the depth with the crane vendor before this goes out' },
+        { id: 'n2', x: 1500, y: 860, color: 'peach', rot: 2.5, text: 'who signs off the HSE section?' }
+      ],
+      strokes: [
+        { id: 's1', kind: 'hl', pts: [[1810, 431], [2380, 431]] },
+        { id: 's2', kind: 'pen', pts: circle }
+      ],
+      stickers: [{ id: 'k1', src: 'assets/rfi.svg', x: 2580, y: 560, w: 120, rot: -8 }]
+    };
+    this.vp = null;
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var PW = 794, PH = 1123, GAP = 96;
+    var px = function (i) { return i * (PW + GAP); };
+    var raw = [
+      { label: 'Cover', cover: true },
+      { label: 'Purpose and scope', blocks: [
+        ['h', '1. Purpose and background'],
+        ['p', '1.1', 'The Contractor shall investigate ground conditions at the North pad ahead of design of the tower crane footing.'],
+        ['p', '1.2', 'Results will be used by the Company to confirm bearing capacity, settlement and the need for piling.'],
+        ['h', '2. Scope of work'],
+        ['p', '2.1', 'Drill three (3) boreholes to 20 m below existing grade, or to refusal, at the locations shown in Appendix B.'],
+        ['p', '2.2', 'Log each borehole continuously and take samples at every change in strata and at least every 1.5 m.'],
+        ['p', '2.3', 'Install standpipe piezometers in BH-01 and BH-03 and record groundwater levels for two weeks after completion.'],
+        ['p', '2.4', 'Carry out the laboratory testing listed in Section 6 on samples selected with the Company.'] ] },
+      { label: 'Site and ground', blocks: [
+        ['h', '3. Site information and access'],
+        ['p', '3.1', 'Access is from the north gate. Laydown space is available next to the batch plant.'],
+        ['p', '3.2', 'All personnel shall complete the site induction before mobilising.'],
+        ['h', '4. Ground conditions'],
+        ['p', '4.1', 'The expected soil is Class D. The Contractor shall confirm conditions on site and report any difference to the Company.'],
+        ['p', '4.2', 'Stop drilling and inform the Company if groundwater, fill or obstructions are met.'] ] },
+      { label: 'Fieldwork', blocks: [
+        ['h', '5. Fieldwork requirements'],
+        ['p', '5.1', 'Use rotary drilling with temporary casing where needed to keep the hole stable.'],
+        ['p', '5.2', 'Carry out standard penetration tests at 1.5 m intervals in soil.'],
+        ['t'],
+        ['p', '5.3', 'Backfill each borehole with cement-bentonite grout on completion.'] ] },
+      { label: 'Lab testing and HSE', blocks: [
+        ['h', '6. Laboratory testing'],
+        ['p', '6.1', 'Classification, moisture content, Atterberg limits and particle size distribution on all disturbed samples.'],
+        ['p', '6.2', 'Consolidation and triaxial tests on selected undisturbed samples.'],
+        ['h', '7. HSE requirements'],
+        ['p', '7.1', 'A permit to dig and an underground services scan are required before each borehole.'],
+        ['p', '7.2', 'Keep an exclusion zone around the rig and hold a toolbox talk at the start of each shift.'] ] },
+      { label: 'Schedule and pricing', blocks: [
+        ['h', '8. Schedule'],
+        ['p', '8.1', 'Mobilise within two weeks of award. Fieldwork is expected to take about two weeks.'],
+        ['h', '9. Deliverables'],
+        ['p', '9.1', 'Factual report with borehole logs, photographs and laboratory results, issued in the project template.'],
+        ['h', '10. Commercial'],
+        ['p', '10.1', 'Lump sum for mobilisation, rates per metre drilled and provisional sums for standby and extra testing.'] ] }
+    ];
+    var pages = raw.map(function (p, i) {
+      return {
+        n: i + 1, aria: 'Page ' + (i + 1) + ', ' + p.label, isCover: !!p.cover, isBody: !p.cover,
+        blocks: (p.blocks || []).map(function (b) { return { isH: b[0] === 'h', isP: b[0] === 'p', isTable: b[0] === 't', text: b[0] === 'h' ? b[1] : b[2], num: b[0] === 'p' ? b[1] : '' }; }),
+        style: 'position:absolute;left:' + px(i) + 'px;top:0;width:' + PW + 'px;height:' + PH + 'px;box-sizing:border-box;padding:56px 64px;background:#ffffff;border:1px solid #d6d4ce;box-shadow:0 1px 2px rgba(17,17,17,.06),0 24px 48px -24px rgba(17,17,17,.25)'
+      };
+    });
+
+    var vpW = function () { return self.vp ? self.vp.clientWidth : 1200; };
+    var vpH = function () { return self.vp ? self.vp.clientHeight : 760; };
+    var setZoom = function (z, cx, cy) {
+      z = Math.max(0.15, Math.min(2.5, z));
+      if (cx === undefined) { cx = vpW() / 2; cy = vpH() / 2; }
+      var wx = (cx - st.px) / st.zoom, wy = (cy - st.py) / st.zoom;
+      self.setState({ zoom: z, px: cx - wx * z, py: cy - wy * z });
+    };
+    var goPage = function (i) {
+      var z = Math.min(0.8, (vpH() - 120) / PH);
+      self.setState({ zoom: z, px: vpW() / 2 - (px(i) + PW / 2) * z, py: 70 });
+    };
+    var fit = function () {
+      var totalW = px(raw.length - 1) + PW;
+      var z = Math.min((vpW() - 80) / totalW, (vpH() - 160) / PH);
+      self.setState({ zoom: z, px: (vpW() - totalW * z) / 2, py: 76 });
+    };
+    var world = function (e) {
+      var r = self.vp.getBoundingClientRect();
+      return [(e.clientX - r.left - st.px) / st.zoom, (e.clientY - r.top - st.py) / st.zoom];
+    };
+    var nextId = function (p) { return p + (st.seq + 1); };
+    var tray = [
+      { label: 'RFI sticker', src: 'assets/rfi.svg', w: 120 },
+      { label: 'Measure twice sticker', src: 'assets/measure-twice.svg', w: 220 },
+      { label: 'Hard hat sticker', src: 'assets/hard-hat-eyes.svg', w: 130 },
+      { label: 'Smiley sticker', src: 'assets/smiley.svg', w: 100 },
+      { label: 'Spec checked sticker', src: 'assets/specd-signed.svg', w: 150 },
+      { label: 'Tape measure sticker', src: 'assets/tool-tape-measure.png', w: 140 }
+    ];
+    var colors = { yellow: ['#fbe97a', '#f7df5a'], peach: ['#f6c08a', '#f0b071'], green: ['#c6ee9c', '#b5e283'], blue: ['#cfe0f6', '#bcd2f0'] };
+    var hints = { pen: 'Sketchpen: draw anywhere', hl: 'Highlighter: drag over text, then ask docbuilder', note: 'Click anywhere to drop a sticky note', sticker: 'Pick a sticker, then click to place it', erase: 'Click a note, sticker or line to remove it', hand: 'Drag to move around' };
+    var pickTool = function (t) { self.setState({ tool: t, hint: hints[t] || '' }); };
+
+    var down = function (e) {
+      if (!self.vp) return;
+      var t = e.target;
+      if (t.closest && (t.closest('textarea') || t.closest('button') || t.closest('form') || t.closest('[role="toolbar"]'))) return;
+      var w = world(e);
+      try { self.vp.setPointerCapture(e.pointerId); } catch (err) {}
+      var noteEl = t.closest && t.closest('[data-notehandle]');
+      var stickEl = t.closest && t.closest('[data-sticker]');
+      if (st.tool === 'erase') {
+        var nn = t.closest && t.closest('[data-note]');
+        if (nn) { var nid = nn.getAttribute('data-note'); self.setState({ notes: st.notes.filter(function (x) { return x.id !== nid; }) }); return; }
+        if (stickEl) { var sid = stickEl.getAttribute('data-sticker'); self.setState({ stickers: st.stickers.filter(function (x) { return x.id !== sid; }) }); return; }
+        var near = st.strokes.filter(function (s) { return !s.pts.some(function (p) { return Math.abs(p[0] - w[0]) < 24 && Math.abs(p[1] - w[1]) < 24; }); });
+        self.setState({ strokes: near }); return;
+      }
+      if (noteEl && (st.tool === 'select' || st.tool === 'hand' || st.tool === 'note')) {
+        var id = noteEl.getAttribute('data-notehandle'), n = st.notes.filter(function (x) { return x.id === id; })[0];
+        self.setState({ drag: { kind: 'note', id: id, ox: w[0] - n.x, oy: w[1] - n.y } }); return;
+      }
+      if (stickEl && (st.tool === 'select' || st.tool === 'hand' || st.tool === 'sticker')) {
+        var kid = stickEl.getAttribute('data-sticker'), k = st.stickers.filter(function (x) { return x.id === kid; })[0];
+        self.setState({ drag: { kind: 'sticker', id: kid, ox: w[0] - k.x, oy: w[1] - k.y } }); return;
+      }
+      if (st.tool === 'note') {
+        var cs = ['yellow', 'peach', 'green', 'blue'];
+        self.setState({ seq: st.seq + 1, tool: 'select', hint: '', notes: st.notes.concat([{ id: nextId('n'), x: w[0] - 110, y: w[1] - 20, color: cs[st.seq % 4], rot: (st.seq % 5) - 2, text: '' }]) });
+        return;
+      }
+      if (st.tool === 'sticker') {
+        var tr = tray[st.sticker];
+        self.setState({ seq: st.seq + 1, stickers: st.stickers.concat([{ id: nextId('k'), src: tr.src, x: w[0] - tr.w / 2, y: w[1] - 40, w: tr.w, rot: (st.seq % 7) - 3 }]) });
+        return;
+      }
+      if (st.tool === 'pen' || st.tool === 'hl') {
+        self.setState({ live: { id: nextId('s'), kind: st.tool, pts: [w] }, seq: st.seq + 1, askAt: null }); return;
+      }
+      self.setState({ drag: { kind: 'pan', sx: e.clientX, sy: e.clientY, px: st.px, py: st.py }, askAt: null });
+    };
+    var move = function (e) {
+      if (st.live) {
+        var w = world(e), pts = st.live.pts, last = pts[pts.length - 1];
+        if (Math.abs(last[0] - w[0]) + Math.abs(last[1] - w[1]) > 3) self.setState({ live: { id: st.live.id, kind: st.live.kind, pts: pts.concat([w]) } });
+        return;
+      }
+      var d = st.drag; if (!d) return;
+      if (d.kind === 'pan') { self.setState({ px: d.px + e.clientX - d.sx, py: d.py + e.clientY - d.sy }); return; }
+      var w2 = world(e);
+      if (d.kind === 'note') self.setState({ notes: st.notes.map(function (n) { return n.id === d.id ? Object.assign({}, n, { x: w2[0] - d.ox, y: w2[1] - d.oy }) : n; }) });
+      if (d.kind === 'sticker') self.setState({ stickers: st.stickers.map(function (k) { return k.id === d.id ? Object.assign({}, k, { x: w2[0] - d.ox, y: w2[1] - d.oy }) : k; }) });
+    };
+    var up = function () {
+      if (st.live) {
+        var s = st.live, ask = null;
+        if (s.kind === 'hl' && s.pts.length > 2) { var l = s.pts[s.pts.length - 1]; ask = { x: l[0] + 12, y: l[1] + 18 }; }
+        self.setState({ strokes: s.pts.length > 1 ? st.strokes.concat([s]) : st.strokes, live: null, askAt: ask });
+        return;
+      }
+      if (st.drag) self.setState({ drag: null });
+    };
+    var wheel = function (e) {
+      if (e.ctrlKey || e.metaKey) {
+        var r = self.vp.getBoundingClientRect();
+        setZoom(st.zoom * Math.exp(-e.deltaY * 0.0022), e.clientX - r.left, e.clientY - r.top);
+      } else self.setState({ px: st.px - e.deltaX, py: st.py - e.deltaY });
+    };
+    var key = function (e) {
+      if (e.target && (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT')) return;
+      var map = { v: 'select', h: 'hand', p: 'pen', y: 'hl', n: 'note', s: 'sticker', e: 'erase' };
+      var k = e.key.toLowerCase();
+      if (map[k]) { pickTool(map[k]); return; }
+      if (k === '+' || k === '=') setZoom(st.zoom * 1.2);
+      if (k === '-') setZoom(st.zoom / 1.2);
+      if (k === '0') fit();
+      if (k === 'escape') self.setState({ tool: 'select', askAt: null, hint: '' });
+    };
+
+    var path = function (pts) { return pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' '); };
+    var all = st.live ? st.strokes.concat([st.live]) : st.strokes;
+    var strokes = all.map(function (s) {
+      var hl = s.kind === 'hl';
+      return { id: s.id, d: path(s.pts), color: hl ? 'rgba(243,222,60,.55)' : '#111111', w: hl ? 20 : 2.6, style: hl ? 'mix-blend-mode:multiply' : '' };
+    });
+    var notes = st.notes.map(function (n) {
+      var c = colors[n.color] || colors.yellow;
+      return {
+        id: n.id, inputId: 'note-' + n.id, text: n.text, byAI: !!n.byAI,
+        edit: function (e) { var v = e.target.value; self.setState({ notes: self.state.notes.map(function (x) { return x.id === n.id ? Object.assign({}, x, { text: v }) : x; }) }); },
+        style: 'position:absolute;left:' + n.x + 'px;top:' + n.y + 'px;width:230px;height:210px;background:' + c[0] + ';box-shadow:0 1px 0 rgba(17,17,17,.04),0 14px 22px -14px rgba(17,17,17,.35);--r:' + n.rot + 'deg;transform:rotate(' + n.rot + 'deg)',
+        bandStyle: 'height:34px;background:' + c[1]
+      };
+    });
+    var stickers = st.stickers.map(function (k) {
+      return { id: k.id, src: k.src, style: 'position:absolute;left:' + k.x + 'px;top:' + k.y + 'px;width:' + k.w + 'px;height:auto;--r:' + k.rot + 'deg;transform:rotate(' + k.rot + 'deg);user-select:none' };
+    });
+    var I = {
+      select: 'M5 3 L5 19 L9.5 14.5 L12.5 21 L15 20 L12 13.5 L18 13.5 Z',
+      hand: 'M8 13 V6 A1.5 1.5 0 0 1 11 6 V12 M11 11 V4.5 A1.5 1.5 0 0 1 14 4.5 V12 M14 11.5 V6 A1.5 1.5 0 0 1 17 6 V14 C17 18 15 21 11 21 C8 21 6.5 19.5 5 17 L3.6 14.4 A1.5 1.5 0 0 1 6.2 12.9 L8 15',
+      pen: 'M4 20 L8 19 L19 8 L16 5 L5 16 Z M14 7 L17 10',
+      hl: 'M9 15 L5 19 H10 L12 17 M9 15 L16 4 L20 7 L13 18 Z',
+      note: 'M5 4 H19 V14 L14 20 H5 Z M14 20 V14 H19',
+      sticker: 'M12 3 A9 9 0 1 0 21 12 L21 12 A9 9 0 0 1 12 3 Z M21 12 C17 12 12 11 12 3',
+      erase: 'M4 15 L13 6 L19 12 L12 19 H7 Z M9 10 L15 16 M7 19 H20'
+    };
+    var tools = [['select', 'Select and move', 'V'], ['hand', 'Hand, pan around', 'H'], ['pen', 'Sketchpen', 'P'], ['hl', 'Highlighter', 'Y'], ['note', 'Sticky note', 'N'], ['sticker', 'Stickers', 'S'], ['erase', 'Eraser', 'E']].map(function (t) {
+      return { label: t[1], title: t[1] + ' (' + t[2] + ')', k: t[2], icon: I[t[0]], on: st.tool === t[0] ? 'true' : 'false', pick: function () { pickTool(t[0]); } };
+    });
+    var cursor = { select: 'default', hand: st.drag && st.drag.kind === 'pan' ? 'grabbing' : 'grab', pen: 'crosshair', hl: 'crosshair', note: 'copy', sticker: 'copy', erase: 'not-allowed' }[st.tool];
+    var aiNote = function (text) {
+      var a = st.askAt;
+      self.setState({ askAt: null, seq: st.seq + 1, notes: st.notes.concat([{ id: nextId('n'), x: (a ? a.x : 900) + 40, y: (a ? a.y : 300) - 30, color: 'blue', rot: 1.5, text: text, byAI: true }]) });
+    };
+    return {
+      vpRef: function (el) { self.vp = el; },
+      vpStyle: 'position:relative;flex:1;min-width:0;overflow:hidden;touch-action:none;cursor:' + cursor + ';background-size:' + (24 * st.zoom).toFixed(2) + 'px ' + (24 * st.zoom).toFixed(2) + 'px;background-position:' + st.px.toFixed(1) + 'px ' + st.py.toFixed(1) + 'px',
+      worldStyle: 'position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;transform:translate(' + st.px.toFixed(1) + 'px,' + st.py.toFixed(1) + 'px) scale(' + st.zoom.toFixed(4) + ')',
+      pages: pages, strokes: strokes, notes: notes, stickers: stickers, tools: tools,
+      pageList: raw.map(function (p, i) { return { n: i + 1, label: p.label, go: function () { goPage(i); } }; }),
+      down: down, move: move, up: up, wheel: wheel, key: key,
+      stop: function (e) { e.stopPropagation(); },
+      zoomPct: Math.round(st.zoom * 100) + '%',
+      zoomIn: function () { setZoom(st.zoom * 1.2); }, zoomOut: function () { setZoom(st.zoom / 1.2); }, fit: fit,
+      showTray: st.tool === 'sticker',
+      tray: tray.map(function (t, i) { return { label: t.label, src: t.src, on: st.sticker === i ? 'true' : 'false', pick: function () { self.setState({ sticker: i, hint: '' }); } }; }),
+      showHint: !!st.hint && st.tool !== 'sticker', hint: st.hint,
+      showAsk: !!st.askAt,
+      askStyle: st.askAt ? 'position:absolute;left:' + st.askAt.x + 'px;top:' + st.askAt.y + 'px;transform-origin:0 0;transform:scale(' + (1 / st.zoom).toFixed(3) + ');z-index:3' : '',
+      askOpts: ['Rewrite it clearer', 'Make it shorter', 'Add a spec reference', 'Explain this to me'].map(function (l) {
+        return { label: l, pick: function () { aiNote(l === 'Explain this to me' ? 'This sets the max borehole depth. 20 m clears the footing pressure bulb with margin.' : 'Done: ' + l.toLowerCase() + ' in Rev B. Shown as a tracked change.'); } };
+      }),
+      closeAsk: function () { self.setState({ askAt: null }); },
+      askText: st.askText,
+      askTyped: function (e) { self.setState({ askText: e.target.value }); },
+      askSubmit: function (e) { if (e && e.preventDefault) e.preventDefault(); if (!st.askText.trim()) return; var t = st.askText.trim(); self.setState({ askText: '' }); aiNote('On it: "' + t + '". I will show the edit as a tracked change.'); }
+    };
+  }
+}
+</script>
+</body>
+</html>

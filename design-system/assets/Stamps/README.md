@@ -1,0 +1,1 @@
+Rubber stamps in fixed Paper ink, for exported PDFs and marketing. In the app use the themeable Stamp component. Inks: Draft `#665d55`, For review `#e05a22`, Approved `#3a7549`, On hold `#c0392b`, Revised `#2c5a9a`, IFC `#111111`.

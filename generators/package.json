@@ -1,0 +1,39 @@
+{
+  "name": "ds",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fontsource/architects-daughter": "^5.3.0",
+    "@fontsource/archivo-black": "^5.3.0",
+    "@fontsource/caveat": "^5.3.0",
+    "@fontsource/coming-soon": "^5.3.0",
+    "@fontsource/delicious-handrawn": "^5.3.0",
+    "@fontsource/delius": "^5.3.0",
+    "@fontsource/gaegu": "^5.3.0",
+    "@fontsource/gloria-hallelujah": "^5.3.0",
+    "@fontsource/gochi-hand": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/indie-flower": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "@fontsource/just-another-hand": "^5.3.0",
+    "@fontsource/kalam": "^5.3.0",
+    "@fontsource/mynerve": "^5.3.0",
+    "@fontsource/nanum-pen-script": "^5.3.0",
+    "@fontsource/patrick-hand": "^5.3.0",
+    "@fontsource/schoolbell": "^5.3.0",
+    "@fontsource/shantell-sans": "^5.3.0",
+    "@fontsource/silkscreen": "^5.3.0",
+    "@fontsource/sour-gummy": "^5.3.0",
+    "@fontsource/space-mono": "^5.3.0",
+    "@fontsource/yellowtail": "^5.3.0",
+    "playwright": "^1.64.1"
+  }
+}
