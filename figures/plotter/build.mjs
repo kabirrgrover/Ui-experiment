@@ -2,8 +2,8 @@
 import { writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import * as k from "/root/.claude/skills/anatomy/kit/iso-kit.mjs";
-import * as G from "/root/.claude/skills/anatomy/kit/lathe.mjs";
+import * as k from "../../anatomy/kit/iso-kit.mjs";
+import * as G from "../../anatomy/kit/lathe.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const theme = process.argv.includes("--dark") ? "dark" : "light";

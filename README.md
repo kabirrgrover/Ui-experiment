@@ -23,6 +23,8 @@ screens/           the four screens as Claude Design canvas artboards
   assets/            every image the screens reference
   blob-map.json      original hosted asset id -> local file (screens already rewritten to local paths)
 
+anatomy/           the anatomy skill, vendored (kit used by figures/)
+
 figures/           isometric drafting-wait figures (built with the anatomy kit)
   crane/             tower crane that stacks storeys as the doc drafts; build.mjs + layer SVGs
   plotter/           pen plotter that draws pages; build.mjs + layer SVGs
@@ -35,5 +37,5 @@ references/        sticker sheets and the GPT-made PNG stickers (cone, tape, cra
 
 - The `.dc.html` files use the Claude Design canvas format (`<x-dc>`, `{{holes}}`, `<sc-for>`, `<sc-if>`, a `DCLogic` class). They won't run as plain HTML; treat them as the spec for markup, styles and behaviour when porting.
 - Figures are split into stacked SVG layers and animated with CSS transforms (hoist moves `translateY(-2.385 * n %)`, rope height `((136.42 - 12.401 * n) / 5.2)%`). Layer geometry lives in `crane.json` / `plotter.json`.
-- Figure builds import the anatomy kit (`kit/iso-kit.mjs`, `kit/lathe.mjs`), which isn't vendored here. The built SVGs are checked in, so you only need the kit to rebuild.
+- `anatomy/` is the full anatomy skill (SKILL.md, kit, scripts, references, examples). The figure builds import it by relative path, so `cd figures/crane && node build.mjs` works from a fresh clone. Built and checked on Node 22.22. No npm deps needed for the build; `kit/react/` needs react, and the capture scripts need a Chromium.
 - Fonts: Coming Soon for display and questions, Shantell Sans for handwriting, Instrument Sans for everything else (buttons at 600 / 15px).
