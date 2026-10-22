@@ -1,0 +1,130 @@
+{
+ "title": "Anatomy of AI DocBuilder",
+ "width": 640,
+ "height": 420,
+ "order": [
+  "sources",
+  "questions",
+  "canvas",
+  "drafting",
+  "checks",
+  "review",
+  "folders"
+ ],
+ "modules": [
+  {
+   "id": "sources",
+   "label": "Sources",
+   "description": "Drawers of standards, past SRs, drawings, vendor docs, procedures and templates the AI reads from.",
+   "bbox": {
+    "x": 224.3,
+    "y": 26.7,
+    "w": 115,
+    "h": 143
+   },
+   "layers": {
+    "light": "parts-sources.svg",
+    "dark": "parts-sources-dark.svg"
+   }
+  },
+  {
+   "id": "questions",
+   "label": "Guided questions",
+   "description": "Card feeder: each answer card feeds the job and decides which sections go in.",
+   "bbox": {
+    "x": 296.8,
+    "y": 81.4,
+    "w": 85,
+    "h": 114.3
+   },
+   "layers": {
+    "light": "parts-questions.svg",
+    "dark": "parts-questions-dark.svg"
+   }
+  },
+  {
+   "id": "drafting",
+   "label": "Drafting engine",
+   "description": "Gantry plotter that writes the document section by section. The lit pen is what is being written now.",
+   "bbox": {
+    "x": 234.4,
+    "y": 109.8,
+    "w": 246.1,
+    "h": 200.5
+   },
+   "layers": {
+    "light": "parts-drafting.svg",
+    "dark": "parts-drafting-dark.svg"
+   }
+  },
+  {
+   "id": "checks",
+   "label": "Checks & reasoning",
+   "description": "Dial gauge on the fence: the needle reads how sure the draft is against its sources.",
+   "bbox": {
+    "x": 477.1,
+    "y": 195.3,
+    "w": 75.4,
+    "h": 105.1
+   },
+   "layers": {
+    "light": "parts-checks.svg",
+    "dark": "parts-checks-dark.svg"
+   }
+  },
+  {
+   "id": "review",
+   "label": "Review stamp",
+   "description": "Stamp arm that marks a finished draft for review, approved or on hold.",
+   "bbox": {
+    "x": 400.2,
+    "y": 201.3,
+    "w": 101.3,
+    "h": 132.5
+   },
+   "layers": {
+    "light": "parts-review.svg",
+    "dark": "parts-review-dark.svg"
+   }
+  },
+  {
+   "id": "folders",
+   "label": "Folders",
+   "description": "Out-tray where finished pages stack, then slide into a pastel folder.",
+   "bbox": {
+    "x": 253.1,
+    "y": 239.4,
+    "w": 169.2,
+    "h": 132
+   },
+   "layers": {
+    "light": "parts-folders.svg",
+    "dark": "parts-folders-dark.svg"
+   }
+  },
+  {
+   "id": "canvas",
+   "label": "Canvas",
+   "description": "Markup table with a pen, a highlighter and sticky notes for editing the draft.",
+   "bbox": {
+    "x": 77.6,
+    "y": 100.4,
+    "w": 222.8,
+    "h": 145.8
+   },
+   "layers": {
+    "light": "parts-canvas.svg",
+    "dark": "parts-canvas-dark.svg"
+   }
+  }
+ ],
+ "base": {
+  "light": "parts-base.svg",
+  "dark": "parts-base-dark.svg"
+ },
+ "composed": {
+  "light": "parts.svg",
+  "dark": "parts-dark.svg"
+ },
+ "stacking": "Draw parts-base first, then the module layers in `order` (back to front). All layers share the same viewBox."
+}
