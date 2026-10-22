@@ -109,3 +109,25 @@
   .st-sticker--mobile:nth-child(5) { left: -10px !important; top: auto !important; bottom: -20px; width: 54px !important; }
 }
 @media (prefers-reduced-motion: reduce) { .st-sticker { animation: none; } }
+
+/* ---------- coming soon lots ---------- */
+.st-soon { padding: 56px clamp(20px, 4vw, 56px) 8px; }
+.st-soon__head { position: relative; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 22px; }
+.st-soon__title { margin: 0; font: 400 clamp(30px, 3.4vw, 40px)/1.1 var(--font-display); }
+.st-soon__sub { margin: 0; font: 500 17px/22px var(--font-hand); color: var(--blue); }
+.st-soon__tape { position: absolute; right: 0; top: -18px; width: 220px; height: auto; rotate: 3deg; pointer-events: none; filter: drop-shadow(0 6px 8px rgba(17,17,17,.12)); }
+.st-soon__lots { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.st-lot { position: relative; display: flex; flex-direction: column; gap: 6px; min-height: 150px; padding: 18px 18px 16px;
+  background: repeating-linear-gradient(-45deg, transparent 0 10px, rgba(17,17,17,.025) 10px 11px), var(--paper);
+  border: 1.5px dashed var(--pencil); border-radius: 6px 10px 7px 11px; transition: border-color 160ms ease, translate 240ms var(--ease-slap); }
+.st-lot:hover { border-color: var(--ink); translate: 0 -3px; }
+.st-lot__top { display: flex; justify-content: space-between; align-items: center; min-height: 26px; }
+.st-lot__code { font: 700 12px/1 var(--font-sans); letter-spacing: .06em; padding: 5px 8px; border: 1.5px solid var(--ink); border-radius: 4px; background: var(--sticky-yellow); }
+.st-lot__name { margin: 4px 0 0; font: 700 20px/24px var(--font-hand); }
+.st-lot__line { margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+.st-lot__stamp { rotate: 4deg; font: 700 10px/1 var(--font-sans); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--safety); border: 2px solid var(--safety); outline: 1px solid var(--safety); outline-offset: -5px; border-radius: 4px; padding: 6px 8px;
+  -webkit-mask-image: var(--db-grunge); mask-image: var(--db-grunge); mask-size: 240px 240px; }
+@media (max-width: 640px) { .st-soon__tape { width: 140px; top: -30px; } .st-soon__lots { grid-template-columns: 1fr 1fr; gap: 12px; } .st-lot { min-height: 0; } }
+@media (max-width: 900px) and (min-width: 641px) { .st-soon__lots { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 420px) { .st-soon__lots { grid-template-columns: 1fr; } }

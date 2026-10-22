@@ -14,7 +14,7 @@ Read this first if you're picking up the front end. Everything you need is in th
 
 | Route | Screen | Folder |
 |---|---|---|
-| `/` | Spec Street: hero, input, stickers, endless street of doc-type doors | `src/screens/street/` |
+| `/` | Spec Street: hero, input, stickers, endless street of doc-type doors, "next up" coming-soon lots | `src/screens/street/` |
 | `/chat` | Guided SR chat → live drafting → flip-book reveal | `src/screens/chat/` |
 | `/canvas` | Markup canvas for the drafted doc | `src/screens/canvas/` |
 | `/folders` | Frosted pastel folders, opened folder view | `src/screens/folders/` |
@@ -106,6 +106,12 @@ Full brand book: `design-system/README.md`. The short version:
 - `screens/` holds the original Claude Design artboards (spec reference) plus `assets/`.
 - `generators/` has the scripts that drew the stickers, buildings and street.
 - `screenshots/` is regenerated with `cd app && npm run build && npm run shots` (needs Chromium; set `CHROME=/path`).
+
+## Roadmap shown on the main screen
+
+`src/screens/street/ComingSoon.tsx` lists what's next as "coming soon" lots (display only, no logic):
+SRQ (SR for quote), bid period support, TBE (technical bid evaluation), SRP (SR conformed for award),
+appendices, and agile click-by-click data entry. When one ships, remove it from `LOTS` and add it as a real door or flow.
 
 ## Not done yet / honest gaps
 

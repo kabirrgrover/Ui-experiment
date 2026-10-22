@@ -1,4 +1,5 @@
 import { HeroStickers } from "./HeroStickers";
+import { ComingSoon } from "./ComingSoon";
 import { useId, useMemo, useState, type CSSProperties, type FormEvent } from "react";
 import { AppHeader } from "../../components/AppHeader";
 import { linkTo, navigate } from "../../lib/router";
@@ -106,6 +107,8 @@ export default function StreetScreen() {
         </div>
         <div className="st-kerb" aria-hidden="true" />
       </section>
+
+      <ComingSoon />
 
       <footer className="st-foot">
         <span>Hover the street to stop it. Drafts save as you go.</span>
