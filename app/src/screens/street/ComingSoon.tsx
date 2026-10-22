@@ -2,15 +2,15 @@
  * "Coming soon" lots on Spec Street: the next things Docbuilder will help with.
  * Display only for now. When one ships, move it into the street as a real door.
  */
-type Lot = { code?: string; name: string; line: string };
+type Lot = { code?: string; name: string };
 
 const LOTS: Lot[] = [
-  { code: "SRQ", name: "SR for quote", line: "Turn a finished SR into a bid package: instructions, pricing schedule, closing date." },
-  { name: "Bid period support", line: "Log bidder questions, draft answers and addenda, keep every bidder on the same page." },
-  { code: "TBE", name: "Technical bid evaluation", line: "Check every bid against every requirement, with the page it came from." },
-  { code: "SRP", name: "SR conformed for award", line: "Fold in addenda and agreed deviations, then lock the award version." },
-  { name: "Appendices", line: "See what's missing, number the attachments, keep every cross-reference right." },
-  { name: "Agile data entry", line: "Answer click by click. Smart options, fill from files, keyboard first." },
+  { code: "SRQ", name: "SR for quote" },
+  { name: "Bid period support" },
+  { code: "TBE", name: "Technical bid evaluation" },
+  { code: "SRP", name: "SR conformed for award" },
+  { name: "Appendices" },
+  { name: "Agile data entry" },
 ];
 
 export function ComingSoon() {
@@ -29,7 +29,6 @@ export function ComingSoon() {
               <span className="st-lot__stamp" aria-hidden="true">coming soon</span>
             </div>
             <h3 className="st-lot__name">{l.name}</h3>
-            <p className="st-lot__line">{l.line}</p>
             <span className="sr-only">Coming soon.</span>
           </li>
         ))}

@@ -109,7 +109,7 @@ Full brand book: `design-system/README.md`. The short version:
 
 ## Roadmap shown on the main screen
 
-`src/screens/street/ComingSoon.tsx` lists what's next as "coming soon" lots (display only, no logic):
+`src/screens/street/ComingSoon.tsx` lists what's next as "coming soon" lots (name and code only, no descriptions yet, no logic):
 SRQ (SR for quote), bid period support, TBE (technical bid evaluation), SRP (SR conformed for award),
 appendices, and agile click-by-click data entry. When one ships, remove it from `LOTS` and add it as a real door or flow.
 
