@@ -1,5 +1,6 @@
 import type { DraftPhase, Section } from "../../data/geotechSR";
 import { NOW_LINES, SOURCES } from "../../data/geotechSR";
+import { ScrambleText } from "../../components/fx/ScrambleText";
 import { linkTo } from "../../lib/router";
 import { CraneThumb, DraftFigure, type FigureName } from "./DraftFigure";
 
@@ -43,7 +44,7 @@ export function DraftingCard({ phase, done, sections, fig, onFig, peek, onPeek, 
           </div>
           <DraftFigure name={fig} set={done} />
           <div className="ch-stage__title">{title}</div>
-          <div role="status" className="ch-stage__now">{nowLine}</div>
+          <div role="status" className="ch-stage__now"><ScrambleText text={nowLine} /></div>
           <div className="ch-stage__bar">{bar}</div>
           <div className="ch-stage__sub ch-num">{sub}</div>
           <div aria-label="Sources pulled so far" className="ch-refs">

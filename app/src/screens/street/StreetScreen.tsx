@@ -1,5 +1,6 @@
 import { HeroStickers } from "./HeroStickers";
 import { ComingSoon } from "./ComingSoon";
+import { AsciiSite } from "../../components/fx/AsciiSite";
 import { useId, useMemo, useState, type CSSProperties, type FormEvent } from "react";
 import { AppHeader } from "../../components/AppHeader";
 import { linkTo, navigate } from "../../lib/router";
@@ -109,6 +110,8 @@ export default function StreetScreen() {
       </section>
 
       <ComingSoon />
+
+      <div className="st-ascii"><AsciiSite width={180} /></div>
 
       <footer className="st-foot">
         <span>Hover the street to stop it. Drafts save as you go.</span>

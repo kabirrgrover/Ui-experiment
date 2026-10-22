@@ -44,6 +44,9 @@ data/geotechSR.ts       ALL demo content: questions, outline, sources, thinking 
 components/AppHeader    shared top bar (sticker pops in on nav hover)
 components/thinking/    ThinkingPanel + ThinkingHandle (new "thinking & sources" drawer)
 components/flipbook/    DocFlipbook (doc-ready 3D page-flip reveal)
+components/fx/          small polish, no deps: ScrambleText (drafting status line), CountUp (folder counts),
+                        InkSparks (ink burst on primary buttons and answer picks, opt in with data-spark),
+                        AsciiSite (drifting ASCII building site above the Spec Street footer)
 screens/<name>/         one folder per screen, own CSS file with a prefix (st- ch- cv- fo-)
 ```
 
@@ -75,6 +78,14 @@ screens/<name>/         one folder per screen, own CSS file with a prefix (st- c
   - Tools: V select, H hand, P pen, Y highlighter (then ask AI), N note, S sticker, E eraser.
   - Also: Space or middle-click pans, Ctrl/Cmd+wheel zooms at the cursor, Ctrl/Cmd+C/X/V copy, cut and paste notes and stickers, Delete removes, Ctrl/Cmd+Z undoes.
 - **Folders:** data lives in `foldersData.ts`. The frosted look is `backdrop-filter` plus a clip-path tab.
+
+## Scope
+
+This UI is for the POC. Keep features small. Notes from review:
+- Sources the AI reads are stripped reference docs users never see, so don't build user-facing "came from doc X" links.
+- No keyboard-shortcut features for now.
+- Assigned comments: only worth it for PEP later.
+- Polish is welcome if subtle: React Bits style effects (hand-written, no new deps) and light ASCII motion.
 
 ## Design rules (don't break these)
 

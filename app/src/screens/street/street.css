@@ -131,3 +131,5 @@
 @media (max-width: 640px) { .st-soon__tape { width: 140px; top: -30px; } .st-soon__lots { grid-template-columns: 1fr 1fr; gap: 12px; } .st-lot { min-height: 0; } }
 @media (max-width: 900px) and (min-width: 641px) { .st-soon__lots { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 420px) { .st-soon__lots { grid-template-columns: 1fr; } }
+
+.st-ascii { padding: 36px clamp(20px, 4vw, 56px) 0; display: flex; justify-content: center; }

@@ -1,4 +1,5 @@
 import { useId, useState, type CSSProperties } from "react";
+import { CountUp } from "../../components/fx/CountUp";
 import { AppHeader } from "../../components/AppHeader";
 import { linkTo, navigate, useQuery } from "../../lib/router";
 import {
@@ -88,7 +89,7 @@ function FolderButton({ folder: f }: { folder: Folder }) {
         </span>
       </span>
       <span className="fo-name">{f.name}</span>
-      <span className="fo-count">{f.n} documents</span>
+      <span className="fo-count"><CountUp to={f.n} /> documents</span>
     </button>
   );
 }
