@@ -1,3 +1,4 @@
+import { HeroStickers } from "./HeroStickers";
 import { useId, useMemo, useState, type CSSProperties, type FormEvent } from "react";
 import { AppHeader } from "../../components/AppHeader";
 import { linkTo, navigate } from "../../lib/router";
@@ -52,6 +53,7 @@ export default function StreetScreen() {
 
       <section className="st-hero">
         <div className="db-grid st-hero__grid" aria-hidden="true" />
+        <HeroStickers />
         <h1 className="st-hero__title">what are we drafting today?</h1>
         <p className="st-hero__sub">Tell me what you need, or knock on a door down Spec Street.</p>
         <form onSubmit={start} className="st-field">

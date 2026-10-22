@@ -1,1 +1,0 @@
-{"root":["./src/App.tsx","./src/main.tsx","./src/components/AppHeader.tsx","./src/data/geotechSR.ts","./src/lib/assets.ts","./src/lib/router.ts","./src/screens/canvas/CanvasScreen.tsx","./src/screens/chat/ChatScreen.tsx","./src/screens/folders/FoldersScreen.tsx","./src/screens/street/StreetScreen.tsx"],"version":"5.9.3"}

@@ -2,11 +2,14 @@
 
 Design exploration for AI Docbuilder: a guided chat that drafts construction and engineering documents (SR, MR, PEP), plus a canvas to mark them up and folders to keep them in. White page, colour only in stickers, sticky notes and folders. References: HeyTea, Woset, Sand Studio / DRAE sticker kits, MyNote, frosted pastel folders.
 
-This is a design skeleton, not a production app. The screens are meant to be ported to React for Databricks Apps.
+**Start with [HANDOFF.md](HANDOFF.md).** The working front end is `app/` (React 19 + TypeScript + Vite, Databricks Apps ready). Screenshots of every screen are in `screenshots/`.
 
 ## What's in here
 
 ```
+app/               the React 19 + TS app: all four screens, thinking & sources panel, flip-book reveal
+screenshots/       every screen at desktop and phone width, plus the parts figure
+
 design-system/     tokens, brand README, components, fonts, all sticker/doodle/stamp assets
   tokens.json        colours, type (Coming Soon / Shantell Sans / Instrument Sans), radii, motion
   components/        Button, Chip, DocTag, StickyNote, Folder, Chat, Stamp, Marks, WorkspaceTabs, Cover
@@ -14,7 +17,7 @@ design-system/     tokens, brand README, components, fonts, all sticker/doodle/s
   assets/            Stickers (44 SVG + 4 PNG), SR Types (11 doodles), Doodles, Stamps
   fonts/             woff2 files (all OFL)
 
-screens/           the four screens as Claude Design canvas artboards
+screens/           the original Claude Design artboards (spec reference for app/)
   Main.dc.html       Spec Street: the endless storefront selector for doc types
   Chat.dc.html       guided questions, crane past-chats, drafting stage, thinking & sources drawer
   Canvas.dc.html     Figma/Excalidraw style markup canvas with pages, pen, highlighter, notes, stickers
@@ -28,6 +31,7 @@ anatomy/           the anatomy skill, vendored (kit used by figures/)
 figures/           isometric drafting-wait figures (built with the anatomy kit)
   crane/             tower crane that stacks storeys as the doc drafts; build.mjs + layer SVGs
   plotter/           pen plotter that draws pages; build.mjs + layer SVGs
+  parts/             Anatomy of AI DocBuilder: the product's 7 parts as one bench; light + dark layers, parts.json
 
 generators/        Python / Node scripts that drew the stickers, doodles, buildings and street
 references/        sticker sheets and the GPT-made PNG stickers (cone, tape, crane, glove)
