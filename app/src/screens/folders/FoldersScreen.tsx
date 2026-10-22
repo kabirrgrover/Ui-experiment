@@ -1,0 +1,10 @@
+import { AppHeader } from "../../components/AppHeader";
+
+export default function FoldersScreen() {
+  return (
+    <div className="db-page" style={{ minHeight: "100vh" }}>
+      <AppHeader />
+      <main style={{ padding: 40 }}>FoldersScreen (todo)</main>
+    </div>
+  );
+}

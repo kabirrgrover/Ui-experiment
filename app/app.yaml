@@ -1,0 +1,2 @@
+# Databricks Apps entry. Build first (npm run build), then the app runs the static server.
+command: ["node", "server.mjs"]
