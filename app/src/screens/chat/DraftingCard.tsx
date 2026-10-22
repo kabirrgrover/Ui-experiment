@@ -1,5 +1,4 @@
-import type { DraftPhase, Section } from "../../data/geotechSR";
-import { NOW_LINES, SOURCES } from "../../data/geotechSR";
+import type { DraftPhase, Section, Source } from "../../data/geotechSR";
 import { ScrambleText } from "../../components/fx/ScrambleText";
 import { linkTo } from "../../lib/router";
 import { CraneThumb, DraftFigure, type FigureName } from "./DraftFigure";
@@ -17,10 +16,15 @@ interface Props {
   onViewDraft: () => void;
   onDownload: () => void;
   onRestart: () => void;
+  nowLines: string[];
+  sources: Source[];
+  /** Prefix for outline row ids, so several sessions can share the page. */
+  idPrefix: string;
+  restartLabel: string;
 }
 
 /** The draft card in the thread: live figure while writing, then a done header, the outline and actions. */
-export function DraftingCard({ phase, done, sections, fig, onFig, peek, onPeek, onViewDraft, onDownload, onRestart }: Props) {
+export function DraftingCard({ phase, done, sections, fig, onFig, peek, onPeek, onViewDraft, onDownload, onRestart, nowLines, sources, idPrefix, restartLabel }: Props) {
   const total = sections.length;
   const isDone = phase === "done";
   const busy = phase === "write" || phase === "wait";
@@ -29,8 +33,8 @@ export function DraftingCard({ phase, done, sections, fig, onFig, peek, onPeek, 
   const pct = isDone ? 100 : Math.round((done / total) * 100);
   const title = isDone ? "your SR is ready" : phase === "wait" ? "paused for one question" : "drafting your SR";
   const sub = isDone ? `${pagesTotal} pages · ${total} sections · saved to Folders` : `page ${pagesSoFar} of ~${pagesTotal} · section ${Math.min(done + 1, total)} of ${total}`;
-  const nowLine = phase === "wait" ? "paused: one quick question below" : NOW_LINES[Math.min(done, NOW_LINES.length - 1)];
-  const refs = SOURCES.filter((r) => done >= r.at || isDone);
+  const nowLine = phase === "wait" ? "paused: one quick question below" : nowLines[Math.min(done, nowLines.length - 1)];
+  const refs = sources.filter((r) => done >= r.at || isDone);
   const bar = <div aria-hidden="true" className="ch-bar"><div style={{ width: `${pct}%` }} /></div>;
 
   return (
@@ -67,23 +71,23 @@ export function DraftingCard({ phase, done, sections, fig, onFig, peek, onPeek, 
           <img className="ch-slap ch-donehead__stamp" src="/assets/specd-signed.svg" alt="" />
         </div>
       )}
-      <Outline phase={phase} done={done} sections={sections} peek={peek} onPeek={onPeek} />
+      <Outline phase={phase} done={done} sections={sections} peek={peek} onPeek={onPeek} idPrefix={idPrefix} />
       {isDone && (
         <div className="ch-actions">
           <button type="button" className="ch-box ch-box--primary" onClick={onViewDraft}>view draft</button>
           <a href="/canvas" onClick={linkTo("/canvas")} className="ch-box">open in canvas</a>
           <button type="button" className="ch-box" onClick={onDownload}>download</button>
-          <button type="button" className="ch-restart" onClick={onRestart}>run the demo again</button>
+          <button type="button" className="ch-restart" onClick={onRestart}>{restartLabel}</button>
         </div>
       )}
     </div>
   );
 }
 
-interface OutlineProps { phase: DraftPhase; done: number; sections: Section[]; peek: number | null; onPeek: (i: number | null) => void }
+interface OutlineProps { phase: DraftPhase; done: number; sections: Section[]; peek: number | null; onPeek: (i: number | null) => void; idPrefix: string }
 
 /** Section list with live status. Finished sections can be peeked. */
-export function Outline({ phase, done, sections, peek, onPeek }: OutlineProps) {
+export function Outline({ phase, done, sections, peek, onPeek, idPrefix }: OutlineProps) {
   return (
     <ol aria-label="Sections" className="ch-outline">
       {sections.map((s, i) => {
@@ -93,7 +97,7 @@ export function Outline({ phase, done, sections, peek, onPeek }: OutlineProps) {
         const state = isDone ? "done" : isNow ? "now" : isWait ? "wait" : "todo";
         const open = peek === i;
         return (
-          <li key={s.n} id={`ch-sec-${i}`} className={`ch-row is-${state}`}>
+          <li key={s.n} id={`${idPrefix}-sec-${i}`} className={`ch-row is-${state}`}>
             <div className="ch-row__line">
               <span aria-hidden="true" className="ch-row__icon">{isDone ? "✓" : isWait ? "?" : ""}</span>
               <span className="ch-row__label"><span className="ch-row__num ch-num">{s.n}.</span>{s.title}</span>

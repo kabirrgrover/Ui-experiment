@@ -15,20 +15,23 @@ Read this first if you're picking up the front end. Everything you need is in th
 | Route | Screen | Folder |
 |---|---|---|
 | `/` | Spec Street: hero, input, stickers, endless street of doc-type doors, "next up" coming-soon lots | `src/screens/street/` |
-| `/chat` | Guided SR chat → live drafting → flip-book reveal | `src/screens/chat/` |
+| `/chat` | Tabbed chat workspace: 3 self-playing SR demos, 2 MR title tabs, a live run; guided questions → drafting → flip-book | `src/screens/chat/` |
 | `/canvas` | Markup canvas for the drafted doc | `src/screens/canvas/` |
 | `/folders` | Frosted pastel folders, opened folder view | `src/screens/folders/` |
 
 ### Deep links (handy for demos, tests and screenshots)
 
 - **Chat:**
-  - `?past=1` opens past chats on the crane
-  - `?state=ask|drafting|wait|done` jumps to a phase
-  - `&book=1` opens the flip-book
-  - `&panel=1` opens thinking & sources
-  - `&figure=crane|plotter` picks the drafting figure
-  - `?type=sr|mr|pep&kind=<slug>` comes from a street door
-  - `?q=<text>` comes from the hero input
+  - Plain `/chat` loads all tabs and starts the demos playing.
+  - `?autoplay=0` loads the tabs without playing; demo tabs show three answers already in.
+  - `?tab=<index>` picks the active tab (0 Geotech, 1 Concrete, 2 Hydro, 3 and 4 the MRs, 5 Live run).
+  - `?new=1` opens a new live tab. `?type=…` from a street door and `?q=…` from the hero input do the same.
+  - These pin the first SR tab and switch autoplay off, so screenshots stay the same every run:
+    - `?past=1` opens past chats on the crane
+    - `?state=ask|drafting|wait|done` jumps to a phase
+    - `&book=1` opens the flip-book
+    - `&panel=1` opens thinking & sources
+    - `&figure=crane|plotter` picks the drafting figure
 - **Folders:** `?open=sr|mr|pep|north|subb|shared` opens a folder
 
 ## Layout of `app/src`
@@ -40,8 +43,11 @@ lib/assets.ts           sticker name -> /assets path map
 styles/tokens.css       GENERATED from design-system/tokens.json (colours, type, spacing, motion)
 styles/components.css   design-system component classes (db-btn, db-chip, db-sticky, db-stamp…)
 styles/global.css       base + graph paper + reduced motion
-data/geotechSR.ts       ALL demo content: questions, outline, sources, thinking steps. Replace with API data.
+data/geotechSR.ts       the geotech demo content plus shared types (Question, Section, Source, ThoughtStep)
+data/scenarios.ts       every SR the chat can run: geotech, concrete, hydro. One Scenario = questions, outline,
+                        sources, thinking steps, now-lines, checks, follow-up, demo answers, figure. Replace with API data.
 components/AppHeader    shared top bar (sticker pops in on nav hover)
+components/BrandLogo    company logo slot: drop the official file at public/brand/bechtel-logo.svg (or .png); renders nothing until then. Never redraw it.
 components/thinking/    ThinkingPanel + ThinkingHandle (new "thinking & sources" drawer)
 components/flipbook/    DocFlipbook (doc-ready 3D page-flip reveal)
 components/fx/          small polish, no deps: ScrambleText (drafting status line), CountUp (folder counts),
@@ -52,10 +58,27 @@ screens/<name>/         one folder per screen, own CSS file with a prefix (st- c
 
 ## How the pieces behave
 
-- **Chat state** is one reducer in `screens/chat/state.ts`.
-  - Phases go `ask → write → wait → write → done`.
-  - Drafting ticks every 900 ms per section, and pauses at section 6 for the standby follow-up question.
-  - When it finishes, the flip-book opens once automatically. "view draft" reopens it.
+- **Chat tabs** (`screens/chat/ChatScreen.tsx`). The screen only owns the tab list and which tab is active.
+  - Every tab is its own session (`ChatSession.tsx`) with its own reducer (`state.ts`).
+  - All sessions stay mounted. Inactive ones are just `hidden`, so demos keep playing in background tabs.
+  - Only the active tab renders the fixed thinking handle and panel, and the flip-book.
+  - Starting tabs (`INITIAL_TABS` in `state.ts`):
+    - **3 SR demos that play themselves:** Geotech, North pad (crane), Concrete testing, pour 4 (plotter), Hydro test, cooling loop (crane). A pulsing orange dot means a demo is playing.
+    - **2 MR tabs, titles only:** Rebar, level 2 and Cable trays, substation B. They show a "MR drafting is coming soon" placeholder.
+    - **1 Live run tab** (blue dot): the geotech questions, answered by you.
+  - "+" in the tab strip, or the header's New chat while you're on /chat, opens a new live tab. From other screens, New chat goes to `/chat?new=1`.
+  - Any tab can be closed. Closing the active one activates its neighbour; closing them all shows an empty state.
+  - Past chats from the crane open as title-only tabs.
+- **Autoplay** (inside `ChatSession.tsx`):
+  - Each demo waits for its tab's `delay` (0, 2.5 and 5 s) so the three are at different stages.
+  - For each question it thinks for 0.9 s, shows its pick pressed for 0.5 s, then answers (about 1.4 s per question), with the user bubble and the AI's reply.
+  - Then it waits 1.2 s and drafts at 900 ms per section, with the figure building and the thinking panel filling live.
+  - At the follow-up question it waits 1.5 s, shows its pick, answers, and carries on to done. A full run is about 25 s.
+  - **Taking over:** a real click on an answer, the composer, the stepper, or a user bubble stops the demo for that tab and hands it to you.
+  - **Flip-book:** it opens only if the tab is in front when the draft finishes, or the first time you switch to a finished tab.
+  - "replay demo" on a finished demo restarts it; on a live tab the same link says "start over".
+  - There are no speed controls, by design.
+- **Session phases** go `ask → write → wait → write → done`. The pause comes at `followUp.at` (section 6 in all three demos).
 - **Drafting figures** are stacked SVG layers in `public/assets/crane-*.svg` and `plotter-*.svg`. `DraftFigure.tsx` moves them with CSS:
   - The hoist moves by `translateY(-2.385 * n %)`.
   - The rope height is `((136.42 - 12.401 * n) / 5.2)%`.
@@ -67,7 +90,7 @@ screens/<name>/         one folder per screen, own CSS file with a prefix (st- c
   - Source cards go queued → reading → used, with a stamp landing on used.
   - A ring shows how many sources have been used.
   - Under 640 px it becomes a bottom sheet.
-  - Props: `{ open, onClose, phase, done, answers, onJumpToSection }`. Keep it mounted and toggle `open`.
+  - Props: `{ open, onClose, phase, done, answers, onJumpToSection, scenario }`. Keep it mounted and toggle `open`. `scenario` decides which reasoning, sources and checks it shows.
 - **Flip-book** (`components/flipbook/`):
   - A `<dialog>` with a 3D cover flip, a riffle through the section pages, then it settles on the contents spread.
   - You can flip manually with click, drag, swipe or the arrow keys.

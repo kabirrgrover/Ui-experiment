@@ -1,12 +1,39 @@
-import { buildOutline, QUESTIONS, type DraftPhase } from "../../data/geotechSR";
+import type { DraftPhase } from "../../data/geotechSR";
+import type { Scenario } from "../../data/scenarios";
 
 /** A canned sticker reply to small talk ("coffee", "hi", "thanks"). */
 export interface Egg { said: string; img: string; text: string }
 
-export interface Tab { id: string; doc: string; title: string }
+/**
+ * One open tab = one chat session.
+ * - demo: a scenario that plays itself (questions, drafting, follow-up, done)
+ * - live: a scenario you answer yourself
+ * - saved: title only, opens the "saved doc" placeholder (MRs, past chats)
+ */
+export interface Tab {
+  id: string;
+  doc: string;
+  title: string;
+  kind: "demo" | "live" | "saved";
+  scenario?: string;
+  /** Autoplay start delay in ms for demo tabs. */
+  delay?: number;
+  /** Pastel tint key for the tab strip. */
+  tint?: string;
+}
+
+export const INITIAL_TABS: Tab[] = [
+  { id: "geo", doc: "SR", title: "Geotech, North pad", kind: "demo", scenario: "geotech", delay: 0, tint: "geo" },
+  { id: "pour", doc: "SR", title: "Concrete testing, pour 4", kind: "demo", scenario: "concrete", delay: 2500, tint: "pour" },
+  { id: "hydro", doc: "SR", title: "Hydro test, cooling loop", kind: "demo", scenario: "hydro", delay: 5000, tint: "sub" },
+  { id: "rebar", doc: "MR", title: "Rebar, level 2", kind: "saved", tint: "rebar" },
+  { id: "trays", doc: "MR", title: "Cable trays, substation B", kind: "saved", tint: "bridge" },
+  { id: "live", doc: "SR", title: "Live run", kind: "live", scenario: "geotech", tint: "lift" },
+];
 
 export interface ChatState {
-  /** Furthest question reached (index into QUESTIONS; QUESTIONS.length = all asked). */
+  sc: Scenario;
+  /** Furthest question reached (index into questions; questions.length = all asked). */
   step: number;
   /** One entry per question, "" when unanswered. */
   answers: string[];
@@ -24,41 +51,53 @@ export interface ChatState {
   text: string;
   panel: boolean;
   fig: "crane" | "plotter";
-  showPast: boolean;
-  active: string;
-  tabs: Tab[];
   book: boolean;
   /** The flip-book auto-opens once per draft. */
   bookShown: boolean;
+  /** Demo is playing itself. Any real click in the tab hands control to the user. */
+  auto: boolean;
+  /** Option the autoplay is about to pick (shown pressed for a beat). */
+  autoPick: string | null;
 }
 
-export const TOTAL = buildOutline([]).length;
-const DEMO_ANSWERS = ["North pad", "Boreholes and lab testing", "Class D", "", "", ""];
-const FULL_ANSWERS = ["North pad", "Boreholes and lab testing", "Class D", "3 × 20 m", "Within 2 weeks", "Factual report"];
+export interface SessionInit {
+  sc: Scenario;
+  kind: Tab["kind"];
+  autoplay: boolean;
+  /** URL overrides for the first SR tab: ?state= ?panel=1 ?book=1 ?figure= */
+  query?: URLSearchParams;
+}
 
-export const INITIAL_TABS: Tab[] = [
-  { id: "geo", doc: "SR", title: "Geotech, North pad" },
-  { id: "rebar", doc: "MR", title: "Rebar, level 2" },
-];
-
-/** Build the first state from the URL: ?past=1 ?state=ask|drafting|wait|done ?book=1 ?panel=1 ?figure=plotter */
-export function initState(q: URLSearchParams): ChatState {
-  const s: ChatState = {
-    step: 3, answers: [...DEMO_ANSWERS], editing: null, phase: "ask", done: 0, follow: null,
-    notes: [], eggs: [], peek: null, text: "", panel: q.get("panel") === "1",
-    fig: q.get("figure") === "plotter" ? "plotter" : "crane",
-    showPast: q.get("past") === "1", active: "geo", tabs: INITIAL_TABS, book: false, bookShown: false,
+function blank(sc: Scenario): ChatState {
+  return {
+    sc, step: 0, answers: sc.questions.map(() => ""), editing: null, phase: "ask", done: 0, follow: null,
+    notes: [], eggs: [], peek: null, text: "", panel: false, fig: sc.figure, book: false, bookShown: false,
+    auto: false, autoPick: null,
   };
-  const st = q.get("state");
+}
+
+/** First state for a session. Demo tabs without autoplay start with three answers in, so they never look empty. */
+export function initSession({ sc, kind, autoplay, query }: SessionInit): ChatState {
+  const s = blank(sc);
+  const total = sc.outline([]).length;
+  if (kind === "demo") {
+    if (autoplay) s.auto = true;
+    else { s.answers = sc.questions.map((_, i) => (i < 3 ? sc.demoAnswers[i] : "")); s.step = 3; }
+  }
+  if (!query) return s;
+  s.panel = query.get("panel") === "1";
+  const fig = query.get("figure");
+  if (fig === "plotter" || fig === "crane") s.fig = fig;
+  const st = query.get("state");
   if (st === "drafting" || st === "wait" || st === "done") {
-    s.answers = [...FULL_ANSWERS];
-    s.step = QUESTIONS.length;
+    s.answers = [...sc.demoAnswers];
+    s.step = sc.questions.length;
   }
   if (st === "drafting") { s.phase = "write"; s.done = 4; }
-  if (st === "wait") { s.phase = "wait"; s.done = 5; }
+  if (st === "wait") { s.phase = "wait"; s.done = sc.followUp.at; }
   if (st === "done") {
-    s.phase = "done"; s.done = TOTAL; s.follow = "Yes, a day rate";
-    s.bookShown = true; s.book = q.get("book") === "1";
+    s.phase = "done"; s.done = total; s.follow = sc.followUp.opts[0];
+    s.bookShown = true; s.book = query.get("book") === "1";
   }
   return s;
 }
@@ -71,19 +110,18 @@ export type Action =
   | { type: "follow"; value: string }
   | { type: "note"; value: string }
   | { type: "egg"; egg: Egg }
-  | { type: "restart" }
-  | { type: "set"; patch: Partial<ChatState> }
-  | { type: "openTab"; tab: Tab }
-  | { type: "closeTab"; id: string };
+  | { type: "restart"; auto: boolean }
+  | { type: "set"; patch: Partial<ChatState> };
 
 export function reducer(st: ChatState, a: Action): ChatState {
+  const qn = st.sc.questions.length;
   switch (a.type) {
     case "answer": {
       const answers = st.answers.slice();
       answers[a.i] = a.value;
       let next = Math.max(st.step, a.i + 1);
-      while (next < QUESTIONS.length && answers[next]) next++;
-      return { ...st, answers, step: st.editing !== null ? st.step : next, editing: null, text: "" };
+      while (next < qn && answers[next]) next++;
+      return { ...st, answers, step: st.editing !== null ? st.step : next, editing: null, text: "", autoPick: null };
     }
     case "edit":
       return st.phase === "ask" ? { ...st, editing: a.i } : st;
@@ -91,31 +129,23 @@ export function reducer(st: ChatState, a: Action): ChatState {
       return { ...st, phase: "write", done: 0, follow: null, notes: [], peek: null, book: false, bookShown: false };
     case "tick": {
       if (st.phase !== "write") return st;
+      const total = st.sc.outline(st.answers).length;
       const next = st.done + 1;
-      // Section 6 needs one more answer from the user before it can be written.
-      if (next === 5 && st.follow === null) return { ...st, done: next, phase: "wait" };
-      if (next >= TOTAL) return { ...st, done: TOTAL, phase: "done" };
+      // The follow-up section needs one more answer before it can be written.
+      if (next === st.sc.followUp.at && st.follow === null) return { ...st, done: next, phase: "wait" };
+      if (next >= total) return { ...st, done: total, phase: "done" };
       return { ...st, done: next };
     }
     case "follow":
-      return { ...st, follow: a.value, phase: "write" };
+      return { ...st, follow: a.value, phase: "write", autoPick: null };
     case "note":
       return { ...st, notes: [...st.notes, a.value], text: "" };
     case "egg":
       return { ...st, eggs: [...st.eggs, a.egg], text: "" };
     case "restart":
-      return { ...st, eggs: [], step: 3, answers: [...DEMO_ANSWERS], editing: null, phase: "ask", done: 0, follow: null, notes: [], peek: null, book: false, bookShown: false };
+      return { ...blank(st.sc), panel: st.panel, fig: st.fig, auto: a.auto };
     case "set":
       return { ...st, ...a.patch };
-    case "openTab": {
-      const tabs = st.tabs.some((t) => t.id === a.tab.id) ? st.tabs : [...st.tabs, a.tab];
-      return { ...st, tabs, active: a.tab.id, showPast: false };
-    }
-    case "closeTab": {
-      const rest = st.tabs.filter((t) => t.id !== a.id);
-      if (!rest.length) return st;
-      return { ...st, tabs: rest, active: st.active === a.id ? rest[0].id : st.active };
-    }
   }
 }
 

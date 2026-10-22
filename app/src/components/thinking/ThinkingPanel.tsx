@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState, type CSSProperties, type FocusEvent, type PointerEvent } from "react";
-import { NOW_LINES, SOURCES, THINKING, buildOutline, type DraftPhase, type Source } from "../../data/geotechSR";
+import type { DraftPhase, Source } from "../../data/geotechSR";
+import { DEFAULT_SCENARIO, type Scenario } from "../../data/scenarios";
 import { useReducedMotion, useStreamedText } from "./useMotion";
 import "./ThinkingPanel.css";
 
@@ -11,22 +12,13 @@ export interface ThinkingPanelProps {
   answers: (string | undefined)[];
   /** Called when the user clicks a section citation; chat scrolls the outline to it. */
   onJumpToSection?: (sectionIndex: number) => void;
+  /** Which SR's reasoning, sources and checks to show. Defaults to the geotech demo. */
+  scenario?: Scenario;
 }
 
 type Tab = "thinking" | "sources" | "checks";
 type SourceState = "later" | "queued" | "reading" | "used";
 type CheckState = "queued" | "checking" | "pass";
-
-/** Things the AI verifies while drafting. `at` is the section index that triggers the check. */
-const CHECKS: { at: number; text: string; detail: string }[] = [
-  { at: 0, text: "Site and scope match your answers", detail: "Cover block and §1 read back your six answers." },
-  { at: 1, text: "Layout follows SR-24-0098", detail: "Same clause order, so reviewers see a familiar shape." },
-  { at: 3, text: "Borehole depth clears the crane pressure bulb", detail: "20 m against the vendor footing loads." },
-  { at: 4, text: "SPT interval matches ASTM D1586", detail: "Every 1.5 m, 450 mm drive in three increments." },
-  { at: 6, text: "Permit to dig before every hole", detail: "Services scan within 24 h, per the procedure." },
-  { at: 9, text: "No price figures invented", detail: "Rates are left blank for the vendor to fill in." },
-  { at: 10, text: "Clause numbers and cross-references resolve", detail: "Every §ref points at a real clause." },
-];
 
 /** "§2, §10" → [{label:"§2", index:1}, …]; "App. B" jumps to the appendices. */
 function citations(sec: string, sectionCount: number): { label: string; index: number }[] {
@@ -51,7 +43,8 @@ const supportsPopover = typeof HTMLElement !== "undefined" && "showPopover" in H
 
 /* ------------------------------------------------------------------ */
 
-export function ThinkingPanel({ open, onClose, phase, done, answers, onJumpToSection }: ThinkingPanelProps): React.JSX.Element {
+export function ThinkingPanel({ open, onClose, phase, done, answers, onJumpToSection, scenario = DEFAULT_SCENARIO }: ThinkingPanelProps): React.JSX.Element {
+  const { sources: SOURCES, thinking: THINKING, nowLines: NOW_LINES, checks: CHECKS } = scenario;
   const [tab, setTab] = useState<Tab>("thinking");
   const [hoverStep, setHoverStep] = useState<number | null>(null);
   const [hoverSource, setHoverSource] = useState<string | null>(null);
@@ -63,7 +56,7 @@ export function ThinkingPanel({ open, onClose, phase, done, answers, onJumpToSec
   const uid = useId();
   const reduced = useReducedMotion();
 
-  const sections = useMemo(() => buildOutline(answers), [answers]);
+  const sections = useMemo(() => scenario.outline(answers), [scenario, answers]);
   const started = phase !== "ask";
   const finished = phase === "done";
 
@@ -76,7 +69,7 @@ export function ThinkingPanel({ open, onClose, phase, done, answers, onJumpToSec
   const checkStates: CheckState[] = CHECKS.map((c) => (!started ? "queued" : finished || done > c.at ? "pass" : done === c.at ? "checking" : "queued"));
   const passCount = checkStates.filter((c) => c === "pass").length;
 
-  const nowLine = !started ? "waiting for your answers" : finished ? "draft ready · every source logged" : phase === "wait" ? "waiting on your answer about standby…" : NOW_LINES[Math.min(done, NOW_LINES.length - 1)];
+  const nowLine = !started ? "waiting for your answers" : finished ? "draft ready · every source logged" : phase === "wait" ? scenario.followUp.waitLine : NOW_LINES[Math.min(done, NOW_LINES.length - 1)];
 
   // Focus the close button when the drawer opens; Esc closes it.
   useEffect(() => {

@@ -19,3 +19,6 @@
 }
 @media (max-width: 380px) { .db-enav > a:not(.db-btn):nth-child(2), .db-enav > button { display: none; } }
 @media (prefers-reduced-motion: reduce) { .db-enav img { transition: opacity 200ms ease !important; transform: translateY(-50%) rotate(-6deg) !important; } }
+
+.db-brand { display: inline-flex; align-items: center; gap: 14px; }
+.db-brandlogo { display: block; padding-right: 14px; border-right: 1.5px solid var(--rule); box-sizing: content-box; }

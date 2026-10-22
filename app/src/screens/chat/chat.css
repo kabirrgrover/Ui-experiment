@@ -84,7 +84,7 @@
 .ch-step__sep { width: 14px; height: 1px; background: #d6d4ce; }
 
 /* ---------- thread ---------- */
-.ch-thread { display: flex; flex-direction: column; gap: 22px; padding-top: 26px; }
+.ch-thread { display: flex; flex-direction: column; gap: 14px; padding-top: 26px; }
 .ch-msg { animation: ch-in 280ms var(--ease-out) both; }
 .ch-ai { font-size: 16px; line-height: 26px; max-width: 90%; }
 .ch-who { font: 400 15px/1.3 var(--font-display); color: var(--ink-muted); margin-bottom: 2px; }
@@ -217,3 +217,33 @@
 /* Scroll targets stop clear of the sticky composer and the floating thinking handle. */
 .ch-opts, .ch-follow, .ch-card { scroll-margin-top: 24px; scroll-margin-bottom: 96px; }
 @media (max-width: 640px) { .ch-opts, .ch-follow { scroll-margin-bottom: 150px; } }
+
+/* ---------- multi-tab sessions ---------- */
+.ch-main > [hidden] { display: none !important; }
+.ch-tab__dot { width: 7px; height: 7px; border-radius: 50%; flex: 0 0 auto; }
+.ch-tab__dot.is-live { background: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 18%, transparent); }
+.ch-tab__dot.is-run { background: var(--safety); animation: ch-tabpulse 1.2s ease-in-out infinite; }
+@keyframes ch-tabpulse { 50% { opacity: .35; } }
+.ch-demo-tag { margin-left: 10px; font: 500 14px/1 var(--font-hand); color: var(--blue); }
+.ch-tabs__new { border: 0; background: none; cursor: pointer; color: var(--ink); }
+.ch-tabs__new:hover { background: var(--paper-sunk); }
+.ch-saved__sticker { width: 150px; height: auto; rotate: -4deg; filter: drop-shadow(0 6px 8px rgba(17,17,17,.14)); }
+@media (max-width: 640px) { .ch-demo-tag { display: block; margin: 4px 0 0; } }
+@media (prefers-reduced-motion: reduce) { .ch-tab__dot.is-run { animation: none; } }
+/* Tabs shrink before they scroll; "+" stays pinned at the end of the strip. */
+.ch-tab { flex: 0 1 auto; min-width: 104px; }
+.ch-tab__btn { min-width: 0; }
+.ch-tabs__new { position: sticky; right: 0; background: var(--paper); box-shadow: -10px 0 10px var(--paper); }
+
+/* ---------- folded answers once drafting starts ---------- */
+.ch-fold { border-top: 1.5px dashed var(--rule); border-bottom: 1.5px dashed var(--rule); }
+.ch-fold__btn { display: flex; align-items: baseline; gap: 12px; width: 100%; padding: 12px 2px; background: none; border: 0; cursor: pointer; text-align: left; font: inherit; color: var(--ink); }
+.ch-fold__n { font: 700 16px/20px var(--font-hand); white-space: nowrap; }
+.ch-fold__list { flex: 1; min-width: 0; font-size: 14px; color: var(--ink-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ch-fold__chev { font-size: 13px; color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.ch-fold__body { display: flex; flex-direction: column; gap: 14px; padding: 4px 0 16px; }
+
+/* ---------- demo / live label next to the chat title ---------- */
+.ch-kind { display: inline-block; vertical-align: middle; margin-left: 10px; font: 600 11px/1 var(--font-sans); letter-spacing: .06em; text-transform: uppercase; padding: 4px 7px; border-radius: 4px; border: 1.5px solid currentColor; }
+.ch-kind--demo { color: var(--ink-muted); }
+.ch-kind--live { color: var(--blue); }

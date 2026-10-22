@@ -9,6 +9,8 @@ export interface DocFlipbookProps {
   onOpenCanvas: () => void;
   onDownload: () => void;
   onClose: () => void;
+  /** Margin notes keyed by section number. Defaults to the geotech demo's notes. */
+  margin?: Record<number, string>;
 }
 
 interface Leaf { front: ReactNode; back: ReactNode; frontLabel: string; backLabel: string }
@@ -25,12 +27,12 @@ const RM = "(prefers-reduced-motion: reduce)";
  * "Doc ready" reveal. The cover flips open in 3D, the pages riffle, and the book
  * settles on the contents spread with the next actions underneath.
  */
-export function DocFlipbook({ open, meta, sections, onOpenCanvas, onDownload, onClose }: DocFlipbookProps): React.JSX.Element | null {
+export function DocFlipbook({ open, meta, sections, onOpenCanvas, onDownload, onClose, margin = MARGIN }: DocFlipbookProps): React.JSX.Element | null {
   if (!open) return null;
-  return <Book meta={meta} sections={sections} onOpenCanvas={onOpenCanvas} onDownload={onDownload} onClose={onClose} />;
+  return <Book meta={meta} sections={sections} onOpenCanvas={onOpenCanvas} onDownload={onDownload} onClose={onClose} margin={margin} />;
 }
 
-function Book({ meta, sections, onOpenCanvas, onDownload, onClose }: Omit<DocFlipbookProps, "open">) {
+function Book({ meta, sections, onOpenCanvas, onDownload, onClose, margin = MARGIN }: Omit<DocFlipbookProps, "open">) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const primaryRef = useRef<HTMLButtonElement>(null);
   const reduced = useMemo(() => window.matchMedia(RM).matches, []);
@@ -40,7 +42,7 @@ function Book({ meta, sections, onOpenCanvas, onDownload, onClose }: Omit<DocFli
   const leaves = useMemo<Leaf[]>(() => {
     const pages: { node: ReactNode; label: string }[] = [
       { node: <Contents meta={meta} sections={sections} />, label: "contents" },
-      ...sections.map((s) => ({ node: <SectionPage meta={meta} s={s} />, label: `§${s.n} ${s.title}` })),
+      ...sections.map((s) => ({ node: <SectionPage meta={meta} s={s} note={margin[s.n]} />, label: `§${s.n} ${s.title}` })),
       { node: <EndPage meta={meta} sections={sections} total={totalPages} />, label: "end of draft" },
     ];
     const out: Leaf[] = [{ front: <Cover meta={meta} sections={sections} total={totalPages} />, frontLabel: "cover", back: pages[0].node, backLabel: pages[0].label }];
@@ -48,7 +50,7 @@ function Book({ meta, sections, onOpenCanvas, onDownload, onClose }: Omit<DocFli
       out.push({ front: pages[i].node, frontLabel: pages[i].label, back: pages[i + 1]?.node ?? <Blank />, backLabel: pages[i + 1]?.label ?? "blank" });
     }
     return out;
-  }, [meta, sections, totalPages]);
+  }, [meta, sections, totalPages, margin]);
   const n = leaves.length;
 
   const [f, setF] = useState(reduced ? 1 : 0);
@@ -259,8 +261,7 @@ function Contents({ meta, sections }: { meta: typeof DOC_META; sections: Section
   );
 }
 
-function SectionPage({ meta, s }: { meta: typeof DOC_META; s: Section }) {
-  const note = MARGIN[s.n];
+function SectionPage({ meta, s, note }: { meta: typeof DOC_META; s: Section; note?: string }) {
   // Placeholder text lines, varied but stable per section.
   const widths = Array.from({ length: 9 }, (_, k) => 62 + ((s.n * 37 + k * 23) % 36));
   return (

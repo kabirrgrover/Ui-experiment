@@ -102,10 +102,10 @@ export const THINKING: ThoughtStep[] = [
   { head: "Final pass", body: "Numbered clauses, cross-references and the cover block." },
 ];
 
-/** Live one-liner shown under the drafting figure, one per section. */
+/** Live one-liner shown under the drafting figure: index i is shown while section i+1 is being written. */
 export const NOW_LINES = [
   "reading the geotech standard…", "opening SR-24-0098 from the South yard…", "checking the North pad site plan…",
-  "pulling the crane vendor footing loads…", "writing fieldwork with ASTM D1586…", "waiting on your answer about standby…",
+  "pulling the crane vendor footing loads…", "writing fieldwork with ASTM D1586…", "writing the lab testing section…",
   "adding the permit to dig steps…", "writing the schedule…", "listing deliverables…", "building the pricing schedule…", "final pass on numbering…",
 ];
 

@@ -1,3 +1,4 @@
+import { BrandLogo } from "../../components/BrandLogo";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { linkTo } from "../../lib/router";
 import { AskBar } from "./AskBar";
@@ -102,6 +103,7 @@ export default function CanvasScreen() {
     <div className="cv-screen">
       <header className="cv-header">
         <div className="cv-header__left">
+          <BrandLogo height={20} />
           <a href="/chat?state=done" onClick={linkTo("/chat?state=done")} aria-label="Back to chat" className="cv-back">← chat</a>
           <span aria-hidden="true" className="cv-divider" />
           <div className="cv-titles">

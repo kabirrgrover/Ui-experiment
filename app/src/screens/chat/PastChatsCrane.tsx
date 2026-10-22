@@ -4,11 +4,11 @@ import type { Tab } from "./state";
 interface Past extends Tab { num: string; when: string; summary: string }
 
 const PAST: Past[] = [
-  { id: "bridge", doc: "SR", title: "Bridging, East gate", num: "SR-24-0131", when: "3 days ago", summary: "Temporary bridge over the drainage cut at the east gate. 40 t rating, 6-week hire. Approved." },
-  { id: "rebar", doc: "MR", title: "Rebar, level 2", num: "MR-24-0087", when: "yesterday", summary: "Bars for the level 2 slab, cut and bent. Waiting on review from structures." },
-  { id: "sub", doc: "PEP", title: "Substation upgrade", num: "PEP-24-0009", when: "last week", summary: "Execution plan for the substation upgrade: phases, outages and the team." },
-  { id: "pour", doc: "SR", title: "Concrete testing, pour 4", num: "SR-24-0122", when: "2 weeks ago", summary: "Slump and cylinder tests for pour 4. 28-day results due next week." },
-  { id: "lift", doc: "SR", title: "Elevator, tower B", num: "SR-24-0104", when: "last month", summary: "Supply and install of two passenger lifts in tower B. Draft, not sent." },
+  { id: "bridge", kind: "saved", tint: "bridge", doc: "SR", title: "Bridging, East gate", num: "SR-24-0131", when: "3 days ago", summary: "Temporary bridge over the drainage cut at the east gate. 40 t rating, 6-week hire. Approved." },
+  { id: "rebar", kind: "saved", tint: "rebar", doc: "MR", title: "Rebar, level 2", num: "MR-24-0087", when: "yesterday", summary: "Bars for the level 2 slab, cut and bent. Waiting on review from structures." },
+  { id: "sub", kind: "saved", tint: "sub", doc: "PEP", title: "Substation upgrade", num: "PEP-24-0009", when: "last week", summary: "Execution plan for the substation upgrade: phases, outages and the team." },
+  { id: "pour", kind: "saved", tint: "pour", doc: "SR", title: "Concrete testing, pour 4", num: "SR-24-0122", when: "2 weeks ago", summary: "Slump and cylinder tests for pour 4. 28-day results due next week." },
+  { id: "lift", kind: "saved", tint: "lift", doc: "SR", title: "Elevator, tower B", num: "SR-24-0104", when: "last month", summary: "Supply and install of two passenger lifts in tower B. Draft, not sent." },
 ];
 const BASE_X = [210, 400, 590, 780, 970];
 const CABLE = [50, 84, 64, 96, 58];
