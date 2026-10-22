@@ -6,15 +6,17 @@ import "./AppHeader.css";
 type Props = {
   /** Extra controls placed before "New chat", e.g. a Past chats toggle on the chat screen. */
   pastChats?: ReactNode;
+  /** Marks the current section in the nav. */
+  current?: "folders" | "chat";
 };
 
 /** Shared top bar: wordmark, emoji-style nav (a sticker pops in on hover), New chat, avatar. */
-export function AppHeader({ pastChats }: Props) {
+export function AppHeader({ pastChats, current }: Props) {
   return (
     <header className="db-header">
       <a href="/" onClick={linkTo("/")} className="db-wordmark">AI Docbuilder</a>
       <nav aria-label="Main" className="db-enav">
-        <a href="/folders" onClick={linkTo("/folders")}><img src={asset("icon-folder.svg")} alt="" />Folders</a>
+        <a href="/folders" onClick={linkTo("/folders")} aria-current={current === "folders" ? "page" : undefined}><img src={asset("icon-folder.svg")} alt="" />Folders</a>
         {pastChats ?? (
           <a href="/chat?past=1" onClick={linkTo("/chat?past=1")}><img src={asset("icon-chat.svg")} alt="" />Past chats</a>
         )}
