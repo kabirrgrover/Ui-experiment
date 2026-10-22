@@ -65,3 +65,7 @@
   .fo-paper, .fo-front, .fo-doc { transition: none; }
   .fo-in { animation: none; }
 }
+
+/* ---------- recent docs under the folders ---------- */
+.fo-recent { margin-top: 56px; }
+.fo-recent__title { margin: 0 0 14px; font: 400 30px/1.1 var(--font-display); }

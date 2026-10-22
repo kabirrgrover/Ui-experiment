@@ -4,7 +4,7 @@ import { AppHeader } from "../../components/AppHeader";
 import { linkTo, navigate, useQuery } from "../../lib/router";
 import {
   ALL_FOLDERS, BY_PROJECT, BY_TYPE, COLORS, DOCS, DOODLES, FOLDER_PATH, GROUPS, PAPER_SLOTS, SINGLE_PAPER, STAMP_COLOR, STICKERS,
-  type Folder, type Grouping,
+  type DocCard, type Folder, type Grouping,
 } from "./foldersData";
 import "./folders.css";
 
@@ -58,6 +58,13 @@ function FolderGrid({ group, setGroup, q, setQ }: { group: Grouping; setGroup: (
       <div className="fo-grid">
         {list.map((f) => <FolderButton key={f.id} folder={f} />)}
       </div>
+
+      <section className="fo-recent" aria-labelledby="fo-recent-h">
+        <h2 id="fo-recent-h" className="fo-recent__title">recent</h2>
+        <div className="fo-docs">
+          {RECENT.map((d) => <DocLink key={d.num} d={d} rgb={COLORS[TYPE_COLOR[d.doc]].rgb} />)}
+        </div>
+      </section>
     </div>
   );
 }
@@ -107,19 +114,29 @@ function OpenedFolder({ folder, q }: { folder: Folder; q: string }) {
       </div>
       <div className="fo-docs">
         {docs.map((d) => (
-          <a key={d.num} href="/canvas" onClick={linkTo("/canvas")} className="fo-doc">
-            <span className="fo-doc__thumb" style={{ background: `rgba(${c.rgb},.35)` }}><img src={DOODLES[d.doodle]} alt="" /></span>
-            <span className="fo-doc__info">
-              <span className="fo-doc__row">
-                <span className="fo-doc__type">{d.doc}</span>
-                <span className="fo-doc__stamp" style={{ color: STAMP_COLOR[d.status], borderColor: STAMP_COLOR[d.status] }}>{d.status.toUpperCase()}</span>
-              </span>
-              <span className="fo-doc__title">{d.title}</span>
-              <span className="fo-doc__meta">{d.num} · {d.when}</span>
-            </span>
-          </a>
+          <DocLink key={d.num} d={d} rgb={c.rgb} />
         ))}
       </div>
     </div>
+  );
+}
+
+/** Most recently touched docs across all folders (demo data). */
+const RECENT: DocCard[] = [DOCS.sr[0], DOCS.mr[0], DOCS.pep[0], DOCS.sr[2], DOCS.sr[1]];
+const TYPE_COLOR: Record<DocCard["doc"], Folder["color"]> = Object.fromEntries(BY_TYPE.map((f) => [DOCS[f.id]?.[0]?.doc ?? "SR", f.color])) as Record<DocCard["doc"], Folder["color"]>;
+
+function DocLink({ d, rgb }: { d: DocCard; rgb: string }) {
+  return (
+    <a href="/canvas" onClick={linkTo("/canvas")} className="fo-doc">
+      <span className="fo-doc__thumb" style={{ background: `rgba(${rgb},.35)` }}><img src={DOODLES[d.doodle]} alt="" /></span>
+      <span className="fo-doc__info">
+        <span className="fo-doc__row">
+          <span className="fo-doc__type">{d.doc}</span>
+          <span className="fo-doc__stamp" style={{ color: STAMP_COLOR[d.status], borderColor: STAMP_COLOR[d.status] }}>{d.status.toUpperCase()}</span>
+        </span>
+        <span className="fo-doc__title">{d.title}</span>
+        <span className="fo-doc__meta">{d.num} · {d.when}</span>
+      </span>
+    </a>
   );
 }

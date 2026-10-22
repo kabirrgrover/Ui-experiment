@@ -29,7 +29,7 @@
 .st-filter[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 .st-filter__n { opacity: .6; }
 
-.st-clip { position: relative; overflow-x: clip; overflow-y: visible; padding-top: 150px; }
+.st-clip { position: relative; overflow-x: clip; overflow-y: visible; padding-top: 24px; }
 .st-skywrap { position: absolute; inset: 0; pointer-events: none; }
 .st-sky { position: absolute; left: 0; bottom: 0; display: flex; width: max-content; opacity: .9; animation: st-drift linear infinite; }
 .st-sky img { display: block; width: 1600px; height: 262px; flex: 0 0 auto; max-width: none; }

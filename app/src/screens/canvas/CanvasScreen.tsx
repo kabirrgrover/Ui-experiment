@@ -15,7 +15,7 @@ import "./canvas.css";
 
 const initialBoard = (): Board => ({
   notes: [
-    { id: "n1", x: 640, y: 120, color: "yellow", rot: -3, text: "check the depth with the crane vendor before this goes out" },
+    { id: "n1", x: 430, y: 500, color: "yellow", rot: -3, text: "check the depth with the crane vendor before this goes out" },
     { id: "n2", x: 1500, y: 860, color: "peach", rot: 2.5, text: "who signs off the HSE section?" },
   ],
   strokes: [

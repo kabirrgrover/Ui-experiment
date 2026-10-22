@@ -1,2 +1,4 @@
 .fx-ascii { margin: 0; font: 400 11px/12px ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--pencil); opacity: .8; white-space: pre; overflow: hidden; user-select: none;
   mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.fx-loader { min-height: 70vh; display: grid; place-items: center; }
+.fx-loader pre { margin: 0; font: 400 13px/14px ui-monospace, "SFMono-Regular", Menlo, monospace; color: var(--pencil); min-height: 84px; }
