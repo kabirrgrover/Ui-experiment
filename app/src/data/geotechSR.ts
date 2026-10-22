@@ -58,6 +58,7 @@ export function buildOutline(answers: (string | undefined)[]): Section[] {
 
 export type SourceKind = "STANDARD" | "PAST SR" | "DRAWING" | "VENDOR" | "PROCEDURE" | "TEMPLATE";
 
+/** A reference doc the AI reads. These are stripped internal docs users don't open, so the UI shows name, type and where it was used, never quotes. */
 export interface Source {
   id: string;
   kind: SourceKind;
@@ -67,18 +68,16 @@ export interface Source {
   at: number;
   /** Where in the doc it was used. */
   sec: string;
-  /** A short quote from the source the AI relied on. */
-  quote: string;
 }
 
 export const SOURCES: Source[] = [
-  { id: "std-geo", kind: "STANDARD", title: "Company geotechnical investigation standard", why: "Clause structure, sampling and logging rules.", at: 0, sec: "§1–6", quote: "Samples shall be taken at each change in strata and at intervals not exceeding 1.5 m." },
-  { id: "sr-0098", kind: "PAST SR", title: "SR-24-0098 · Geotech, South yard", why: "A similar job. Reused the layout and the pricing schedule.", at: 1, sec: "§2, §10", quote: "Rates per metre drilled, inclusive of casing to 10 m." },
-  { id: "plan-c", kind: "DRAWING", title: "North pad site plan, rev C", why: "Gate, laydown area and borehole locations.", at: 2, sec: "§3, App. B", quote: "North gate · laydown L2 adjacent batch plant." },
-  { id: "crane-loads", kind: "VENDOR", title: "Tower crane footing loads (vendor PDF)", why: "Why 20 m depth clears the pressure bulb.", at: 3, sec: "§4", quote: "Max. bearing 410 kPa, footing 8.5 × 8.5 m." },
-  { id: "astm-d1586", kind: "STANDARD", title: "ASTM D1586 · Standard penetration test", why: "SPT method and interval in the fieldwork section.", at: 4, sec: "§5", quote: "Drive the sampler 450 mm in three 150 mm increments." },
-  { id: "ptd", kind: "PROCEDURE", title: "Permit to dig procedure", why: "Services scan and permit before each hole.", at: 6, sec: "§7", quote: "No excavation without a valid permit and a CAT scan within 24 h." },
-  { id: "price-tpl", kind: "TEMPLATE", title: "Pricing schedule template", why: "Lump sum, rates per metre, provisional sums.", at: 9, sec: "§10", quote: "Schedule A · Lump sums · Schedule B · Rates · Schedule C · Provisional sums" },
+  { id: "std-geo", kind: "STANDARD", title: "Company geotechnical investigation standard", why: "Clause structure, sampling and logging rules.", at: 0, sec: "§1–6" },
+  { id: "sr-0098", kind: "PAST SR", title: "SR-24-0098 · Geotech, South yard", why: "A similar job. Reused the layout and the pricing schedule.", at: 1, sec: "§2, §10" },
+  { id: "plan-c", kind: "DRAWING", title: "North pad site plan, rev C", why: "Gate, laydown area and borehole locations.", at: 2, sec: "§3, App. B" },
+  { id: "crane-loads", kind: "VENDOR", title: "Tower crane footing loads (vendor PDF)", why: "Why 20 m depth clears the pressure bulb.", at: 3, sec: "§4" },
+  { id: "astm-d1586", kind: "STANDARD", title: "ASTM D1586 · Standard penetration test", why: "SPT method and interval in the fieldwork section.", at: 4, sec: "§5" },
+  { id: "ptd", kind: "PROCEDURE", title: "Permit to dig procedure", why: "Services scan and permit before each hole.", at: 6, sec: "§7" },
+  { id: "price-tpl", kind: "TEMPLATE", title: "Pricing schedule template", why: "Lump sum, rates per metre, provisional sums.", at: 9, sec: "§10" },
 ];
 
 export interface ThoughtStep {

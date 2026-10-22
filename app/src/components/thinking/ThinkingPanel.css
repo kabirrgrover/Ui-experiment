@@ -174,10 +174,6 @@
   animation: th-slap 300ms var(--ease-slap) both;
 }
 .th-src__title { margin: 8px 0 0; font: 600 14.5px/20px var(--font-sans); }
-.th-quote { position: relative; margin: 8px 0 0; padding: 0; font: 500 15px/21px var(--font-hand); color: var(--ink); }
-.th-quote span { position: relative; z-index: 1; }
-.th-quote__ul { display: block; width: 92%; height: 8px; margin-top: 1px; fill: none; stroke: var(--safety); stroke-width: 2; stroke-linecap: round; opacity: .85; }
-.th-src[data-state="queued"] .th-quote__ul, .th-src[data-state="later"] .th-quote__ul { stroke: var(--rule); }
 .th-src__why { margin: 6px 0 0; font: 400 13px/18px var(--font-sans); color: var(--ink-muted); }
 .th-src__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 .th-cites { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
@@ -218,7 +214,7 @@
 }
 .th-pop:popover-open { animation: th-pop 200ms var(--ease-out) both; }
 .th-pop__title { font: 600 14px/19px var(--font-sans); }
-.th-pop__quote { font: 500 15px/21px var(--font-hand); }
+.th-pop__why { font-size: 13px; line-height: 18px; color: var(--ink-muted); }
 .th-pop__sec { font: 500 12px/1 var(--font-sans); color: var(--ink-muted); }
 
 /* ---------- handle ---------- */

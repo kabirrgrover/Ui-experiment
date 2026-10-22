@@ -247,10 +247,6 @@ export function ThinkingPanel({ open, onClose, phase, done, answers, onJumpToSec
                       {st === "used" && <span key="stamp" className="th-stamp" aria-hidden="true">used</span>}
                     </div>
                     <p className="th-src__title">{s.title}</p>
-                    <blockquote className="th-quote">
-                      <span>{s.quote}</span>
-                      <svg className="th-quote__ul" viewBox="0 0 200 8" preserveAspectRatio="none" aria-hidden="true"><path d="M2 5 C 40 2, 80 7, 120 4 S 180 3, 198 5" /></svg>
-                    </blockquote>
                     <p className="th-src__why">{s.why}</p>
                     <div className="th-src__foot">
                       {st === "used" || finished ? (
@@ -304,7 +300,7 @@ export function ThinkingPanel({ open, onClose, phase, done, answers, onJumpToSec
           <>
             <span className="th-kind" data-kind={preview.kind}>{preview.kind}</span>
             <strong className="th-pop__title">{preview.title}</strong>
-            <span className="th-pop__quote">“{preview.quote}”</span>
+            <span className="th-pop__why">{preview.why}</span>
             <span className="th-pop__sec">used in {preview.sec}</span>
           </>
         )}
